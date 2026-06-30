@@ -14,10 +14,11 @@ SKILL_DIR="skills/prompt-writer"
 SKILL_MD="$SKILL_DIR/SKILL.md"
 TEMPLATE_MD="$SKILL_DIR/references/template.md"
 EXAMPLE_MD="$SKILL_DIR/examples/example.md"
+EXAMPLE_RESEARCH_MD="$SKILL_DIR/examples/example_research.md"
 
 # 1. Check file existence
 echo "Checking file paths..."
-for file in "$SKILL_MD" "$TEMPLATE_MD" "$EXAMPLE_MD"; do
+for file in "$SKILL_MD" "$TEMPLATE_MD" "$EXAMPLE_MD" "$EXAMPLE_RESEARCH_MD"; do
   if [[ -f "$file" ]]; then
     echo -e "  [${GREEN}OK${NC}] Found file: $file"
   else
