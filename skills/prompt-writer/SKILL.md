@@ -34,7 +34,8 @@ When analyzing, refining, and drafting the user's prompt, you MUST adopt the app
 
 ### 4. 🛠️ The Producer Stage (Prompt Drafting & Context Engineering)
 *   **Action**: Assemble the high-fidelity rewritten prompt using XML-style tags (`<ROLE>`, `<CONTEXT>`, `<RESOURCES_AND_KNOWLEDGE_BASES>`, `<GOAL>`, `<TASK_BREAKDOWN>`, `<CONSTRAINTS>`, `<VERIFICATION_PLAN>`) to isolate context.
-*   **Archetype Embeddings**: Embed the 6 AI Archetypes directly within the rewritten prompt itself, assigning specific archetypes to milestones and subagents.
+*   **Archetype Embeddings**: Embed relevant AI Archetypes directly within the rewritten prompt itself, assigning specific archetypes to milestones and subagents.
+    *   *Note on Selectivity*: Only embed the **Teacher** archetype in the output prompt if the task involves onboarding, educational explanations, tutorial-driven development, or if the user explicitly requests a pedagogical walkthrough. For purely automated, headless, or purely operational tasks, omit the Teacher stage from the output prompt entirely to prevent overhead.
 *   **Multi-Agent Coordination**: Instruct the executing agent to use parallel subagents (`invoke_subagent`) assigned to specialized archetype roles (e.g. `Role: "Producer - UI Component Builder"` or `Role: "Auditor - Security Reviewer"`).
 
 ### 5. 🛡️ The Auditor Stage (Quality Guardrails & Citation Rules)

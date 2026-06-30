@@ -72,7 +72,8 @@ Deconstruct the objective into independent, modular milestones, mapping each to 
   Prompt: "[Review the newly created modules for credential safety, edge cases, and compliance. Ensure perfect HTML tag symmetry and output verification]"
   ```
 
-### Milestone 5: Pedagogical Handoff & Mentoring (Sequence: 4) [Teacher]
+### Milestone 5: Pedagogical Handoff & Mentoring (Sequence: 4) [Teacher - OPTIONAL / SELECTIVE]
+*Note: Only include this milestone if the task involves onboarding, educational explanations, tutorial-driven development, or if the user explicitly requests educational/pedagogical walkthroughs. Omit for purely operational or headless automation tasks.*
 - [ ] Write a walkthrough documenting changes, design choices (SOLID/DRY), and system architecture using Mermaid.js.
 - [ ] Outline 1-2 interactive exercises or challenge tasks to help the developer understand and test the implementation.
 </TASK_BREAKDOWN>
