@@ -68,62 +68,62 @@ You MUST query live search engines to retrieve 2025/2026 data and avoid using fr
 - [ ] **Pillar 1 - Sizing & Subsidies**: Clear market share percentages, CAGR growth rates, and details on local federal tax credits.
 - [ ] **Pillar 2 - Purchase Barriers**: Data-supported breakdown of range anxiety, battery pricing premiums, and local charging station growth rates.
 - [ ] **Pillar 3 - Competitor Benchmarking Matrix**: A markdown table comparing Tesla, BYD, and Rivian across base price, EPA range, and charging speed.
-- [ ] **Citation Hygiene [Auditor]**: All statistical claims, market shares, and specifications must have explicit source citations linked to an Evidence ID in `.gemini/EVIDENCE.md`.
+- [ ] **Citation Hygiene [Sentry]**: All statistical claims, market shares, and specifications must have explicit source citations linked to an Evidence ID in `.gemini/EVIDENCE.md`.
 - [ ] **No Placeholders**: Every SWOT profile and table cell must be completely written and polished. Zero "TBD" or mock figures.
 </GOAL>
 
 <TASK_BREAKDOWN>
 Deconstruct the objective into independent milestones, mapping each to a primary archetype stage.
 
-### Milestone 1: Setup, Baseline Research & Sizing (Sequence: 1) [Scholar]
+### Milestone 1: Setup, Baseline Research & Sizing (Sequence: 1) [Scout]
 - [ ] Query live search engines to extract market shares, growth rates, and regulatory tax credits.
 - [ ] Draft Section 1 (Market Sizing and Policy Subsidies).
 - [ ] Record verification evidence as `[E-101]` in `.gemini/EVIDENCE.md`.
 
-### Milestone 2: Competitor Benchmarking (Sequence: 2, Parallel-Eligible) [Producer]
+### Milestone 2: Competitor Benchmarking (Sequence: 2, Parallel-Eligible) [Builder]
 - [ ] Benchmark Tesla, BYD, and Rivian vehicle portfolios using live specifications.
-- *Parallel Execution*: Invoke a specialized subagent (`invoke_subagent`) adopting the Producer archetype:
+- *Parallel Execution*: Invoke a specialized subagent (`invoke_subagent`) adopting the Builder archetype:
   ```python
-  Role: "Producer - Competitor Researcher"
+  Role: "Builder - Competitor Researcher"
   Prompt: "Search live web specs for Tesla (Model Y/3), BYD (Atto/Seal), and Rivian (R1T/R1S). Benchmark base pricing, EPA range, charging times, and key software features. Structure findings in a comparative markdown table with the first column as nowrap."
   ```
 
-### Milestone 3: SWOT & Purchase Barrier Analysis (Sequence: 2, Parallel-Eligible) [Producer]
+### Milestone 3: SWOT & Purchase Barrier Analysis (Sequence: 2, Parallel-Eligible) [Builder]
 - [ ] Research consumer purchase hurdles (pricing, battery health, range anxiety).
 - [ ] Formulate detailed SWOT profiles for the top 3 manufacturers.
-- *Parallel Execution*: Invoke a specialized subagent (`invoke_subagent`) adopting the Producer archetype:
+- *Parallel Execution*: Invoke a specialized subagent (`invoke_subagent`) adopting the Builder archetype:
   ```python
-  Role: "Producer - Strategic Analyst"
+  Role: "Builder - Strategic Analyst"
   Prompt: "Conduct live research on North American charging infrastructure and consumer purchase hurdles (pricing, Battery Health, range anxiety). Write separate, high-fidelity SWOT profiles for Tesla, BYD, and Rivian."
   ```
 
-### Milestone 4: Synthesis & Fact Verification (Sequence: 3) [Auditor]
+### Milestone 4: Synthesis & Fact Verification (Sequence: 3) [Sentry]
 - [ ] Merge report sections from parallel research subagents.
 - [ ] Verify that every URL citation is active, correct, and matches historical evidence.
 - [ ] Compile all citation links, logging them under Evidence IDs inside `.gemini/EVIDENCE.md`.
-- *Parallel Execution*: Invoke a specialized subagent (`invoke_subagent`) adopting the Auditor archetype:
+- *Parallel Execution*: Invoke a specialized subagent (`invoke_subagent`) adopting the Sentry archetype:
   ```python
-  Role: "Auditor - Fact Sentry"
+  Role: "Sentry - Fact Sentry"
   Prompt: "Review the merged report. Ensure there are no fabricated statistics. Cross-check all prices, vehicle models, and CAGR percentages against live search outputs. Log evidence under Evidence IDs in .gemini/EVIDENCE.md."
   ```
 
-### Milestone 5: Executive Presentation & Mentoring (Sequence: 4) [Teacher]
+### Milestone 5: Executive Presentation & Mentoring (Sequence: 4) [Mentor]
 - [ ] Write a walkthrough documenting key market takeaways and strategic recommendations.
 - [ ] Create a Mermaid.js diagram illustrating the market's Porter's Five Forces forces.
 - [ ] Outline 1-2 strategic "sandbox exercises" (e.g., modeling a potential market shock) for stakeholder analysis.
 </TASK_BREAKDOWN>
 
 <CONSTRAINTS>
-1.  **Factual Hygiene [Scholar]**: No ungrounded assertions. Every figure must match active search outputs.
+1.  **Factual Hygiene [Scout]**: No ungrounded assertions. Every figure must match active search outputs.
 2.  **Strict Table Formatting**: Enforce standard markdown table syntax with clean, nowrap headers.
 3.  **No Placeholders**: All SWOT profiles and strategic sections must be completely written and formatted.
 </CONSTRAINTS>
 
 <VERIFICATION_PLAN>
-### 1. Source & Citation Cross-Checking (Producer/Auditor)
+### 1. Source & Citation Cross-Checking (Builder/Sentry)
 - Verify all citation links in the final report.
 
-### 2. Manual and Visual Auditing (Auditor/Teacher)
+### 2. Manual and Visual Auditing (Sentry/Mentor)
 - Review report rendering in a markdown viewer to ensure the benchmarking table displays cleanly without awkward line wraps.
 </VERIFICATION_PLAN>
 ```
