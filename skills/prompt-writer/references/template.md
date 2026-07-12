@@ -48,6 +48,7 @@ State all development, security, or research restrictions:
     - **Layout Principles**: Ensure layouts are information-dense, comprehensive, yet minimalist and extremely readable. Avoid generic default colors. Use elegant HSL variables, smooth transitions, and responsive grids.
     - **User Documentation**: Maintain thorough, extensive, and easy-to-read user documentation within the project workspace.
 7.  **Strict Data Contract Schemas [Architect]**: All Inter-Process Communication (IPC) and file exchange between parallel subagents inside the shared `scratch/` directory must be governed by rigid, formal schemas (such as Pydantic models or JSON schemas). Raw, schema-less file exchange is strictly forbidden.
+8.  **Self-Resuming State Checkpointing**: You MUST implement and maintain the State Checkpoint & Error Recovery Protocol. Create and continuously update `.gemini/tasks/state_journal.json` and `.gemini/tasks/task.md` immediately after completing any task, action, or stage transition. Upon any system error, process restart, or context limit, read these files first to instantly hydrate context and resume exactly where you left off.
 </CONSTRAINTS>
 
 
@@ -61,7 +62,7 @@ State all development, security, or research restrictions:
 ### Definition of Done (Exit Criteria)
 - [ ] Deliverable A: [Specific functional behavior, report section, or technical setup]
 - [ ] Deliverable B: [Specific quality metrics, visual designs, or data schema]
-- [ ] **State Checkpointing & Resilience**: The execution progress must be actively updated in a local `task.md` file after completing each milestone to ensure state recovery if interrupted.
+- [ ] **Self-Resuming State Checkpointing & Resilience**: Create and maintain both `.gemini/tasks/state_journal.json` (programmatic JSON state machine) and `.gemini/tasks/task.md` (interactive checklist) to survive errors, crashes, or context resets, and automatically resume without state or context loss.
 - [ ] **Citation & Evidence Audit [Sentry]**: All verification checks, test outputs, and claims must reference a verified Evidence ID recorded in `.gemini/EVIDENCE.md`.
 - [ ] **Programmatic Evidence Validation [Sentry]**: An automated verification script (`validate_evidence.py`) must be executed successfully during auditing to programmatically verify that all Evidence IDs map to physical output files and actual test run assets.
 - [ ] **Visual Verification [Sentry]**: Pages and dashboards must be verified visually using the `browser_subagent` (with WebP video recordings saved in the artifacts directory) to ensure layout correctness, table nowrap formatting, and theme toggles work perfectly.
@@ -72,7 +73,7 @@ Deconstruct the objective into independent, modular milestones, mapping each to 
 
 ### Milestone 1: Context Grounding & Setup (Sequence: 1) [Scout]
 - [ ] Ingest the current codebase, active files, or guidelines. Avoid any speculation on technical APIs.
-- [ ] Verify environment dependencies and scaffolding. Establish `task.md` to track current run state.
+- [ ] Verify environment dependencies and scaffolding. Initialize/read and hydrate execution state from `.gemini/tasks/state_journal.json` and `.gemini/tasks/task.md` to track current run state and enable instant self-resumption.
 - [ ] Action item...
 
 ### Milestone 2: Code Construction & Schema-Enforced Parallelization (Sequence: 2) [Builder]
@@ -168,7 +169,12 @@ Deconstruct the objective into independent, modular milestones, mapping each to 
   - Command: `python validate_evidence.py`
 - [ ] Compile all test results, static analysis reports, and verified output hashes, logging them under Evidence IDs in `.gemini/EVIDENCE.md`.
 
-### Milestone 5: Pedagogical Handoff & Mentoring (Sequence: 4) [Mentor - OPTIONAL / SELECTIVE]
+### Milestone 4: Antigravity Automated Verification Walkthrough (Sequence: 4) [Sentry/Mentor]
+- [ ] Run a fully automated verification of all files, routes, compile tasks, security checks, and visual aspects inside the workspace.
+- [ ] Compile all test results, static analysis reports, and verified output hashes.
+- [ ] Generate a comprehensive, beautiful user-facing walkthrough report named `walkthrough.md` in the workspace root, displaying exactly what was done, verified, and tested/validated, complete with raw test execution logs, Evidence IDs, and visual proof lists (recordings/screenshots).
+
+### Milestone 5: Pedagogical Handoff & Mentoring (Sequence: 5) [Mentor - OPTIONAL / SELECTIVE]
 *Note: Only include this milestone if the task involves onboarding, educational explanations, tutorial-driven development, or if the user explicitly requests educational/pedagogical walkthroughs. Omit for purely operational or headless automation tasks.*
 - [ ] Write a walkthrough documenting changes, design choices (SOLID/DRY), subagent coordination schemas (Pydantic models), and backtracking state transition flowcharts using Mermaid.js.
 - [ ] Outline 1-2 interactive exercises or challenge tasks to help the developer understand and test the implementation.
