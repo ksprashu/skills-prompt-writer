@@ -1,5 +1,7 @@
 # Google Antigravity Custom Skill: Prompt-Writer
 
+[![npx skills](https://img.shields.io/badge/skills.sh-installed-brightgreen)](https://skills.sh)
+
 A custom, version-controlled skill for Google Antigravity that transforms basic, vague, or incomplete user prompts into highly-structured, technically precise, and optimized instruction sets designed specifically for Gemini models and Antigravity features.
 
 ---
@@ -35,6 +37,14 @@ A custom, version-controlled skill for Google Antigravity that transforms basic,
 
 ## Installation & Activation
 
+### Recommended: Using `npx skills`
+Install this skill into your agent environment using `npx skills`:
+
+```bash
+npx skills add ksprashu/skills-prompt-writer
+```
+
+### Alternative: Local Linking
 To register this custom skill globally within your Antigravity desktop application or CLI:
 
 1.  Open your terminal.

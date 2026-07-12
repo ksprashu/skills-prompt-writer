@@ -24,13 +24,17 @@ Provide comprehensive context on the objective. Detail:
 ### 1. Required Frameworks, Libraries, & Materials
 Define the precise tools, frameworks, libraries, datasets, methodologies, or standard guidelines required.
 
-### 2. Live Knowledge Retrieval (MANDATORY SCOUT MCP)
-Specify exactly which resources must be fetched using Model Context Protocol (MCP) servers or web search tools to ensure absolute factual hygiene:
-- **Frontend Libraries & Framework APIs**: Query `content7` (using `resolve-library-id`, `query-docs`) to pull up-to-date client-side specs.
-- **Official Cloud APIs & Auth SDKs**: Query `developer-knowledge` (using `search_documents`, `answer_query`) for authoritative specs.
-- **Live Statistics & Metrics**: Query `search_web` for live market data, figures, or articles.
-- **Modern Web/Layout Standards**: Leverage the `modern-web-guidance` skill immediately for styling/modern web components.
-- **Project Documentation Sync**: Run `docs-sync` to keep documents synchronized and compile correctly.
+### 2. Multi-Agent Context Engineering (MANDATORY SCOUT)
+Specify the execution of specialized background subagents to scour codebases and gather documentation concurrently:
+- **Subagents Coordination**: Spawn three parallel subagents using `invoke_subagent`:
+  - **Codebase Scout**: Indexes files, maps routes/APIs, and writes `scratch/context_engineering/codebase_map.json` matching `codebase_map_schema.json`.
+  - **Web Intelligence Analyst**: Searches the web (`search_web`) for versions/best-practices and writes `scratch/context_engineering/web_intel.json`.
+  - **Docs Crawler**: Queries MCPs (`content7`, `developer-knowledge`) and writes `scratch/context_engineering/docs_crawler.json`.
+- **Hybrid Handoff Protocol**: Subagents write complete granular payloads to disk as the Single Source of Truth, then trigger `send_message` with lightweight notification event headers to Parent.
+- **Cache-Friendly Context Tiering**: Partition context into:
+  - **Static Context Prefix**: Fixed library signatures, Pydantic/JSON schemas, and core guidelines at the top.
+  - **Dynamic Suffix**: User specs, checklist checklist updates, and run variables at the bottom.
+  - **External Reference Links**: Large dumps referenced via file URLs to avoid prompt bloat.
 </RESOURCES_AND_KNOWLEDGE_BASES>
 
 <CONSTRAINTS>
