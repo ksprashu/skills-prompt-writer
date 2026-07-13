@@ -35,6 +35,11 @@ Specify the execution of specialized background subagents to scour codebases and
   - **Static Context Prefix**: Fixed library signatures, Pydantic/JSON schemas, and core guidelines at the top.
   - **Dynamic Suffix**: User specs, checklist checklist updates, and run variables at the bottom.
   - **External Reference Links**: Large dumps referenced via file URLs to avoid prompt bloat.
+
+### 3. Required Core Antigravity Skills (Companion Subsystems)
+To govern the stage-by-stage cognitive transitions and structural knowledge formatting:
+- **6-personas**: Integrates the global standalone [6-personas Custom Skill](file:///Users/ksprashanth/.gemini/skills/6-personas/SKILL.md) to structure the implementation stages (Scout, Analyst, Architect, Builder, Sentry, Mentor).
+- **knowledge-catalog**: Enforces the [Knowledge Catalog Custom Skill](file:///Users/ksprashanth/.gemini/skills/knowledge-catalog/SKILL.md) to organize and deliver all stage insights as a standard Google OKF Knowledge Bundle.
 </RESOURCES_AND_KNOWLEDGE_BASES>
 
 <CONSTRAINTS>
