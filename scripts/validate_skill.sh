@@ -30,10 +30,12 @@ TEMPLATE_MD="$SKILL_DIR/references/template.md"
 EXAMPLE_MD="$SKILL_DIR/examples/example.md"
 EXAMPLE_RESEARCH_MD="$SKILL_DIR/examples/example_research.md"
 EXAMPLE_SDK_ORCHESTRATOR_MD="$SKILL_DIR/examples/example_sdk_orchestrator.md"
+PROMPT_REGISTRY_PY="scripts/prompt_registry.py"
+EXECUTE_PIPELINE_PY="scripts/execute_pipeline.py"
 
 # 1. Check file existence
 echo "Checking file paths..."
-for file in "$SKILL_MD" "$TEMPLATE_MD" "$EXAMPLE_MD" "$EXAMPLE_RESEARCH_MD" "$EXAMPLE_SDK_ORCHESTRATOR_MD"; do
+for file in "$SKILL_MD" "$TEMPLATE_MD" "$EXAMPLE_MD" "$EXAMPLE_RESEARCH_MD" "$EXAMPLE_SDK_ORCHESTRATOR_MD" "$PROMPT_REGISTRY_PY" "$EXECUTE_PIPELINE_PY"; do
   if [[ -f "$file" ]]; then
     echo -e "  [${GREEN}OK${NC}] Found file: $file"
   else

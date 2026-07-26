@@ -1,0 +1,16 @@
+- [x] Milestone 1: Refactor 6-Personas Custom Skill [Scout/Architect]
+  - [x] Edit `/Users/ksprashanth/code/github/skills-6-personas/skills/6-personas/SKILL.md`
+  - [x] Add the Agent Dreaming lifecycle section (Light, REM, and Deep sleep phases)
+  - [x] Define the biological mappings and Inception security protections
+- [x] Milestone 2: Refactor Prompt-Writer Custom Skill [Builder]
+  - [x] Edit `/Users/ksprashanth/code/github/skills-prompt-writer/skills/prompt-writer/SKILL.md`
+  - [x] Incorporate Agent Dreaming under the Mentor stage
+  - [x] Integrate structured `ask_question` tool guidelines under the Socratic Analyst stage
+- [x] Milestone 3: Refactor the Domain-Agnostic Prompt Template [Builder]
+  - [x] Edit `/Users/ksprashanth/code/github/skills-prompt-writer/skills/prompt-writer/references/template.md`
+  - [x] Add Agent Dreaming constraints and memory promotion requirements under `<CONSTRAINTS>`
+  - [x] Add Agent Dreaming post-execution/memory-cleanup milestone under `<TASK_BREAKDOWN>`
+- [x] Milestone 4: Verification and Handoff [Sentry/Mentor]
+  - [x] Run the local validation script `scripts/validate_skill.sh`
+  - [x] Ensure all markdown files have perfectly balanced tags and link mappings
+  - [x] Generate the final `walkthrough.md` report

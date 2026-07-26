@@ -1,0 +1,23 @@
+- [x] Milestone 1: Multi-Platform Scout & Setup [Scout]
+  - [x] Map the workspace structure
+  - [x] Scan `/Users/ksprashanth/.gemini/antigravity/brain/` and `/Users/ksprashanth/.gemini/antigravity-cli/brain/` to list active conversation directories
+  - [x] Create `scratch/` directory for the script and event cards
+- [x] Milestone 2: Map Stage - Transcript Parsing & Ingestion [Builder/Sentry]
+  - [x] Write the programmatic parser script `scratch/parse_transcripts.py`
+  - [x] Configure the parser to extract user goals, success edits, compile errors, and preferences
+  - [x] Execute `parse_transcripts.py` to compile event cards inside `scratch/event_cards/`
+- [x] Milestone 3: Reduce Stage - Synthesis & Socratic Clustering [Analyst/Architect]
+  - [x] Ingest and cluster event cards to extract recurring preferences, rules, and stubs
+  - [x] Synthesize permanent memory ledger `.gemini/knowledge/MEMORY.md`
+  - [x] Synthesize global project style rulebook `.agents/AGENTS.md`
+  - [x] Scaffold at least 1-2 new custom skills under `skills/` for discovered repetitive commands
+- [x] Milestone 4: Documentation Compilation & World Setup [Builder/Mentor]
+  - [x] Create the `.gemini/knowledge/index.md` index catalog
+  - [x] Draft raw markdown guides (`user_guide.md`, `walkthrough.md`, `architecture_map.md`) in `docs/`
+  - [x] Invoke `/Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py` to compile raw markdown into highly stylized Stitch-themed HTML
+- [x] Milestone 5: Verification & Walkthrough Audit [Sentry/Mentor]
+  - [x] Write and execute `validate_evidence.py` to programmatically verify deliverables against disk
+  - [x] Verify markdown formatting, tag symmetry, and clickable links
+  - [x] Log all validation evidence in `.gemini/EVIDENCE.md`
+  - [x] Draft narrative dream reflections in `.gemini/knowledge/DREAMS.md`
+  - [x] Generate the final `walkthrough.md` report

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" class="dark h-full bg-[#121212]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Interaction Guide • Google India Summit 2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'google-blue': '#A8C7FA',
+                        'surface-100': '#1E1E1E',
+                        'surface-200': '#2A2A2A',
+                        'safety-green': '#10b981',
+                        'muted-slate': '#94a3b8',
+                        'electric-teal': '#0be6b3',
+                        'neon-indigo': '#A8C7FA',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        headings: ['Outfit', 'sans-serif'],
+                        console: ['Fira Code', 'monospace'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html {
+            font-size: 16px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-panel {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'dark',
+                securityLevel: 'loose',
+                themeVariables: {
+                    background: '#121212',
+                    primaryColor: '#A8C7FA',
+                    primaryTextColor: '#ffffff',
+                    lineColor: '#94a3b8',
+                }
+            });
+        });
+    </script>
+</head>
+<body class="h-full font-sans text-zinc-300 flex flex-col overflow-hidden selection:bg-google-blue/30 selection:text-white bg-[#121212]">
+
+    <div id="toast" class="fixed top-5 right-5 transform translate-y-[-100px] opacity-0 transition-all duration-300 bg-emerald-500 text-white font-headings font-bold px-4 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 z-50">
+        <span class="text-xs">Copied to Clipboard!</span>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <header class="h-16 border-b border-white/10 px-6 flex items-center justify-between shrink-0 glass-panel sticky top-0 z-40">
+        <div class="flex items-center space-x-6 min-w-0">
+            <div class="flex items-center space-x-2 shrink-0">
+                <div class="w-3 h-3 rounded-full bg-google-blue animate-pulse"></div>
+                <span class="text-sm font-headings font-extrabold tracking-wide text-white uppercase">Google Keynote</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-1 pl-4 border-l border-white/10">
+                
+        <a href="user_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-white font-bold bg-white/10">
+            User & Demo Guide
+        </a>
+        
+        <a href="deployment_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            Enterprise Deployment
+        </a>
+        
+        <a href="master_roadmap.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            Project Roadmap & History
+        </a>
+        
+            </nav>
+        </div>
+        <div class="flex items-center space-x-4 shrink-0">
+            <span class="text-xs font-console text-zinc-400">DOCS_SYNC <span class="text-emerald-400 font-bold">ONLINE</span></span>
+        </div>
+    </header>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto custom-scrollbar relative">
+        <!-- Subtle Glow Background -->
+        <div class="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-google-blue/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+
+        <div class="max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-8 py-8 leading-relaxed pt-12 pb-24 animate-fade-in-up relative z-10">
+            <h1 class="text-3xl md:text-5xl font-headings font-black tracking-tight text-white mb-4">Developer Interaction Guide</h1>
+            <div class="h-1 w-20 bg-google-blue rounded-full mb-10"></div>
+            
+            <div class="space-y-6">
+                
+    <!-- Cockpit Diagnostic Row -->
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        
+        <!-- Live Connection Mode Controller -->
+        <div class="glass-panel border border-white/5 rounded-3xl p-5 flex flex-col justify-between bg-[#0a0c14]/40">
+            <div>
+                <span class="text-xs font-console font-black text-zinc-500 uppercase tracking-widest">Simulation controller</span>
+                <h4 class="text-xs font-headings font-extrabold text-white mt-1.5">Database Operation Mode</h4>
+                <p class="text-xs text-zinc-400 mt-2 leading-relaxed">Toggle the simulated environment state in the header bar dynamically.</p>
+            </div>
+            <div class="flex items-center space-x-2 mt-4">
+                <button onclick="toggleSimulatedMode('gcp')" id="sim-btn-gcp" class="flex-1 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-console font-black text-xs tracking-wider transition hover:bg-emerald-500/25">GCP CLOUD</button>
+                <button onclick="toggleSimulatedMode('mock')" id="sim-btn-mock" class="flex-1 py-1.5 rounded-lg border border-white/10 bg-white/5 text-zinc-400 font-console font-black text-xs tracking-wider transition hover:bg-white/10">MOCK LOCAL</button>
+            </div>
+        </div>
+        
+        <!-- Dynamic Connection Latency and Ping Test -->
+        <div class="glass-panel border border-white/5 rounded-3xl p-5 flex flex-col justify-between bg-[#0a0c14]/40 col-span-2">
+            <div>
+                <span class="text-xs font-console font-black text-zinc-500 uppercase tracking-widest">Diagnostic probe</span>
+                <h4 class="text-xs font-headings font-extrabold text-white mt-1.5">Active Resource Pings</h4>
+                <p class="text-xs text-zinc-400 mt-2 leading-relaxed">Scan connections and verify response latency parameters across stage clusters.</p>
+            </div>
+            
+            <!-- Connection Pings Status -->
+            <div class="grid grid-cols-2 gap-x-4 gap-y-1.5 mt-3">
+                <div class="flex items-center justify-between text-xs font-console">
+                    <span class="text-zinc-500">Firestore coords:</span>
+                    <span id="ping-db" class="text-emerald-400 font-bold">READY (12ms)</span>
+                </div>
+                <div class="flex items-center justify-between text-xs font-console">
+                    <span class="text-zinc-500">WebSocket voice:</span>
+                    <span id="ping-voice" class="text-emerald-400 font-bold">READY (15ms)</span>
+                </div>
+                <div class="flex items-center justify-between text-xs font-console">
+                    <span class="text-zinc-500">AlloyDB pgvector:</span>
+                    <span id="ping-vector" class="text-emerald-400 font-bold">READY (22ms)</span>
+                </div>
+                <div class="flex items-center justify-between text-xs font-console">
+                    <span class="text-zinc-500">Cloud Storage:</span>
+                    <span id="ping-gcs" class="text-emerald-400 font-bold">READY (8ms)</span>
+                </div>
+            </div>
+            
+            <button onclick="runGuideDiagnostics(this)" class="mt-4 py-2 w-full rounded-xl bg-neon-indigo text-white border border-neon-indigo/30 hover:shadow-[0_0_15px_rgba(99,102,241,0.3)] transition duration-300 font-headings font-extrabold text-xs">Run Live Diagnostic Scan ⚡</button>
+        </div>
+    </div>
+    
+    
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+        
+        <!-- Left vertical navbar -->
+        <div class="lg:sticky lg:top-8 space-y-1.5 bg-[#090b11]/30 border border-white/5 rounded-3xl p-5 shadow-xl">
+            <span class="text-xs font-console font-black tracking-widest text-zinc-500 uppercase px-3.5">OPERATIONAL MANUAL</span>
+            <div class="space-y-1 mt-3">
+                
+        <button onclick="showGuideTab('1-interacting-with-the-prompt-writer-skill')" id="tab-btn-guide-1-interacting-with-the-prompt-writer-skill" class="guide-tab-btn w-full text-left pl-3.5 pr-2.5 py-3.5 border-l-4 rounded-r-xl transition flex items-start space-x-3 text-sm md:text-base font-bold font-headings border-electric-teal bg-electric-teal/10 text-white font-bold">
+            <div class="shrink-0 mt-0.5"><svg class="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span>🚀 1. Interacting with the Prompt-Writer Skill</span>
+        </button>
+        
+        <button onclick="showGuideTab('2-background-agent-dreaming')" id="tab-btn-guide-2-background-agent-dreaming" class="guide-tab-btn w-full text-left pl-3.5 pr-2.5 py-3.5 border-l-4 rounded-r-xl transition flex items-start space-x-3 text-sm md:text-base font-bold font-headings border-transparent text-zinc-400 hover:bg-white/[0.01] hover:text-zinc-200">
+            <div class="shrink-0 mt-0.5"><svg class="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span>💤 2. Background Agent Dreaming</span>
+        </button>
+        
+        <button onclick="showGuideTab('3-running-validation-scripts')" id="tab-btn-guide-3-running-validation-scripts" class="guide-tab-btn w-full text-left pl-3.5 pr-2.5 py-3.5 border-l-4 rounded-r-xl transition flex items-start space-x-3 text-sm md:text-base font-bold font-headings border-transparent text-zinc-400 hover:bg-white/[0.01] hover:text-zinc-200">
+            <div class="shrink-0 mt-0.5"><svg class="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span>🛠️ 3. Running Validation Scripts</span>
+        </button>
+        
+            </div>
+        </div>
+        
+        <!-- Right content pane -->
+        <div class="lg:col-span-3 glass-panel border border-white/5 rounded-3xl p-8.5 shadow-2xl relative bg-[#090c15]/20 min-h-[500px]">
+            <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-electric-teal/[0.015] rounded-full blur-3xl -z-10"></div>
+            
+        <div id="pane-guide-1-interacting-with-the-prompt-writer-skill" class="guide-pane space-y-5 ">
+            
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">The <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">prompt-writer</code> skill is your primary entry point for authoring high-fidelity, optimized prompts utilizing the <strong class="text-white font-bold font-headings">6 AI Personas Framework</strong>:</p>
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">1.  <strong class="text-white font-bold font-headings">Trigger Command</strong>: Use the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">/prompt-writer</code> slash command in the Antigravity chat interface.</p>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">2.  <strong class="text-white font-bold font-headings">Socratic Questionnaire</strong>: The agent will start a highly structured, interactive grilling loop—asking exactly <strong class="text-white font-bold font-headings">one</strong> deep question at a time to clarify boundaries, constraints, and dependencies.</p>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">3.  <strong class="text-white font-bold font-headings">Proactive Defaults</strong>: For every Socratic question, the agent proposes 2-3 technical options. If you are ambiguous or request defaults, the fallback is immediately activated.</p>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">4.  <strong class="text-white font-bold font-headings">Instant Execution Artifact</strong>: The final prompt is saved as <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">rewritten_prompt.md</code> with an embedded executable hook. Clicking "Proceed" reactivates the codebase-level planning mode and runs the pipeline.</p>
+
+<hr class="border-white/5 my-8" />
+        </div>
+        
+        <div id="pane-guide-2-background-agent-dreaming" class="guide-pane space-y-5 hidden">
+            
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">To maintain cognitive consistency, future agents in this workspace execute a 3-phase asynchronous memory consolidation cycle at the end of their task lifecycle:</p>
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">1.  <strong class="text-white font-bold font-headings">Light Phase (Workspace Purge)</strong>: Cleans up transient scratch files, temp variables, and test logs.</p>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">2.  <strong class="text-white font-bold font-headings">REM Phase (Insight Extraction)</strong>: Programs an automated parser to extract errors, preferences, and design system decisions.</p>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">3.  <strong class="text-white font-bold font-headings">Deep Phase (Memory Promotion)</strong>: Programmatically promotes durable findings to <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/MEMORY.md</code> and style definitions to <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.agents/AGENTS.md</code>.</p>
+
+<hr class="border-white/5 my-8" />
+        </div>
+        
+        <div id="pane-guide-3-running-validation-scripts" class="guide-pane space-y-5 hidden">
+            
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">To ensure your workspace remains structurally valid and compile-safe, always run the local validation suites:</p>
+
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>3.1 Validate Skill Integrity</span></h3>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">Verify custom skill layouts, YAML frontmatters, and file paths:</p>
+
+            <div class="rounded-2xl overflow-hidden border border-white/5 bg-[#080b13] my-6 font-console text-xs relative group shadow-2xl backdrop-blur-md">
+                <div class="flex items-center justify-between px-4 py-2.5 bg-[#0d101b] border-b border-white/5">
+                    <div class="flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-[0_0_6px_rgba(239,68,68,0.4)]"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80 shadow-[0_0_6px_rgba(234,179,8,0.4)]"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-500/80 shadow-[0_0_6px_rgba(34,197,94,0.4)]"></span>
+                        <span class="text-xs text-muted-slate font-console font-black pl-2 tracking-widest uppercase">bash code terminal</span>
+                    </div>
+                    <button onclick="navigator.clipboard.writeText(decodeURIComponent('bash%20scripts/validate_skill.sh%0A')); showCopiedToast(this);" class="text-xs font-console font-bold text-muted-slate hover:text-white bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded-md transition duration-200 border border-white/5 flex items-center space-x-1 group-hover:border-white/10">
+                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+                <pre class="p-4 overflow-x-auto text-zinc-300 leading-relaxed font-console text-xs md:text-sm max-h-[420px] custom-scrollbar"><code>bash scripts/validate_skill.sh
+</code></pre>
+            </div>
+            
+
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>3.2 Compile Document Suite</span></h3>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">Compile raw Markdown files inside <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">docs/</code> into interactive HTML sheets using Stitch themes:</p>
+
+            <div class="rounded-2xl overflow-hidden border border-white/5 bg-[#080b13] my-6 font-console text-xs relative group shadow-2xl backdrop-blur-md">
+                <div class="flex items-center justify-between px-4 py-2.5 bg-[#0d101b] border-b border-white/5">
+                    <div class="flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-[0_0_6px_rgba(239,68,68,0.4)]"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80 shadow-[0_0_6px_rgba(234,179,8,0.4)]"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-500/80 shadow-[0_0_6px_rgba(34,197,94,0.4)]"></span>
+                        <span class="text-xs text-muted-slate font-console font-black pl-2 tracking-widest uppercase">bash code terminal</span>
+                    </div>
+                    <button onclick="navigator.clipboard.writeText(decodeURIComponent('python%20/Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py%20--dir%20./docs%0A')); showCopiedToast(this);" class="text-xs font-console font-bold text-muted-slate hover:text-white bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded-md transition duration-200 border border-white/5 flex items-center space-x-1 group-hover:border-white/10">
+                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+                <pre class="p-4 overflow-x-auto text-zinc-300 leading-relaxed font-console text-xs md:text-sm max-h-[420px] custom-scrollbar"><code>python /Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py --dir ./docs
+</code></pre>
+            </div>
+            
+
+        </div>
+        
+        </div>
+        
+    </div>
+    
+    <script>
+        function showGuideTab(slug) {
+            document.querySelectorAll('.guide-pane').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.guide-tab-btn').forEach(btn => {
+                btn.className = "guide-tab-btn w-full text-left pl-3.5 pr-2.5 py-3.5 border-l-4 border-transparent rounded-r-xl transition flex items-start space-x-3 text-sm md:text-base font-bold font-headings text-zinc-400 hover:bg-white/[0.01] hover:text-zinc-200";
+            });
+            
+            document.getElementById('pane-guide-' + slug).classList.remove('hidden');
+            const abtn = document.getElementById('tab-btn-guide-' + slug);
+            if (abtn) {
+                abtn.className = "guide-tab-btn w-full text-left pl-3.5 pr-2.5 py-3.5 border-l-4 border-electric-teal rounded-r-xl transition flex items-start space-x-3 text-sm md:text-base font-bold font-headings bg-electric-teal/10 text-white font-bold";
+            }
+        }
+        
+        function toggleSimulatedMode(mode) {
+            const headerBadge = document.querySelector('header span.text-neon-indigo, header span.text-emerald-400, header div.inline-flex');
+            
+            const btnGcp = document.getElementById('sim-btn-gcp');
+            const btnMock = document.getElementById('sim-btn-mock');
+            
+            if (mode === 'gcp') {
+                btnGcp.className = "flex-1 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-console font-black text-xs tracking-wider transition hover:bg-emerald-500/25";
+                btnMock.className = "flex-1 py-1.5 rounded-lg border border-white/10 bg-white/5 text-zinc-400 font-console font-black text-xs tracking-wider transition hover:bg-white/10";
+                
+                // Update global text on header top bar (simulated)
+                document.querySelector('header span.text-electric-teal').innerText = "24 MAY 2026 (LIVE GCP CONNECT)";
+                document.querySelector('header span.text-electric-teal').className = "text-emerald-400";
+            } else {
+                btnMock.className = "flex-1 py-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-400 font-console font-black text-xs tracking-wider transition hover:bg-amber-500/25";
+                btnGcp.className = "flex-1 py-1.5 rounded-lg border border-white/10 bg-white/5 text-zinc-400 font-console font-black text-xs tracking-wider transition hover:bg-white/10";
+                
+                document.querySelector('header span.text-emerald-400, header span.text-electric-teal').innerText = "24 MAY 2026 (MOCK FALLBACK)";
+                document.querySelector('header span.text-emerald-400, header span.text-electric-teal').className = "text-amber-500";
+            }
+        }
+        
+        function runGuideDiagnostics(btn) {
+            const origText = btn.innerHTML;
+            btn.innerHTML = `
+                <svg class="w-4.5 h-4.5 text-white animate-spin mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
+            `;
+            
+            const db = document.getElementById('ping-db');
+            const voice = document.getElementById('ping-voice');
+            const vec = document.getElementById('ping-vector');
+            const gcs = document.getElementById('ping-gcs');
+            
+            db.innerText = "SCANNING..."; db.className = "text-amber-400 animate-pulse font-bold";
+            voice.innerText = "SCANNING..."; voice.className = "text-amber-400 animate-pulse font-bold";
+            vec.innerText = "SCANNING..."; vec.className = "text-amber-400 animate-pulse font-bold";
+            gcs.innerText = "SCANNING..."; gcs.className = "text-amber-400 animate-pulse font-bold";
+            
+            setTimeout(() => {
+                db.innerText = "ONLINE (9ms)"; db.className = "text-emerald-400 font-bold";
+                voice.innerText = "ONLINE (12ms)"; voice.className = "text-emerald-400 font-bold";
+                vec.innerText = "ONLINE (18ms)"; vec.className = "text-emerald-400 font-bold";
+                gcs.innerText = "ONLINE (6ms)"; gcs.className = "text-emerald-400 font-bold";
+                btn.innerHTML = "Diagnostics Successful ✓";
+                btn.className = "mt-4 py-2 w-full rounded-xl bg-emerald-500 text-white border border-emerald-400 hover:shadow-[0_0_15px_rgba(16,185,129,0.3)] transition duration-300 font-headings font-extrabold text-xs";
+                
+                setTimeout(() => {
+                    btn.innerHTML = origText;
+                    btn.className = "mt-4 py-2 w-full rounded-xl bg-neon-indigo text-white border border-neon-indigo/30 hover:shadow-[0_0_15px_rgba(99,102,241,0.3)] transition duration-300 font-headings font-extrabold text-xs";
+                }, 2000);
+            }, 1500);
+        }
+    </script>
+    
+            </div>
+        </div>
+        
+        <footer class="max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-8 py-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-zinc-500 mx-auto px-8 relative z-10">
+            <p>© 2026 Google India Summit • Developed on stage live with Antigravity</p>
+            <a href="https://ai.google.dev/gemini-api/docs" target="_blank" class="hover:text-white transition mt-2 md:mt-0">Gemini Live API Docs ➔</a>
+        </footer>
+    </main>
+
+    <script>
+        function showCopiedToast(btn) {
+            const toast = document.getElementById('toast');
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateY(-100px)';
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

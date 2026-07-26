@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en" class="dark h-full bg-[#121212]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementation Plan - Custom Documentation Skill (From Scratch) with Live-Reload Server • Google India Summit 2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'google-blue': '#A8C7FA',
+                        'surface-100': '#1E1E1E',
+                        'surface-200': '#2A2A2A',
+                        'safety-green': '#10b981',
+                        'muted-slate': '#94a3b8',
+                        'electric-teal': '#0be6b3',
+                        'neon-indigo': '#A8C7FA',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        headings: ['Outfit', 'sans-serif'],
+                        console: ['Fira Code', 'monospace'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html {
+            font-size: 16px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-panel {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'dark',
+                securityLevel: 'loose',
+                themeVariables: {
+                    background: '#121212',
+                    primaryColor: '#A8C7FA',
+                    primaryTextColor: '#ffffff',
+                    lineColor: '#94a3b8',
+                }
+            });
+        });
+    </script>
+</head>
+<body class="h-full font-sans text-zinc-300 flex flex-col overflow-hidden selection:bg-google-blue/30 selection:text-white bg-[#121212]">
+
+    <div id="toast" class="fixed top-5 right-5 transform translate-y-[-100px] opacity-0 transition-all duration-300 bg-emerald-500 text-white font-headings font-bold px-4 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 z-50">
+        <span class="text-xs">Copied to Clipboard!</span>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <header class="h-16 border-b border-white/10 px-6 flex items-center justify-between shrink-0 glass-panel sticky top-0 z-40">
+        <div class="flex items-center space-x-6 min-w-0">
+            <div class="flex items-center space-x-2 shrink-0">
+                <div class="w-3 h-3 rounded-full bg-google-blue animate-pulse"></div>
+                <span class="text-sm font-headings font-extrabold tracking-wide text-white uppercase">Google Keynote</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-1 pl-4 border-l border-white/10">
+                
+        <a href="user_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            User & Demo Guide
+        </a>
+        
+        <a href="deployment_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            Enterprise Deployment
+        </a>
+        
+        <a href="master_roadmap.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            Project Roadmap & History
+        </a>
+        
+            </nav>
+        </div>
+        <div class="flex items-center space-x-4 shrink-0">
+            <span class="text-xs font-console text-zinc-400">DOCS_SYNC <span class="text-emerald-400 font-bold">ONLINE</span></span>
+        </div>
+    </header>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto custom-scrollbar relative">
+        <!-- Subtle Glow Background -->
+        <div class="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-google-blue/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+
+        <div class="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto px-8 py-8 leading-relaxed pt-12 pb-24 animate-fade-in-up relative z-10">
+            <h1 class="text-3xl md:text-5xl font-headings font-black tracking-tight text-white mb-4">Implementation Plan - Custom Documentation Skill (From Scratch) with Live-Reload Server</h1>
+            <div class="h-1 w-20 bg-google-blue rounded-full mb-10"></div>
+            
+            <div class="space-y-6">
+                <p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">This plan details the design and construction of a new, standalone <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">documentation</code> skill from scratch under <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">/Users/ksprashanth/code/github/skills-documentation</code>. We will codify the 4 premium visual styles extracted from Stitch, develop a robust, zero-dependency Markdown-to-HTML compiler, construct a built-in <strong class="text-white font-bold font-headings">Live-Reload & Watch Server</strong> (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">watch_docs.py</code>), and integrate this new skill directly into both the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">6-personas</code> and <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">prompt-writer</code> skills to make its adoption explicit across all projects.</p>
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">User Review Required</h2>
+
+
+        <div class="border-l-4 p-4 rounded-xl my-6 border-indigo-500 bg-indigo-950/10 text-indigo-200/90 flex items-start space-x-3.5 shadow-lg border border-white/5">
+            <svg class="w-5 h-5 text-indigo-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div class="flex-1 space-y-1">
+                <span class="text-xs font-console font-black tracking-widest uppercase text-white/50">IMPORTANT</span>
+                <p class="text-base md:text-lg leading-relaxed"><br/><strong class="text-white font-bold font-headings">1. Creation of standalone <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">skills-documentation</code>:</strong><br/>We will scaffold a new local repository <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">/Users/ksprashanth/code/github/skills-documentation</code> following the canonical Custom Skill guidelines. It will be globally discoverable and version-controlled.<br/><br/><strong class="text-white font-bold font-headings">2. Built-in Live-Reload & Watch Server (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">watch_docs.py</code>):</strong><br/>We will write a lightweight, standard-library-only Python server. It will:<br/>*   Watch for any edits inside the project's <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">docs/</code> folder (or specific <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.md</code> files).<br/>*   Automatically re-run the markdown compiler (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">compile_docs.py</code>) when changes are saved.<br/>*   Serve the compiled documentation locally (e.g. at <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">http://localhost:8000</code>).<br/>*   Inject a lightweight JavaScript listener in "watch mode" to auto-refresh the browser on re-compilation with zero third-party packages.<br/><br/><strong class="text-white font-bold font-headings">3. Explicit Integration across Prompts:</strong><br/>*   <strong class="text-white font-bold font-headings">6-Personas Skill</strong>: The <strong class="text-white font-bold font-headings">Mentor</strong> stage will now explicitly mandate utilizing the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">documentation</code> skill to compile project walkthroughs and interactive user guides.<br/>*   <strong class="text-white font-bold font-headings">Prompt-Writer Skill</strong>: The <strong class="text-white font-bold font-headings">Analyst</strong> and <strong class="text-white font-bold font-headings">Builder</strong> stages will force the generated prompts to explicitly include documentation requirements and template selections.<br/><br/><strong class="text-white font-bold font-headings">4. Compiler Customization</strong>:<br/>We will design a clean-slate, modular Python script <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">compile_docs.py</code> that translates raw markdown files into interactive HTML dashboards supporting the 4 distinct visual themes:<br/>*   <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">technical</code> (Light theme, developer portal, sticky sidebars, Inter + JetBrains Mono)<br/>*   <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">obsidian</code> (Dark theme, glassmorphic, glowing gradients, Outfit font, timeline pulses)<br/>*   <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">proscript</code> (Light theme, enterprise checklists, clean boxes, formal layouts)<br/>*   <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">dynamics</code> (Dark theme, high information-density, analytical stats, Geist monospaced)</p>
+            </div>
+        </div>
+        
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">Open Questions</h2>
+
+
+        <div class="border-l-4 p-4 rounded-xl my-6 border-blue-500 bg-blue-950/10 text-blue-200/90 flex items-start space-x-3.5 shadow-lg border border-white/5">
+            <svg class="w-5 h-5 text-blue-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <div class="flex-1 space-y-1">
+                <span class="text-xs font-console font-black tracking-widest uppercase text-white/50">NOTE</span>
+                <p class="text-base md:text-lg leading-relaxed"><br/>* <strong class="text-white font-bold font-headings">Automatic Navigation Tree</strong>: The compiler will automatically generate a shared side navigation sidebar on every compiled HTML page, allowing seamless jumping between all guides in the project's <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">docs/</code> folder. Do you have any specific file names you want us to support as the standard suite beyond <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">user_guide.md</code>, <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">specifications.md</code>, <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">architecture.md</code>, and <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">walkthrough.md</code>?</p>
+            </div>
+        </div>
+        
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">Proposed Changes</h2>
+
+<hr class="border-white/5 my-8" />
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>1. New Standalone Documentation Skill (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">skills-documentation</code>)</span></h3>
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">We will create a clean-slate Custom Skill repository containing the instruction set, templates, and compiler logic.</p>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[NEW] <a href="SKILL.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">SKILL.md</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Canonical skill definition with YAML frontmatter <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">name: documentation</code>.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Specifies the Markdown-to-HTML compilation standards.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Lays out the design guidelines, variables, and typography rules for the 4 premium Stitch themes.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Instructs executing agents on how to construct a comprehensive Standard Document Suite.</span>
+                </li>
+                </ul>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[NEW] <a href="compile_docs.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">compile_docs.py</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  A clean, robust, standalone Python script.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Parses frontmatter metadata (e.g. <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">title</code>, <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">theme</code>, <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">description</code>) from Markdown source files.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Renders Markdown headers, paragraphs, links, list items, checkboxes, alerts (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">> [!NOTE]</code>), tables, and code snippets into beautiful semantic HTML.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Injects premium responsive CSS layouts, fonts (Outfit, Hanken Grotesk, Geist, Inter), gradients, and animations corresponding to the selected theme.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Generates interactive side-menus and page-level tables of contents on the fly.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Injects a tiny live-reload long-polling fetch script when the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">--watch</code> flag is set.</span>
+                </li>
+                </ul>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[NEW] <a href="watch_docs.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">watch_docs.py</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Standard library Python script that launches an HTTP server and watches <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">docs/*.md</code> files.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Exposes a <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">/live-reload</code> HTTP long-polling endpoint to notify connected clients when files are updated.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Automatically triggers the compiler script when changes are detected, resulting in sub-100ms rebuild-to-render times.</span>
+                </li>
+                </ul>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[NEW] <a href="sample_guide.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">sample_guide.md</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  A rich reference markdown file demonstrating headers, checklist items, warning blocks, tables, code blocks, and multi-theme configurations.</span>
+                </li>
+                </ul>
+
+<hr class="border-white/5 my-8" />
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>2. Update 6-Personas Skill (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">skills-6-personas</code>)</span></h3>
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">We will integrate the documentation skill into our global cognitive persona framework to make documentation compilation a core delivery metric.</p>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[MODIFY] <a href="SKILL.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">SKILL.md</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Mentor Stage</strong>: Explicitly instruct the agent to execute the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">documentation</code> skill to compile all walkthroughs, setup guides, and project roadmaps into stunning, interactive HTML interfaces matching the chosen project theme.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Link to the documentation skill's path explicitly.</span>
+                </li>
+                </ul>
+
+<hr class="border-white/5 my-8" />
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>3. Update Prompt-Writer Skill (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">skills-prompt-writer</code>)</span></h3>
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">We will make documentation creation and style selections an explicit part of every prompt generated for new or existing codebases.</p>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[MODIFY] <a href="SKILL.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">SKILL.md</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Analyst Stage</strong>: Require the agent to prompt the developer for their preferred documentation theme (Technical, Obsidian, Proscript, or Dynamics) and target audiences during the Socratic Grill.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Builder Stage</strong>: Ensure the generated prompt explicitly directs the builder to draft exhaustive user documentation.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Mentor Stage</strong>: Mandate compiling interactive HTML user walkthroughs using the custom <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">compile_docs.py</code> tool.</span>
+                </li>
+                </ul>
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">Verification Plan</h2>
+
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Automated Tests</span></h3>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  We will run the newly built Python script against sample markdown files to verify clean compilation, CSS style injection, and frontmatter parsing:</span>
+                </li>
+                </ul>
+    
+            <div class="rounded-2xl overflow-hidden border border-white/5 bg-[#080b13] my-6 font-console text-xs relative group shadow-2xl backdrop-blur-md">
+                <div class="flex items-center justify-between px-4 py-2.5 bg-[#0d101b] border-b border-white/5">
+                    <div class="flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-[0_0_6px_rgba(239,68,68,0.4)]"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80 shadow-[0_0_6px_rgba(234,179,8,0.4)]"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-500/80 shadow-[0_0_6px_rgba(34,197,94,0.4)]"></span>
+                        <span class="text-xs text-muted-slate font-console font-black pl-2 tracking-widest uppercase">bash code terminal</span>
+                    </div>
+                    <button onclick="navigator.clipboard.writeText(decodeURIComponent('%20%20%20%20python%20/Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py%20--help%0A%20%20%20%20')); showCopiedToast(this);" class="text-xs font-console font-bold text-muted-slate hover:text-white bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded-md transition duration-200 border border-white/5 flex items-center space-x-1 group-hover:border-white/10">
+                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+                <pre class="p-4 overflow-x-auto text-zinc-300 leading-relaxed font-console text-xs md:text-sm max-h-[420px] custom-scrollbar"><code>    python /Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py --help
+    </code></pre>
+            </div>
+            
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Verify watcher functionality:</span>
+                </li>
+                </ul>
+    
+            <div class="rounded-2xl overflow-hidden border border-white/5 bg-[#080b13] my-6 font-console text-xs relative group shadow-2xl backdrop-blur-md">
+                <div class="flex items-center justify-between px-4 py-2.5 bg-[#0d101b] border-b border-white/5">
+                    <div class="flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-[0_0_6px_rgba(239,68,68,0.4)]"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80 shadow-[0_0_6px_rgba(234,179,8,0.4)]"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-500/80 shadow-[0_0_6px_rgba(34,197,94,0.4)]"></span>
+                        <span class="text-xs text-muted-slate font-console font-black pl-2 tracking-widest uppercase">bash code terminal</span>
+                    </div>
+                    <button onclick="navigator.clipboard.writeText(decodeURIComponent('%20%20%20%20python%20/Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/watch_docs.py%20--dir%20./docs%0A%20%20%20%20')); showCopiedToast(this);" class="text-xs font-console font-bold text-muted-slate hover:text-white bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded-md transition duration-200 border border-white/5 flex items-center space-x-1 group-hover:border-white/10">
+                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+                <pre class="p-4 overflow-x-auto text-zinc-300 leading-relaxed font-console text-xs md:text-sm max-h-[420px] custom-scrollbar"><code>    python /Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/watch_docs.py --dir ./docs
+    </code></pre>
+            </div>
+            
+
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Manual Verification</span></h3>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  We will compile a mock documentation suite for the 4 themes and view them in the browser using the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">browser_subagent</code> and Chrome DevTools to visually audit layout elegance, mobile responsiveness, color contrast, and font correctness.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Verify that saving an edit inside <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">sample_guide.md</code> triggers an instant, automatic live reload of the open browser tab.</span>
+                </li>
+                </ul>
+
+            </div>
+        </div>
+        
+        <footer class="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto px-8 py-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-zinc-500 mx-auto px-8 relative z-10">
+            <p>© 2026 Google India Summit • Developed on stage live with Antigravity</p>
+            <a href="https://ai.google.dev/gemini-api/docs" target="_blank" class="hover:text-white transition mt-2 md:mt-0">Gemini Live API Docs ➔</a>
+        </footer>
+    </main>
+
+    <script>
+        function showCopiedToast(btn) {
+            const toast = document.getElementById('toast');
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateY(-100px)';
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

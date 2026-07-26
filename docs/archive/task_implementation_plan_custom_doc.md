@@ -1,0 +1,25 @@
+# Task List: Codifying Documentation Themes & Upgrading Prompt-Writer
+
+- `[x]` Phase 1: Scaffold Standalone `skills-documentation` Repository
+    - `[x]` Create folder `/Users/ksprashanth/code/github/skills-documentation/skills/documentation`
+    - `[x]` Create subdirectories: `scripts`, `references/templates`, `examples`
+- `[x]` Phase 2: Author Documentation Custom Skill Instructions
+    - `[x]` Write `skills/documentation/SKILL.md` detailing the Standard Document Suite
+- `[x]` Phase 3: Codify the 4 Stitch Visual Themes
+    - `[x]` Define CSS variables and typography tokens for Technical, Obsidian, Proscript, and Dynamics themes
+    - `[x]` Save CSS rules to `/Users/ksprashanth/code/github/skills-documentation/skills/documentation/references/templates/styles.css`
+    - `[x]` Create layout structures in `/Users/ksprashanth/code/github/skills-documentation/skills/documentation/references/templates/base_layout.html`
+- `[x]` Phase 4: Build Standalone Markdown-to-HTML Python Compiler
+    - `[x]` Write `skills/documentation/scripts/compile_docs.py` to parse frontmatter metadata
+    - `[x]` Implement robust regex translation for headers, links, code blocks, alerts (`> [!NOTE]`), and tables
+    - `[x]` Implement theme-selection dispatcher inserting correct custom assets
+- `[x]` Phase 4.5: Create the Live-Reload & Watch Server
+    - `[x]` Write `skills/documentation/scripts/watch_docs.py` to run HTTP server and monitor changes
+    - `[x]` Add `/live-reload` endpoint and inject the client-side JavaScript trigger script
+- `[x]` Phase 5: Update 6-Personas Custom Skill
+    - `[x]` Modify `/Users/ksprashanth/code/github/skills-6-personas/skills/6-personas/SKILL.md` Mentor stage to explicitly invoke `documentation`
+- `[x]` Phase 6: Update Prompt-Writer Custom Skill
+    - `[x]` Modify `/Users/ksprashanth/code/github/skills-prompt-writer/skills/prompt-writer/SKILL.md` Socratic loops and Builder stages
+- `[x]` Phase 7: Verification & Visual Auditing
+    - `[x]` Write `/Users/ksprashanth/code/github/skills-documentation/skills/documentation/examples/sample_guide.md`
+    - `[x]` Execute compile script and visually inspect in Chrome with `browser_subagent`

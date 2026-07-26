@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" class="dark h-full bg-[#121212]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementation Plan: Integrating Agent Dreaming and Structured Socratic Grilling • Google India Summit 2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'google-blue': '#A8C7FA',
+                        'surface-100': '#1E1E1E',
+                        'surface-200': '#2A2A2A',
+                        'safety-green': '#10b981',
+                        'muted-slate': '#94a3b8',
+                        'electric-teal': '#0be6b3',
+                        'neon-indigo': '#A8C7FA',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        headings: ['Outfit', 'sans-serif'],
+                        console: ['Fira Code', 'monospace'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html {
+            font-size: 16px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-panel {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'dark',
+                securityLevel: 'loose',
+                themeVariables: {
+                    background: '#121212',
+                    primaryColor: '#A8C7FA',
+                    primaryTextColor: '#ffffff',
+                    lineColor: '#94a3b8',
+                }
+            });
+        });
+    </script>
+</head>
+<body class="h-full font-sans text-zinc-300 flex flex-col overflow-hidden selection:bg-google-blue/30 selection:text-white bg-[#121212]">
+
+    <div id="toast" class="fixed top-5 right-5 transform translate-y-[-100px] opacity-0 transition-all duration-300 bg-emerald-500 text-white font-headings font-bold px-4 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 z-50">
+        <span class="text-xs">Copied to Clipboard!</span>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <header class="h-16 border-b border-white/10 px-6 flex items-center justify-between shrink-0 glass-panel sticky top-0 z-40">
+        <div class="flex items-center space-x-6 min-w-0">
+            <div class="flex items-center space-x-2 shrink-0">
+                <div class="w-3 h-3 rounded-full bg-google-blue animate-pulse"></div>
+                <span class="text-sm font-headings font-extrabold tracking-wide text-white uppercase">Google Keynote</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-1 pl-4 border-l border-white/10">
+                
+        <a href="user_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            User & Demo Guide
+        </a>
+        
+        <a href="deployment_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            Enterprise Deployment
+        </a>
+        
+        <a href="master_roadmap.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            Project Roadmap & History
+        </a>
+        
+            </nav>
+        </div>
+        <div class="flex items-center space-x-4 shrink-0">
+            <span class="text-xs font-console text-zinc-400">DOCS_SYNC <span class="text-emerald-400 font-bold">ONLINE</span></span>
+        </div>
+    </header>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto custom-scrollbar relative">
+        <!-- Subtle Glow Background -->
+        <div class="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-google-blue/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+
+        <div class="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto px-8 py-8 leading-relaxed pt-12 pb-24 animate-fade-in-up relative z-10">
+            <h1 class="text-3xl md:text-5xl font-headings font-black tracking-tight text-white mb-4">Implementation Plan: Integrating Agent Dreaming and Structured Socratic Grilling</h1>
+            <div class="h-1 w-20 bg-google-blue rounded-full mb-10"></div>
+            
+            <div class="space-y-6">
+                <p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">This implementation plan details how to incorporate the <strong class="text-white font-bold font-headings">Agent Dreaming (Sleep-Time Compute / Asynchronous Memory Consolidation)</strong> paradigm into the <strong class="text-white font-bold font-headings">Prompt-Writer</strong> and <strong class="text-white font-bold font-headings">6-Personas</strong> skills. It also outlines guidelines for when and how executing agents should use structured question tools (like <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">ask_question</code>) versus fluid chat dialogues for Socratic grilling.</p>
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">🎯 Success Criteria</h2>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">1. <strong class="text-white font-bold font-headings">6-Personas Skill Refactored</strong>: <a href="SKILL.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">6-personas/SKILL.md</a> includes a dedicated section defining the Agent Dreaming background process (Light, REM, and Deep sleep phases) as a post-Mentor lifecycle state, with explicit safeguards against "Inception" memory-poisoning attacks.</p>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">2. <strong class="text-white font-bold font-headings">Prompt-Writer Skill Updated</strong>: <a href="SKILL.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">prompt-writer/SKILL.md</a> is updated to include Agent Dreaming under its Mentor stage and guidelines for using the structured <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">ask_question</code> tool in the Analyst Socratic grill phase.</p>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">3. <strong class="text-white font-bold font-headings">Prompt Template Specialized</strong>: <a href="template.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">template.md</a> is updated to mandate and structure the Agent Dreaming post-execution pipeline for executing agents, producing long-term <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">MEMORY.md</code> and <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">DREAMS.md</code> logs in the OKF Knowledge Bundle.</p>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">4. <strong class="text-white font-bold font-headings">Validation Success</strong>: Shell validation script <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">scripts/validate_skill.sh</code> completes successfully.</p>
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">🧭 Proposed Changes</h2>
+
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Component 1: 6-Personas Custom Skill</span></h3>
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">We will enhance the cognitive lifecycle of the 6-personas framework. After the <strong class="text-white font-bold font-headings">Mentor</strong> stage (the final pedagogical step), we introduce <strong class="text-white font-bold font-headings">Agent Dreaming</strong> as an asynchronous, stateful background process that consolidates session history into long-term memory.</p>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[MODIFY] <a href="SKILL.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">6-personas/SKILL.md</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed"><strong class="text-white font-bold font-headings">Add "Agent Dreaming" Subsystem</strong>:</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">Define the biological three-phase mapping of the sleep cycle:</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed"><strong class="text-white font-bold font-headings">Light Phase (Ingestion)</strong>: Scan session logs, checklists (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">task.md</code>), decisions, and active scratch structures, staging them for consolidation.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed"><strong class="text-white font-bold font-headings">REM Phase (Reflection & Consolidation)</strong>: Abstract key lessons, design decisions, and reusable code blocks. Resolve conflicts or outdated facts.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed"><strong class="text-white font-bold font-headings">Deep Phase (Promotion)</strong>: Grade insights by significance and promote high-value facts/lessons to a durable <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">MEMORY.md</code> file (stored in <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/memory.md</code> or <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/MEMORY.md</code>). Log a narrative, human-readable summary of the agent's internal reflections to a "Dream Diary" file <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">DREAMS.md</code> (stored in <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/dreams.md</code> or <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/DREAMS.md</code>).</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed"><strong class="text-white font-bold font-headings">Inception Attack Safeguards</strong>:</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">Mandate validation and sanitization gates during memory promotion to ensure raw, untrusted user inputs or potential chat prompt injections are never evaluated as active instructions, and are instead stripped or marked as inert facts.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">Require that <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">DREAMS.md</code> remains highly transparent and readable so that a user can easily audit the consolidated beliefs of the agent.</span>
+                </li>
+                </ul>
+
+<hr class="border-white/5 my-8" />
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Component 2: Prompt-Writer Skill & Template</span></h3>
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">We will update the Prompt-Writer's workflow to enforce this dreaming paradigm on the prompts it generates, ensuring that agents running the rewritten prompts will execute their own "dreaming" memory consolidation loops. We also update its Socratic grilling rules to integrate structured question-asking tools.</p>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[MODIFY] <a href="SKILL.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">prompt-writer/SKILL.md</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed"><strong class="text-white font-bold font-headings">Analyst Stage Socratic Grilling</strong>:</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">Update guidelines to instruct the agent to utilize structured <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">ask_question</code> tool calls when presenting multiple-choice technical selections or structured options to the user.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">Clarify that the number of questions does not need to be pre-determined; questions can be asked dynamically. Detail the balance between:</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed"><strong class="text-white font-bold font-headings">Structured Tool Calls (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">ask_question</code>)</strong>: Ideal for presenting crisp, mutually exclusive technical defaults or UI selections (e.g. choice of language, library, theme options, or database engines).</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed"><strong class="text-white font-bold font-headings">Fluid Chat Dialogues</strong>: Better suited for open-ended design trade-offs, brainstorming, and high-level strategy exploration where the conversation is non-linear and benefits from direct, descriptive replies.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed"><strong class="text-white font-bold font-headings">Mentor Stage Execution Handoff</strong>:</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">Detail that when executing rewritten prompts, the executing agent must organize its background consolidation and memory cleanup using the new Agent Dreaming standard.</span>
+                </li>
+                </ul>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[MODIFY] <a href="template.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">template.md</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed"><strong class="text-white font-bold font-headings">Under <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded"><CONSTRAINTS></code></strong>:</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">Add a new constraint for <strong class="text-white font-bold font-headings">Asynchronous Memory Consolidation (Agent Dreaming)</strong>. The executing agent must be instructed to run a background "dreaming" process (Light, REM, and Deep phases) to consolidate its task run into <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/memory.md</code> and <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/dreams.md</code>.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed"><strong class="text-white font-bold font-headings">Under <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded"><TASK_BREAKDOWN></code></strong>:</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">Add a milestone (e.g., Milestone 6 or as a post-execution sub-task of Milestone 4/5) instructing the agent to run the dreaming pipeline to clean up intermediate scratch files, update long-term memory, and draft its dream journal (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">dreams.md</code>).</span>
+                </li>
+                </ul>
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">🧪 Verification Plan</h2>
+
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Automated Tests</span></h3>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">Run the local validation suite to verify the syntax and structure of the modified files:</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">Command: <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">bash scripts/validate_skill.sh</code></span>
+                </li>
+                </ul>
+
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Manual Verification</span></h3>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">Inspect the revised markdown files to ensure absolute symmetry of all tags and files.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">Confirm that all file paths and external references are valid and click-navigable.</span>
+                </li>
+                </ul>
+
+            </div>
+        </div>
+        
+        <footer class="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto px-8 py-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-zinc-500 mx-auto px-8 relative z-10">
+            <p>© 2026 Google India Summit • Developed on stage live with Antigravity</p>
+            <a href="https://ai.google.dev/gemini-api/docs" target="_blank" class="hover:text-white transition mt-2 md:mt-0">Gemini Live API Docs ➔</a>
+        </footer>
+    </main>
+
+    <script>
+        function showCopiedToast(btn) {
+            const toast = document.getElementById('toast');
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateY(-100px)';
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

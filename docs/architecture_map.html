@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" class="dark h-full bg-[#121212]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genesis Dream: Workspace Architecture Map • Google India Summit 2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'google-blue': '#A8C7FA',
+                        'surface-100': '#1E1E1E',
+                        'surface-200': '#2A2A2A',
+                        'safety-green': '#10b981',
+                        'muted-slate': '#94a3b8',
+                        'electric-teal': '#0be6b3',
+                        'neon-indigo': '#A8C7FA',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        headings: ['Outfit', 'sans-serif'],
+                        console: ['Fira Code', 'monospace'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html {
+            font-size: 16px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-panel {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'dark',
+                securityLevel: 'loose',
+                themeVariables: {
+                    background: '#121212',
+                    primaryColor: '#A8C7FA',
+                    primaryTextColor: '#ffffff',
+                    lineColor: '#94a3b8',
+                }
+            });
+        });
+    </script>
+</head>
+<body class="h-full font-sans text-zinc-300 flex flex-col overflow-hidden selection:bg-google-blue/30 selection:text-white bg-[#121212]">
+
+    <div id="toast" class="fixed top-5 right-5 transform translate-y-[-100px] opacity-0 transition-all duration-300 bg-emerald-500 text-white font-headings font-bold px-4 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 z-50">
+        <span class="text-xs">Copied to Clipboard!</span>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <header class="h-16 border-b border-white/10 px-6 flex items-center justify-between shrink-0 glass-panel sticky top-0 z-40">
+        <div class="flex items-center space-x-6 min-w-0">
+            <div class="flex items-center space-x-2 shrink-0">
+                <div class="w-3 h-3 rounded-full bg-google-blue animate-pulse"></div>
+                <span class="text-sm font-headings font-extrabold tracking-wide text-white uppercase">Google Keynote</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-1 pl-4 border-l border-white/10">
+                
+        <a href="user_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            User & Demo Guide
+        </a>
+        
+        <a href="deployment_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            Enterprise Deployment
+        </a>
+        
+        <a href="master_roadmap.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            Project Roadmap & History
+        </a>
+        
+            </nav>
+        </div>
+        <div class="flex items-center space-x-4 shrink-0">
+            <span class="text-xs font-console text-zinc-400">DOCS_SYNC <span class="text-emerald-400 font-bold">ONLINE</span></span>
+        </div>
+    </header>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto custom-scrollbar relative">
+        <!-- Subtle Glow Background -->
+        <div class="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-google-blue/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+
+        <div class="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto px-8 py-8 leading-relaxed pt-12 pb-24 animate-fade-in-up relative z-10">
+            <h1 class="text-3xl md:text-5xl font-headings font-black tracking-tight text-white mb-4">Genesis Dream: Workspace Architecture Map</h1>
+            <div class="h-1 w-20 bg-google-blue rounded-full mb-10"></div>
+            
+            <div class="space-y-6">
+                <hr class="border-white/5 my-8" />
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">title: "Genesis Dream: System Architecture Map"</p>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">theme: "obsidian"</p>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">description: "Comprehensive system blueprint, multi-agent coordination models, and cognitive tiering specifications"</p>
+<hr class="border-white/5 my-8" />
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">This blueprint maps the structural layout, model tiering parameters, parallelization pipelines, and cognitive state-backpropagation mechanics governing the newly initialized workspace.</p>
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">💤 1. The Persistent Cognitive Lifecycle</h2>
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">The workspace operates as a continuous stateful environment. While active conversations execute fast, non-linear steps, the <strong class="text-white font-bold font-headings">Agent Dreaming</strong> cycle guarantees that the workspace remains clean, organized, and structurally updated:</p>
+
+
+            <div class="flex flex-col items-center justify-center bg-[#0d101b]/35 border border-white/5 rounded-3xl p-6.5 my-6 shadow-2xl backdrop-blur-md w-full overflow-hidden">
+                <div class="text-xs font-console font-black tracking-widest text-zinc-500 uppercase mb-4 flex items-center space-x-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-electric-teal animate-pulse"></span>
+                    <span>Interactive Flow Chart Diagram</span>
+                </div>
+                <div class="mermaid w-full text-center flex justify-center text-sm text-zinc-300">
+graph TD
+    A["Active Multi-Turn Conversations"] -->|"1. Ingests raw logs"| B["Agent Dreaming Light Phase\n(Cleanup & Clutter Removal)"]
+    B -->|"2. Programmatic aggregation"| C["Agent Dreaming REM Phase\n(Pattern & Compile Error Synthesis)"]
+    C -->|"3. Fact Promotion"| D["Agent Dreaming Deep Phase\n(MEMORY.md & AGENTS.md Compilation)"]
+    D -->|"4. Active baseline hydrate"| A
+
+                </div>
+            </div>
+            
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">1.  <strong class="text-white font-bold font-headings">Light Phase (Ingestion & Pruning)</strong>: Scans workspace folders to prune intermediate scripts, temporary backups, or build scratchcards, leaving a clean workspace.</p>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">2.  <strong class="text-white font-bold font-headings">REM Phase (Pattern Synthesis)</strong>: Extracts compile-time, test, and command-line error patterns from the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">transcript.jsonl</code> log file to discover repeated failure vectors and recurring manual tasks.</p>
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">3.  <strong class="text-white font-bold font-headings">Deep Phase (Memory Promotion)</strong>: Permanently writes verified facts to <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/MEMORY.md</code> and style conventions to <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.agents/AGENTS.md</code> while logging the retrospective in <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/DREAMS.md</code>.</p>
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">🛠️ 2. Multi-Agent Resource & Model Tiering</h2>
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">To optimize execution latency, API quotas, and resource costs, tasks are divided hierarchically across three distinct tiers of the fast <strong class="text-white font-bold font-headings">Gemini 3.5 Flash</strong> model:</p>
+
+
+            <div class="flex flex-col items-center justify-center bg-[#0d101b]/35 border border-white/5 rounded-3xl p-6.5 my-6 shadow-2xl backdrop-blur-md w-full overflow-hidden">
+                <div class="text-xs font-console font-black tracking-widest text-zinc-500 uppercase mb-4 flex items-center space-x-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-electric-teal animate-pulse"></span>
+                    <span>Interactive Flow Chart Diagram</span>
+                </div>
+                <div class="mermaid w-full text-center flex justify-center text-sm text-zinc-300">
+gantt
+    title Cognitive Model Tiering Schedule
+    dateFormat  X
+    axisFormat %s
+    section High-Reasoning (Flash High)
+    Planning & Threat Modeling      :active, 0, 10
+    Socratic Grilling & Audits      :active, 10, 20
+    section Builder-Coding (Flash Medium)
+    Module Generation & Writing      : 0, 15
+    Component Compilation Checks    : 15, 20
+    section Programmatic (Flash Low)
+    File-Writing & Code Injection   : 0, 10
+    Automated Testing Suite Runs    : 10, 20
+
+                </div>
+            </div>
+            
+
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">High Tier (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">gemini-3.5-flash-high</code>)</strong>: Tasked with system planning, BDD test-suite mapping, security auditing, and socratic interviews where architectural reasoning is key.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Medium Tier (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">gemini-3.5-flash-medium</code>)</strong>: Tasked with writing source code, editing classes, parsing JSON schemas, and verifying compiler integrity.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Low Tier (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">gemini-3.5-flash-low</code>)</strong>: Tasked with rapid single-file updates, executing CLI tools, running lint suites, and programmatically writing test assets.</span>
+                </li>
+                </ul>
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">⚡ 3. Multi-Agent Shared-State Communications</h2>
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">Parallel subagents avoid bloated chat logs and trace histories by communicating programmatically through the shared <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">/scratch/</code> directory:</p>
+
+
+            <div class="flex flex-col items-center justify-center bg-[#0d101b]/35 border border-white/5 rounded-3xl p-6.5 my-6 shadow-2xl backdrop-blur-md w-full overflow-hidden">
+                <div class="text-xs font-console font-black tracking-widest text-zinc-500 uppercase mb-4 flex items-center space-x-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-electric-teal animate-pulse"></span>
+                    <span>Interactive Flow Chart Diagram</span>
+                </div>
+                <div class="mermaid w-full text-center flex justify-center text-sm text-zinc-300">
+sequenceDiagram
+    autonumber
+    actor Developer
+    participant Orchestrator
+    participant Scout
+    participant Sentry
+    Orchestrator->>Scout: Spawn Scout Subagent (Parallel)
+    Orchestrator->>Sentry: Spawn Sentry Subagent (Parallel)
+    Scout->>Scout: Scan filesystem and route mappings
+    Scout->>Orchestrator: Write state to scratch/context_engineering/codebase_map.json
+    Sentry->>Sentry: Scan import dependencies & licenses
+    Sentry->>Orchestrator: Write state to scratch/context_engineering/security_audit.json
+    Orchestrator->>Developer: Consolidate data & run Socratic Questionnaire
+
+                </div>
+            </div>
+            
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">This decoupled sequence prevents multiple subagents from writing overlapping outputs to the active chat stream, securing absolute transcript readability.</p>
+
+            </div>
+        </div>
+        
+        <footer class="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto px-8 py-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-zinc-500 mx-auto px-8 relative z-10">
+            <p>© 2026 Google India Summit • Developed on stage live with Antigravity</p>
+            <a href="https://ai.google.dev/gemini-api/docs" target="_blank" class="hover:text-white transition mt-2 md:mt-0">Gemini Live API Docs ➔</a>
+        </footer>
+    </main>
+
+    <script>
+        function showCopiedToast(btn) {
+            const toast = document.getElementById('toast');
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateY(-100px)';
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

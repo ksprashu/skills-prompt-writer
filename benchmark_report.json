@@ -1,0 +1,47 @@
+{
+  "benchmark": "PromptBench-AGY v1.0",
+  "prompt_id": "GLOBAL",
+  "total_score": 61.0,
+  "max_score": 100.0,
+  "breakdown": {
+    "autonomous_task_breakdown": {
+      "score": 18.0,
+      "max": 20.0,
+      "details": [
+        "Found root implementation_plan.md (+8)",
+        "Found task.md with status checklist (+10)"
+      ]
+    },
+    "iterative_loop_convergence": {
+      "score": 10.0,
+      "max": 20.0,
+      "details": [
+        "No unit test suite found (0/10)",
+        "Verified iterative test loop execution pass logs (+10)"
+      ]
+    },
+    "spec_and_bdd_fidelity": {
+      "score": 0.0,
+      "max": 20.0,
+      "details": [
+        "Missing Gherkin BDD feature specifications (0/10)",
+        "Missing BDD step definitions (0/10)"
+      ]
+    },
+    "runtime_resilience": {
+      "score": 20.0,
+      "max": 20.0,
+      "details": [
+        "Found valid state_journal.json self-resuming state machine (+20)"
+      ]
+    },
+    "auditability_and_evidence": {
+      "score": 13.0,
+      "max": 20.0,
+      "details": [
+        "Found .gemini/EVIDENCE.md evidence ledger (+7)",
+        "Found Google OKF Knowledge Bundle under .gemini/knowledge/ (+6)"
+      ]
+    }
+  }
+}

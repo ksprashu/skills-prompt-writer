@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" class="dark h-full bg-[#121212]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementation Plan - Visual-First Dual-View Documentation Portal • Google India Summit 2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'google-blue': '#A8C7FA',
+                        'surface-100': '#1E1E1E',
+                        'surface-200': '#2A2A2A',
+                        'safety-green': '#10b981',
+                        'muted-slate': '#94a3b8',
+                        'electric-teal': '#0be6b3',
+                        'neon-indigo': '#A8C7FA',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        headings: ['Outfit', 'sans-serif'],
+                        console: ['Fira Code', 'monospace'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html {
+            font-size: 16px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-panel {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'dark',
+                securityLevel: 'loose',
+                themeVariables: {
+                    background: '#121212',
+                    primaryColor: '#A8C7FA',
+                    primaryTextColor: '#ffffff',
+                    lineColor: '#94a3b8',
+                }
+            });
+        });
+    </script>
+</head>
+<body class="h-full font-sans text-zinc-300 flex flex-col overflow-hidden selection:bg-google-blue/30 selection:text-white bg-[#121212]">
+
+    <div id="toast" class="fixed top-5 right-5 transform translate-y-[-100px] opacity-0 transition-all duration-300 bg-emerald-500 text-white font-headings font-bold px-4 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 z-50">
+        <span class="text-xs">Copied to Clipboard!</span>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <header class="h-16 border-b border-white/10 px-6 flex items-center justify-between shrink-0 glass-panel sticky top-0 z-40">
+        <div class="flex items-center space-x-6 min-w-0">
+            <div class="flex items-center space-x-2 shrink-0">
+                <div class="w-3 h-3 rounded-full bg-google-blue animate-pulse"></div>
+                <span class="text-sm font-headings font-extrabold tracking-wide text-white uppercase">Google Keynote</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-1 pl-4 border-l border-white/10">
+                
+        <a href="user_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            User & Demo Guide
+        </a>
+        
+        <a href="deployment_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            Enterprise Deployment
+        </a>
+        
+        <a href="master_roadmap.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
+            Project Roadmap & History
+        </a>
+        
+            </nav>
+        </div>
+        <div class="flex items-center space-x-4 shrink-0">
+            <span class="text-xs font-console text-zinc-400">DOCS_SYNC <span class="text-emerald-400 font-bold">ONLINE</span></span>
+        </div>
+    </header>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto custom-scrollbar relative">
+        <!-- Subtle Glow Background -->
+        <div class="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-google-blue/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+
+        <div class="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto px-8 py-8 leading-relaxed pt-12 pb-24 animate-fade-in-up relative z-10">
+            <h1 class="text-3xl md:text-5xl font-headings font-black tracking-tight text-white mb-4">Implementation Plan - Visual-First Dual-View Documentation Portal</h1>
+            <div class="h-1 w-20 bg-google-blue rounded-full mb-10"></div>
+            
+            <div class="space-y-6">
+                <p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">This plan shifts our custom documentation compiler and instructions to an <strong class="text-white font-bold font-headings">HTML-first, visual-first interactive portal</strong> model. Rather than rendering raw markdown linearly, the compiled output will serve as a high-fidelity visual web application, utilizing premium whitespaces, gorgeous typography, responsive cards, custom inline diagrams, and an interactive <strong class="text-white font-bold font-headings">dual-view tab system</strong> allowing users to switch between the premium UI layout and the raw Markdown source.</p>
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">User Review Required</h2>
+
+
+        <div class="border-l-4 p-4 rounded-xl my-6 border-indigo-500 bg-indigo-950/10 text-indigo-200/90 flex items-start space-x-3.5 shadow-lg border border-white/5">
+            <svg class="w-5 h-5 text-indigo-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div class="flex-1 space-y-1">
+                <span class="text-xs font-console font-black tracking-widest uppercase text-white/50">IMPORTANT</span>
+                <p class="text-base md:text-lg leading-relaxed"><br/><strong class="text-white font-bold font-headings">1. Interactive Dual-View Tabs ("UI View" vs. "Markdown Source"):</strong><br/>The compiled HTML will feature a beautiful, sticky top-header navigation containing a tab switcher:<br/>*   🖥️ <strong class="text-white font-bold font-headings">Interactive UI View (Default)</strong>: A spaced, card-based responsive portal with glowing buttons, custom visual banners, and spacious paddings.<br/>*   📄 <strong class="text-white font-bold font-headings">Markdown Source</strong>: An elegant monospaced editor view displaying the exact raw source Markdown with a single-click "Copy Source" feature. This satisfies the requirement that Markdown remains a supporting secondary view.<br/><br/><strong class="text-white font-bold font-headings">2. Design-First Hero & Grid Cards:</strong><br/>*   <strong class="text-white font-bold font-headings">Hero Canvas</strong>: Every compiled page will render a spacious visual hero banner at the top, integrating soft gradient background glows, giant typography, metadata badges, and high-impact custom illustrations.<br/>*   <strong class="text-white font-bold font-headings">Grid-Card Parsing</strong>: We will enhance <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">compile_docs.py</code> to support custom grid delimiters (e.g., <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">::: grid</code> and <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">:::</code>) to automatically group bullet points or sub-sections into gorgeous, responsive masonry cards with smooth hover micro-animations.<br/><br/><strong class="text-white font-bold font-headings">3. Integration into Prompts</strong>:<br/>We will update the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">prompt-writer</code> and <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">6-personas</code> skills to explicitly mandate this "HTML-first, dual-view, whitespace-rich" visual standard, directing executing agents to leverage the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">generate_image</code> tool to create stunning header assets.</p>
+            </div>
+        </div>
+        
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">Open Questions</h2>
+
+
+        <div class="border-l-4 p-4 rounded-xl my-6 border-blue-500 bg-blue-950/10 text-blue-200/90 flex items-start space-x-3.5 shadow-lg border border-white/5">
+            <svg class="w-5 h-5 text-blue-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <div class="flex-1 space-y-1">
+                <span class="text-xs font-console font-black tracking-widest uppercase text-white/50">NOTE</span>
+                <p class="text-base md:text-lg leading-relaxed"><br/>* <strong class="text-white font-bold font-headings">Standard Visual Assets</strong>: Should we instruct the compiler to generate automatic SVG illustrations (such as line art or pattern shapes matching the active theme's colors) for pages that do not have custom PNG/WebP images? (We recommend this as a fallback so that every page looks visually striking out-of-the-box).</p>
+            </div>
+        </div>
+        
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">Proposed Changes</h2>
+
+<hr class="border-white/5 my-8" />
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>1. Upgrade Documentation Compiler (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">compile_docs.py</code>)</span></h3>
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">We will update the compilation engine to support the dual-view interface and visual-first grid cards.</p>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[MODIFY] <a href="compile_docs.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">compile_docs.py</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Grid Delimiter Parsing</strong>: Add support for parsing <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">::: grid</code> / <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">::: card</code> blocks in markdown to output flex/grid responsive cards.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Dual-View HTML Wrapper</strong>: Injects a global container housing the Interactive UI content alongside a hidden code container holding the raw Escaped Markdown text.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Tab Controller</strong>: Implements a zero-dependency CSS/JS tab switcher at the top header.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Visual Enhancements</strong>:</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Substantially expand margins and paddings (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">gap-12</code>, <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">py-16</code>, etc.) for airy, premium whitespace feel.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Insert automatic, beautiful SVG gradient backdrops and pattern shapes in the header banner.</span>
+                </li>
+                </ul>
+
+<hr class="border-white/5 my-8" />
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>2. Update Documentation Instructions (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">SKILL.md</code>)</span></h3>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[MODIFY] <a href="SKILL.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">SKILL.md</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Formally establish the "Visual-First Documentation" philosophy.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Instruct agents to use spacious layout tokens and write rich, visually appealing Markdown with grid cards.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Mandate using the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">generate_image</code> or SVG tools to add context-rich diagrams and diagrams.</span>
+                </li>
+                </ul>
+
+<hr class="border-white/5 my-8" />
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>3. Update Prompt-Writer & 6-Personas Skills</span></h3>
+
+<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">We will enforce this design-first standard in both prompt generation and execution personas.</p>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[MODIFY] <a href="SKILL.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">skills-prompt-writer/SKILL.md</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Instruct the writer to force generated prompts to explicitly construct interactive, layout-first documentation.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Require prompts to mandate the dual-view UI structure.</span>
+                </li>
+                </ul>
+
+<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[MODIFY] <a href="SKILL.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">skills-6-personas/SKILL.md</a></h4>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Direct the Mentor persona to build visually breathtaking walkthrough pages utilizing the dual-view layout.</span>
+                </li>
+                </ul>
+
+<hr class="border-white/5 my-8" />
+<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">Verification Plan</h2>
+
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Automated Tests</span></h3>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Compile the reference page and ensure correct dual-view state rendering:</span>
+                </li>
+                </ul>
+    
+            <div class="rounded-2xl overflow-hidden border border-white/5 bg-[#080b13] my-6 font-console text-xs relative group shadow-2xl backdrop-blur-md">
+                <div class="flex items-center justify-between px-4 py-2.5 bg-[#0d101b] border-b border-white/5">
+                    <div class="flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-[0_0_6px_rgba(239,68,68,0.4)]"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80 shadow-[0_0_6px_rgba(234,179,8,0.4)]"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-500/80 shadow-[0_0_6px_rgba(34,197,94,0.4)]"></span>
+                        <span class="text-xs text-muted-slate font-console font-black pl-2 tracking-widest uppercase">bash code terminal</span>
+                    </div>
+                    <button onclick="navigator.clipboard.writeText(decodeURIComponent('%20%20%20%20python%20/Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py%20--file%20/Users/ksprashanth/code/github/skills-documentation/skills/documentation/examples/sample_guide.md%0A%20%20%20%20')); showCopiedToast(this);" class="text-xs font-console font-bold text-muted-slate hover:text-white bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded-md transition duration-200 border border-white/5 flex items-center space-x-1 group-hover:border-white/10">
+                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+                <pre class="p-4 overflow-x-auto text-zinc-300 leading-relaxed font-console text-xs md:text-sm max-h-[420px] custom-scrollbar"><code>    python /Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py --file /Users/ksprashanth/code/github/skills-documentation/skills/documentation/examples/sample_guide.md
+    </code></pre>
+            </div>
+            
+
+<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Manual Verification</span></h3>
+<ul class="space-y-2.5 my-4 pl-1">
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Open the compiled output in the browser using the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">browser_subagent</code>.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Click the <strong class="text-white font-bold font-headings">"Markdown Source"</strong> and <strong class="text-white font-bold font-headings">"Interactive UI"</strong> tabs to verify instant visual toggling.</span>
+                </li>
+                
+                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
+                    <span class="leading-relaxed">  Inspect layout whitespace density, hero gradients, and responsive card sizing to ensure a premium, modern feel.</span>
+                </li>
+                </ul>
+
+            </div>
+        </div>
+        
+        <footer class="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto px-8 py-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-zinc-500 mx-auto px-8 relative z-10">
+            <p>© 2026 Google India Summit • Developed on stage live with Antigravity</p>
+            <a href="https://ai.google.dev/gemini-api/docs" target="_blank" class="hover:text-white transition mt-2 md:mt-0">Gemini Live API Docs ➔</a>
+        </footer>
+    </main>
+
+    <script>
+        function showCopiedToast(btn) {
+            const toast = document.getElementById('toast');
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateY(-100px)';
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

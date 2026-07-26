@@ -37,9 +37,11 @@ The package is fully modular and compatible with `npx skills` installation guide
 
 | Path | Type | Purpose |
 | :--- | :--- | :--- |
-| `skills/prompt-writer/SKILL.md` | Core Instructions | Standard system instructions, socratic question-banks, and compiler variables. |
-| `skills/prompt-writer/references/template.md` | Codebase Template | The authoritative XML prompt envelope schema for Google Gemini models. |
+| `skills/prompt-writer/SKILL.md` | Core Instructions | Standard system instructions, Short ID generation, prompt registry sync, and socratic question-banks. |
+| `skills/prompt-writer/references/template.md` | Codebase Template | The authoritative XML prompt envelope schema with `<PROMPT_METADATA>` and Short ID tags. |
 | `skills/prompt-writer/examples/example.md` | Examples | Complete before-and-after showcase comparing original vague inputs and completed outputs. |
+| `scripts/prompt_registry.py` | Python CLI | Central registry management, Short ID (`PRMT-<HEX4>`) generation, diff prompt calculation, and status tracking. |
+| `scripts/execute_pipeline.py` | Python Orchestrator | Asynchronous multi-prompt pipeline runner utilizing the Google Antigravity SDK. |
 | `scripts/validate_skill.sh` | Shell Script | Automated structural audit testing frontmatter, files, and link integrity. |
 
 ---

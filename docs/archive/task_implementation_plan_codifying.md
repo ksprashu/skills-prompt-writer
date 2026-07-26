@@ -1,0 +1,22 @@
+# Task List: Codifying Documentation Themes & Upgrading Prompt-Writer
+
+- `[ ]` Phase 1: Establish Local Repository (`skills-docs-sync`)
+    - `[ ]` Create local folder `/Users/ksprashanth/code/github/skills-docs-sync`
+    - `[ ]` Migrate files from global `docs-sync-plugin`
+    - `[ ]` Initialize git repository and set up folder structures
+- `[ ]` Phase 2: Codify the 4 Stitch Visual Themes
+    - `[ ]` Extract styling specs, colors, fonts, and elevations for all 4 themes
+    - `[ ]` Create `/Users/ksprashanth/code/github/skills-docs-sync/skills/docs-sync/references/templates/styles.css` containing tokens
+    - `[ ]` Create HTML structural layouts for each theme
+- `[ ]` Phase 3: Update Python Documentation Compiler (`compile_html_docs.py`)
+    - `[ ]` Integrate frontmatter metadata parsing for the `theme` key
+    - `[ ]` Implement the theme-switching layout selection logic
+    - `[ ]` Ensure code blocks, tables, and alert notes render correctly across all themes
+- `[ ]` Phase 4: Upgrade Prompt-Writer Skill
+    - `[ ]` Update `/Users/ksprashanth/code/github/skills-prompt-writer/skills/prompt-writer/SKILL.md`
+    - `[ ]` Add mandatory documentation planning stage to Socratic loop
+    - `[ ]` Explicitly include the documentation lifecycle in the Builder/Sentry instructions
+- `[ ]` Phase 5: Verification & Walkthrough
+    - `[ ]` Generate test markdown pages for all 4 styles
+    - `[ ]` Compile and render in Chrome using `browser_subagent`
+    - `[ ]` Update `walkthrough.md` with visual results
