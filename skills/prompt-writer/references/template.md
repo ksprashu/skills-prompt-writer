@@ -1,8 +1,19 @@
-# Domain-Agnostic Prompt Template
+# Domain-Agnostic Prompt Template & Deck Structures
 
-This is a structural blueprint designed to format highly-optimized, structured prompts for Google Antigravity and Gemini. It is fully optimized for **Gemini 3+ Context Caching** by placing static instructions, guidelines, and schemas first, and placing dynamic states, checklists, and goals last. It can be specialized for any domain (coding, planning, research, data analysis, education, or any other objective).
+This repository supports two execution prompt layouts depending on complexity:
+
+1. **⚡ Lightweight Mode**: A single, concise, context-focused directive prompt file (`prompt.md`) for direct execution of quick patches or single-file fixes.
+2. **🧠 Heavyweight Mode (Modular Orchestration Deck / Task Graph DAG)**: An orchestrated deck structure designed to prevent LLM context pollution and instruction decay. It splits complex workflows into atomic task nodes executed by specialized subagents governed by a Pure Manager thread:
+   - `task_graph.json`: Machine-readable Directed Acyclic Graph (DAG) with atomic task nodes, dependencies, model tiers, and blocking verification criteria.
+   - `orchestrator.md`: Directives for the **Pure Manager Thread** (enforcing worker subagent dispatch, Sentry verification, and sign-off).
+   - `tasks/task_01_<name>.md`: Focused, atomic worker prompts.
 
 ---
+
+## 1. Single Prompt Template (Lightweight Mode)
+
+This is a structural blueprint designed to format highly-optimized, structured prompts for Google Antigravity and Gemini. It is fully optimized for **Gemini 3+ Context Caching** by placing static instructions, guidelines, and schemas first, and placing dynamic states, checklists, and goals last.
+
 
 ```markdown
 <!-- ======================================================================= -->

@@ -135,10 +135,32 @@ def auto_sync_registry(project_root=None):
     registry = load_registry(root)
     updated_count = 0
 
-    for prompt in registry["prompts"]:
-        prompt_id = prompt["id"]
+    prompts_items = registry["prompts"].values() if isinstance(registry.get("prompts"), dict) else registry.get("prompts", [])
+
+    for prompt in prompts_items:
+        prompt_id = prompt.get("id")
+        if not prompt_id:
+            continue
         status = prompt.get("status", "WAITING_IMPLEMENTATION")
         
+        # Check task_graph.json DAG deck progress
+        prompt_dir = os.path.join(root, ".gemini", "prompts", prompt_id)
+        task_graph_path = os.path.join(prompt_dir, "task_graph.json")
+        if os.path.exists(task_graph_path):
+            try:
+                with open(task_graph_path, "r", encoding="utf-8") as tgf:
+                    tg_data = json.load(tgf)
+                    nodes = tg_data.get("nodes", [])
+                    total_nodes = len(nodes)
+                    verified_nodes = sum(1 for n in nodes if n.get("status") in ("VERIFIED", "COMPLETED"))
+                    prompt["dag_progress"] = f"{verified_nodes}/{total_nodes} nodes"
+                    if total_nodes > 0 and verified_nodes == total_nodes and status == "EXECUTING":
+                        prompt["status"] = "COMPLETED"
+                        prompt["updated_at"] = datetime.now(timezone.utc).isoformat()
+                        updated_count += 1
+            except Exception:
+                pass
+
         # Check disk artifact completion
         task_dir = os.path.join(root, ".gemini", "tasks", prompt_id)
         walkthrough_path = os.path.join(task_dir, "walkthrough.md")
@@ -163,7 +185,7 @@ def auto_sync_registry(project_root=None):
                 if os.path.exists(transcript_path):
                     try:
                         with open(transcript_path, "r", encoding="utf-8") as tf:
-                            lines = f.readlines()
+                            lines = tf.readlines()
                             last_lines = "".join(lines[-20:])
                             if "GOAL_COMPLETE" in last_lines or "walkthrough.md" in last_lines:
                                 prompt["status"] = "COMPLETED"
@@ -692,7 +714,8 @@ def main():
 
     if not args.command or args.command == "list":
         registry, _ = auto_sync_registry()
-        prompts = registry.get("prompts", [])
+        raw_prompts = registry.get("prompts", [])
+        prompts = list(raw_prompts.values()) if isinstance(raw_prompts, dict) else raw_prompts
         status_filter = getattr(args, "status", None)
         active_only = getattr(args, "active", False)
 
@@ -708,12 +731,15 @@ def main():
             title = p.get('title', '')
             if len(title) > 35:
                 title = title[:32] + "..."
-            print(f"{p['id']:<12} | {p.get('mode', 'interactive'):<12} | {p.get('status', 'DRAFT'):<22} | {title}")
+            mode_str = p.get('execution', {}).get('mode') if isinstance(p.get('execution'), dict) else p.get('mode', 'interactive')
+            print(f"{p['id']:<12} | {mode_str:<12} | {p.get('status', 'DRAFT'):<22} | {title}")
         print()
 
     elif args.command == "show":
         registry, _ = auto_sync_registry()
-        prompt = next((p for p in registry.get("prompts", []) if p["id"] == args.prompt_id), None)
+        raw_prompts = registry.get("prompts", [])
+        prompts_list = list(raw_prompts.values()) if isinstance(raw_prompts, dict) else raw_prompts
+        prompt = next((p for p in prompts_list if p.get("id") == args.prompt_id), None)
         if not prompt:
             print(f"❌ Prompt '{args.prompt_id}' not found in registry.")
             sys.exit(1)

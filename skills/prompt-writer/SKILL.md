@@ -57,11 +57,14 @@ flowchart TD
 
 ### 2. 🧠 Heavyweight Mode (`--heavy`, `--deep`, `plan`, `think`, `architect`, `investigate`, `/goal`)
 - **When to Use**: Deep investigative tasks, new feature architectures, multi-file refactors, security audits, or when explicit heavyweight keywords (`plan`, `think`, `architect`, `deep`, `investigate`, `/goal`) are detected.
-- **Workflow**:
+- **Workflow & Modular Deck Assembly**:
   1. **3-Subagent Scout Crawl**: Spawns parallel subagents for codebase indexing, web research, and docs scraping.
   2. **Stateful Socratic Grill**: Uses `ask_question` (1 question at a time) to resolve architectural trade-offs.
-  3. **High-Fidelity XML Prompt Deck**: Generates an exhaustive specification containing Gherkin BDD features, state journal schemas, security checklists, and OKF Knowledge Bundles.
-  4. **User Approval & /Goal Execution**: Saves `rewritten_prompt_<SHORT_ID>.md` with a **"Proceed"** execution button. Upon user approval, reactivates global Planning Mode (`implementation_plan.md` & `task.md`) and executes via `/goal` iterative test loops.
+  3. **Modular Orchestration Deck Assembly (DAG Task Graph)**: Rather than generating a single context-polluting monolithic prompt, `prompt-writer` generates a **Modular Orchestration Deck** under `.gemini/prompts/<SHORT_ID>/`:
+     - `task_graph.json`: Machine-readable Directed Acyclic Graph (DAG) with atomic task nodes, dependencies, subagent roles, model tiers, and blocking verification criteria.
+     - `orchestrator.md`: Directives for the **Pure Manager Thread** (prohibiting direct code edits, enforcing subagent worker dispatch, Sentry verification, and state sign-off).
+     - `tasks/task_01_<name>.md`, `tasks/task_02_<name>.md`: Atomic, single-focus worker prompts.
+  4. **User Approval & Execution Hook**: Saves `rewritten_prompt_<SHORT_ID>.md` with an interactive summary diagram and a **"Proceed"** execution button. Upon launch, the executing agent acts as the Pure Manager thread orchestrating DAG worker execution.
 
 ---
 
@@ -144,37 +147,28 @@ When analyzing, refining, and drafting the user's prompt, you MUST adopt the app
 *   **OKF Decision Journaling**: Save all confirmed Socratic decisions, visual preferences, and BDD scenarios as OKF Concept Documents inside `.gemini/knowledge/<SHORT_ID>/analyst/` (e.g., `user_decisions.md` [type: `Decision`] and `bdd_scenarios.md` [type: `Scenario`]).
 *   **Update State**: Check off "Analyst Stage" in `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md` and sync decisions.
 
-### 3. 📐 The Architect Stage (Tactical Design, Parallelization & OKF Specifications)
-*   **Customization**: Classify the prompt's domain (Coding, Planning, Research, Data Analysis, Teaching, etc.) and customize the standard template structure inside `references/template.md`.
-*   **Mandate Executing Agent State Checkpoint & Resilience**: You MUST explicitly write instructions in the rewritten prompt instructing the executing agent to run the **State Checkpoint & Error Recovery Protocol (Self-Resuming State Machine)** using `state_journal.json` and `task.md` under `.gemini/tasks/<SHORT_ID>/` to ensure absolute runtime resilience and grounding in the target execution phase.
-*   **Mandate OKF Bundle Generation**: The rewritten prompt MUST instruct the executing agent to organize and deliver all stage-by-stage insights, specifications, designs, threat models, playbooks, and audits as version-controlled, human-readable **OKF Concept Documents** in `.gemini/knowledge/<SHORT_ID>/`.
-*   **Gemini 3+ Context Caching Optimization**: Structure the rewritten prompt hierarchically:
-    *   **Static Context Prefix**: Place system prompts, expert roles, fixed guidelines, strict security rules, and static library references at the top of the prompt.
-    *   **Dynamic Suffix**: Place the fast-changing variables, the specific `GOAL`, the `task.md` checklist, and active run status at the bottom.
-*   **Strict Data Contract Enforcement**: When designing multi-agent parallel execution layouts, explicitly instruct the executing agent to define and enforce strict, rigid data schemas (e.g., Pydantic models or JSON schemas) for all data exchanged via the shared filesystem (`scratch/`). Save these contracts as an OKF Concept Document under `.gemini/knowledge/<SHORT_ID>/architecture/data_contracts.md` (type: `Data Contract`).
-*   **Agentic Orchestration & Parallelization**: Deconstruct the objective into independent, modular milestones. If a task requires parallel execution with distinct reasoning vs. building stages, explicitly instruct the agent to generate a highly configurable Python orchestrator script (`execute_pipeline.py`) utilizing the `google-antigravity` Python SDK (governed by the native **[Google Antigravity SDK Skill](file:///Users/ksprashanth/.gemini/config/plugins/google-antigravity-sdk/skills/google-antigravity-sdk/SKILL.md)**):
-    *   **Configurable Model Selection**: The script must load model names dynamically (e.g., from environment variables or a settings dictionary), allowing the user to configure models easily.
-    *   **Resource Tiering**: Direct the agent to default to different tiers of the fast **Gemini 3.5 Flash** model instead of Pro models to optimize latency and cost:
-        *   **High Tier (`gemini-3.5-flash-high`)**: For the complex planning, reasoning, or security auditing tasks.
-        *   **Medium Tier (`gemini-3.5-flash-medium`)**: For core coding, module generation, and data parsing.
-        *   **Low Tier (`gemini-3.5-flash-low`)**: For rapid file writing, simple formatting, or running tests.
-    *   **Message Passing & State Coordination**: Formulate a robust file-based communication strategy using a shared workspace directory (like `scratch/` or `.gemini/tasks/<SHORT_ID>/`) to exchange state between parallel subagents without cluttering conversation transcripts.
+### 3. 📐 The Architect Stage (Domain Classification, DAG Task Graph & Contract Design)
+*   **Domain Classification & Template Selection**: Classify the prompt's primary domain (`coding`, `ui_design`, `security`, `research`, `verification`) and select the appropriate pipeline template from `references/dag_templates/`. Refer to **[DAG Orchestration Specification](file:///Users/ksprashanth/code/github/skills-prompt-writer/skills/prompt-writer/references/dag_orchestration.md)**.
+*   **Deconstruct Objective into an Atomic Task Graph (`task_graph.json`)**:
+    - Break down complex multi-step user tasks into atomic single-responsibility nodes.
+    - Define node dependencies, subagent roles (`Role`), model tiers (`pro`, `flash_medium`, `flash_low`), workspace isolation (`Workspace: "branch"` or `"share"`), and blocking `verification_gate` criteria.
+*   **Mandate Pure Orchestrator (Manager) Protocol**: Explicitly configure the execution directives so the main thread operates strictly as a **Pure Manager/Orchestrator** that dispatches worker subagents, spawns Sentry verifiers, and signs off on state transitions without executing direct code edits.
+*   **Gemini 3+ Context Caching Optimization**: Structure atomic worker prompts hierarchically:
+    *   **Static Context Prefix**: System prompts, expert roles, fixed guidelines, strict security rules, and static library references at the top.
+    *   **Dynamic Suffix**: Fast-changing variables, node-specific goal, acceptance criteria, and active run status at the bottom.
+*   **Strict Data Contract & Schema Enforcement**: Define centralized schema models (Pydantic classes or JSON schemas) for all data exchanged between parallel subagents. Save contracts as an OKF Concept Document under `.gemini/knowledge/<SHORT_ID>/architecture/data_contracts.md` (type: `Data Contract`).
 *   **Update State**: Check off the "Architect Stage" in `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md` and save system architecture configurations.
 
-### 4. 🛠️ The Builder Stage (Prompt Drafting & Design Excellence)
-*   **Action**: Assemble the high-fidelity rewritten prompt using XML-style tags (`<PROMPT_METADATA>`, `<ROLE>`, `<CONTEXT>`, `<RESOURCES_AND_KNOWLEDGE_BASES>`, `<GOAL>`, `<TASK_BREAKDOWN>`, `<CONSTRAINTS>`, `<VERIFICATION_PLAN>`) to isolate context. Embed `<SHORT_ID>` and `<PARENT_SHORT_ID>` (if applicable) inside `<PROMPT_METADATA>`.
-*   **State-Journal & OKF Blueprint Integration**: Embed the complete, strict JSON schema for the executing agent's `state_journal.json`, the `task.md` checklist, and the blueprint for the `.gemini/knowledge/<SHORT_ID>/` OKF Bundle inside the generated prompt's `<CONSTRAINTS>` and `<GOAL>` sections.
-*   **Strict Contract Adherence**: Direct the executing agent that all built modules and data exchanges must strictly adhere to the data schemas (Pydantic classes or JSON schemas) designed in the Architect phase.
-*   **Modern Web Guidance & Design Aesthetics**: If building web interfaces or documentation, explicitly instruct the executing agent to follow the standard **[Modern Web Guidance Skill](file:///Users/ksprashanth/.gemini/config/plugins/modern-web-guidance-plugin/skills/modern-web-guidance/SKILL.md)** guidelines and enforce:
-    *   **Theme Defaults**: Default to a clean, premium **Light Theme** for interactive documentation and dashboards, with a robust, polished **Dark/Light toggle**.
-    *   **Layout Quality**: Ensure layouts are **information-dense, highly comprehensive, yet minimalist, readable, and visual-first**. Avoid generic styles; use custom HSL palettes, smooth transitions, glassmorphism, and responsive modern CSS.
-    *   **Document Suite and Theme Enforcer**: Require comprehensive, clean user documentation organized within a `docs/` folder, explicitly leveraging YAML frontmatter to choose from the 4 premium Stitch themes. Mandate invoking the custom **[Documentation Custom Skill](file:///Users/ksprashanth/code/github/skills-documentation/skills/documentation/SKILL.md)** to compile raw markdown guides into stunning, HTML-first visual portals. Structure pages as interactive visual directories containing beautiful, sticky **dual-view toggles** (allowing instant switching between Interactive UI and Raw Markdown Source), ambient gradient **hero headers**, and responsive **card-grids** (`:::: grid` enclosing `::: card Title`) to group tech specs.
-    *   **Exhaustive Documentation**: Require comprehensive, clean user documentation, and mandate keeping build playbooks and local environment setup files inside `.gemini/knowledge/<SHORT_ID>/builder/` (type: `Playbook`).
-*   **Multi-Agent Coordination & Programmatic SDK Execution**: Direct the executing agent to:
-    *   Incorporate a complete blueprint for the async Python SDK orchestrator script (`execute_pipeline.py`) inside the `<TASK_BREAKDOWN>` or `<GOAL>` sections.
-    *   Showcase how to define and load env-vars or dictionary settings to map individual agent instances (`Agent(config)`) to the corresponding configurable Gemini 3.5 Flash tiers (`High`, `Medium`, `Low`).
-    *   Ensure all programmatic configurations pass proper `CapabilitiesConfig` to allow required filesystem write and command-running permissions.
+### 4. 🛠️ The Builder Stage (Modular Orchestration Deck Assembly)
+*   **Action**: Generate the complete Modular Orchestration Deck under `.gemini/prompts/<SHORT_ID>/`:
+    1.  **`task_graph.json`**: Output the full JSON DAG matching the schema in `references/dag_orchestration.md`.
+    2.  **`orchestrator.md`**: Output the Pure Manager Thread directives using XML-style tags (`<ROLE>`, `<CONTEXT>`, `<GOAL>`, `<TASK_GRAPH_PROTOCOL>`, `<CONSTRAINTS>`).
+    3.  **`tasks/task_01_<name>.md`, `tasks/task_02_<name>.md`**: Write dedicated, hyper-focused worker prompts for each node in `task_graph.json`.
+    4.  **`prompt.md`**: Create a unified compiled entrypoint referencing the deck.
+*   **State-Journal & OKF Blueprint Integration**: Embed the complete JSON schema for the executing agent's `state_journal.json`, `task.md` checklist, and the blueprint for `.gemini/knowledge/<SHORT_ID>/`.
+*   **Modern Web Guidance & Design Aesthetics**: If building web interfaces or documentation, mandate following **[Modern Web Guidance Skill](file:///Users/ksprashanth/.gemini/config/plugins/modern-web-guidance-plugin/skills/modern-web-guidance/SKILL.md)** and invoking **[Documentation Custom Skill](file:///Users/ksprashanth/code/github/skills-documentation/skills/documentation/SKILL.md)** for HTML portal compilation.
 *   **Update State**: Check off the "Builder Stage" in `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md` and save the drafted prompt structure.
+
 
 ### 5. 🛡️ The Sentry Stage (Quality Guardrails, Security & Citation Rules)
 *   **Action**: Audit the drafted rewritten prompt before delivering it. Ensure the rewritten prompt contains:
@@ -193,6 +187,9 @@ When analyzing, refining, and drafting the user's prompt, you MUST adopt the app
     13. **BDD Step Definition Safety & Dynamic Code Inspection**: Mandate that BDD step definitions (`features/steps/*.py`) adhere to strict PEP8 typing, docstrings, defensive bounds (zero unhandled division-by-zero or index errors), and perform dynamic file/AST/JSON code inspection rather than setting static mock context flags.
     14. **High-Fidelity Security & Error Code Verification**: Mandate cryptographic authentication standards (e.g., real JWT decoding/verification), sliding-window TTL rate limiters, and explicit test suite coverage for HTTP 401, 403, and 429 error codes.
     15. **100% Cloud Resource Parameterization**: Mandate zero hardcoded ARNs, secrets, or subnet IDs in IaC files (`.tf`). All infrastructure parameters must be explicitly parameterized via `variables.tf` or `data` blocks.
+    16. **Mandatory Schema & Contract Verification Pass**: Direct the executing agent to generate a unit test (`tests/test_contracts.py`) that programmatically verifies 1:1 key alignment between LLM judge JSON response schemas, dataclass fields, CLI flags, and report serialization before delivering code.
+    17. **Strict Prohibition of Hardcoded Synthetic Offsets & Mock Metrics**: Strictly ban hardcoded heuristic offsets (e.g., `+ 5.0s if vanilla`). Require either real API response usage metadata extraction (`usage_metadata` / `usage.input_tokens`) and `time.time()` measurements, or explicit `None` / `0` values with an `is_simulated: true` boolean flag.
+    18. **Automated Spec-to-Code Synchronization Check**: Require a verification pass comparing numerical scoring weights and metric descriptions in documentation (`.md` design docs) against literal constants in source code files before declaring task completion.
 *   **Update State**: Check off the "Sentry Stage" in `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md` after verifying the draft's security, testing, and resilience features.
 
 ### 6. 🏫 The Mentor Stage (Pedagogical Delivery, Non-Blocking Async Handoff & OKF Compilation)
