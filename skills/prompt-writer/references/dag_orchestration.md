@@ -97,8 +97,15 @@ The executing main thread operates under strict **Pure Orchestrator Protocol**:
 6. **State Journal & Sign-off**:
    - If the Sentry confirms all `blocking_criteria` pass, the Manager updates node status to `VERIFIED` in `task_graph.json` and `.gemini/tasks/<SHORT_ID>/state_journal.json`.
    - If the Sentry reports failures, the Manager re-dispatches the worker subagent with failure feedback (capped at `MAX_ITERATIONS=3`).
-7. **Reactive Wakeup**:
+7. **Continuous Evolutionary Retrospective & Dynamic DAG Evolution**:
+   - The Manager thread MUST NOT terminate execution merely because all initial implementation nodes reach `VERIFIED`.
+   - At encoded `retrospective_checkpoints` (and upon completion of the base DAG), the Manager launches a specialized **Reviewer / Retrospective Subagent** passing `tasks/task_retro_critique.md`.
+   - The Reviewer audits the current state (code, docs, tests, performance) and outputs a structured **Evolution Proposal** (`.gemini/tasks/<SHORT_ID>/evolution_proposal.json`) listing concrete scope for improvement, optimization, or missing coverage.
+   - If improvements are identified, the Manager dynamically appends new child task nodes (`task_XX_evolution_1`, `task_XX_evolution_2`) to `task_graph.json` and continues execution via `/goal`.
+   - The loop continues until a Retrospective Pass explicitly confirms `STATUS: OPTIMAL / ZERO_GAPS`.
+8. **Reactive Wakeup**:
    - After launching subagents, the Manager stops calling tools. The Antigravity system automatically wakes the Manager up when a subagent sends a message or completes.
+
 
 
 ---

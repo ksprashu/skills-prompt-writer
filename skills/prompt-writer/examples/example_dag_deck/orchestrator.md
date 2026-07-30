@@ -23,5 +23,7 @@ Executing task graph PRMT-A4C9. All atomic tasks are defined as isolated prompts
 2. **Worker Dispatch (/Goal Handoff)**: Call `invoke_subagent` passing the node's `subagent_role`, `workspace_mode`, `model_tier`, and format the Prompt as a `/goal` directive passing the contents of `tasks/<node_prompt_file>`. The subagent receives the clean Intent Directive and uses its own thinking engine to form an implementation plan and execute it.
 3. **Sentry Dispatch**: When the worker returns, dispatch a Sentry subagent with the node's `verification_gate.verifier_prompt`.
 4. **Sign-off**: If Sentry confirms `blocking_criteria` pass, update node status to `VERIFIED` in `task_graph.json` and `.gemini/tasks/PRMT-A4C9/state_journal.json`.
-5. **Repeat**: Repeat until all nodes reach `VERIFIED`.
+5. **Evolutionary Retrospective Loop**: Upon reaching checkpoint nodes or completing base nodes, dispatch a specialized **Retrospective Reviewer Subagent** to critique the implementation and search for optimizations, code smells, or missing test coverage.
+   - If the Reviewer returns concrete improvements, dynamically append new child nodes (`task_XX_evolution_1`, `task_XX_evolution_2`) to `task_graph.json`.
+   - Repeat execution until a Retrospective Pass explicitly confirms `STATUS: OPTIMAL / ZERO_GAPS`.
 </TASK_GRAPH_PROTOCOL>

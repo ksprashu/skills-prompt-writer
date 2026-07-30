@@ -155,16 +155,23 @@ When analyzing, refining, and drafting the user's prompt, you MUST adopt the app
 *   **Deconstruct Objective into an Intent-Driven Task Graph (`task_graph.json`)**:
     - Identify logical atomic task units, dependencies, parallelization opportunities, subagent roles (`subagent_role`), model tiers (`pro`, `flash_medium`, `flash_low`), workspace isolation (`Workspace: "branch"` or `"share"`), and blocking `verification_gate` criteria.
     - **Intent-First Principle**: Focus strictly on *what* needs to be accomplished, inputs/outputs, boundaries, and acceptance criteria. Do NOT write step-by-step implementation code or file-by-file execution scripts during prompt generation.
-*   **Pure Manager Protocol & `/Goal` Handoff Design**: Configure `orchestrator.md` so the Manager thread dispatches each node by passing the intent spec file (`tasks/task_XX.md`) as a `/goal` prompt to a subagent (`invoke_subagent`). This allows the subagent to leverage Antigravity's full thinking harness to generate its own `implementation_plan.md` and execute TDD/BDD loops autonomously.
+*   **Pure Manager Protocol & `/Goal` Handoff Design**: Configure `orchestrator.md` so the Manager thread dispatches each node by passing the intent spec file (`tasks/task_XX.md`) as a `/goal` prompt to a subagent (`invoke_subagent`).
+*   **Continuous Evolutionary Retrospective Cycles & Self-Enhancing DAG Protocol**:
+    - **Never-Satisfied Orchestration Rule**: Direct that completion of initial implementation nodes MUST NOT conclude the DAG execution.
+    - **Checkpoint & Periodic Retrospective Loops**: Inject explicit **Retrospective & Critique Nodes** (`retrospective_checkpoints`) into `task_graph.json` at strategic intervals (e.g. post-implementation, post-integration, and post-verification):
+      1. *Critique Dispatch*: Manager dispatches a specialized **Sentry/Reviewer Subagent** tasked strictly with adversarial code review, static analysis, performance profiling, and gap detection against original intent.
+      2. *Dynamic DAG Evolution*: If the Reviewer identifies scope for improvement, optimization, or missing edge-case handling, the Manager receives the structured improvement proposal and dynamically appends new child task nodes (`task_XX_evolution_step1`, `task_XX_evolution_step2`) to `task_graph.json`.
+      3. *Recursive Refinement*: The Manager dispatches workers for the newly appended evolution nodes via `/goal`, followed by a subsequent Retrospective Cycle. The Manager is never satisfied until a Retrospective Pass explicitly returns `STATUS: OPTIMAL / ZERO_GAPS`.
 *   **Strict Data Contract & Schema Enforcement**: Define centralized schema models (Pydantic classes or JSON schemas) for all data exchanged between parallel subagents. Save contracts as an OKF Concept Document under `.gemini/knowledge/<SHORT_ID>/architecture/data_contracts.md` (type: `Data Contract`).
 *   **Update State**: Check off the "Architect Stage" in `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md` and save system architecture configurations.
 
 ### 4. 🛠️ The Builder Stage (Modular Orchestration Deck Assembly)
 *   **Action**: Generate the complete Modular Orchestration Deck under `.gemini/prompts/<SHORT_ID>/`:
-    1.  **`task_graph.json`**: Machine-readable DAG schema defining node goals, dependencies, subagent roles, model tiers, and verification gates.
-    2.  **`orchestrator.md`**: Directives for the **Pure Manager Thread** (instructing the Manager to invoke subagents via `/goal`, await event notifications, run Sentry verification, and update node status).
-    3.  **`tasks/task_01_<name>.md`, `tasks/task_02_<name>.md`**: Write dedicated **Intent Specification Prompts** for each node, formatted with clean `<ROLE>`, `<GOAL>`, `<REQUIREMENTS>`, `<CONSTRAINTS>`, and `<DEFINITION_OF_DONE>`.
+    1.  **`task_graph.json`**: Machine-readable DAG schema defining node goals, dependencies, subagent roles, model tiers, verification gates, and explicit `retrospective_checkpoints`.
+    2.  **`orchestrator.md`**: Directives for the **Pure Manager Thread** (instructing the Manager to invoke subagents via `/goal`, execute retrospective cycles, dynamically evolve `task_graph.json` upon review findings, and require explicit `ZERO_GAPS` sign-off).
+    3.  **`tasks/task_01_<name>.md`, `tasks/task_02_<name>.md`**: Write dedicated **Intent Specification Prompts** for both implementation nodes and retrospective/critique nodes.
     4.  **`prompt.md`**: Unified compiled entrypoint referencing the deck.
+
 *   **State-Journal & OKF Blueprint Integration**: Embed the JSON schema for `.gemini/tasks/<SHORT_ID>/state_journal.json`, `task.md`, and the blueprint for `.gemini/knowledge/<SHORT_ID>/`.
 *   **Modern Web Guidance & Design Aesthetics**: If building web interfaces or documentation, mandate following **[Modern Web Guidance Skill](file:///Users/ksprashanth/.gemini/config/plugins/modern-web-guidance-plugin/skills/modern-web-guidance/SKILL.md)** and invoking **[Documentation Custom Skill](file:///Users/ksprashanth/code/github/skills-documentation/skills/documentation/SKILL.md)** for HTML portal compilation.
 *   **Update State**: Check off the "Builder Stage" in `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md` and save the drafted prompt structure.
