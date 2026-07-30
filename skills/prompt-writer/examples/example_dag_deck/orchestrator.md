@@ -20,7 +20,7 @@ Executing task graph PRMT-A4C9. All atomic tasks are defined as isolated prompts
 
 <TASK_GRAPH_PROTOCOL>
 1. **Node Readiness**: Read `task_graph.json`. Select any node whose `status` is `PENDING` and whose `dependencies` are all `VERIFIED`.
-2. **Worker Dispatch**: Call `invoke_subagent` passing the node's `subagent_role`, `workspace_mode`, `model_tier`, and the prompt contents of `tasks/<node_prompt_file>`.
+2. **Worker Dispatch (/Goal Handoff)**: Call `invoke_subagent` passing the node's `subagent_role`, `workspace_mode`, `model_tier`, and format the Prompt as a `/goal` directive passing the contents of `tasks/<node_prompt_file>`. The subagent receives the clean Intent Directive and uses its own thinking engine to form an implementation plan and execute it.
 3. **Sentry Dispatch**: When the worker returns, dispatch a Sentry subagent with the node's `verification_gate.verifier_prompt`.
 4. **Sign-off**: If Sentry confirms `blocking_criteria` pass, update node status to `VERIFIED` in `task_graph.json` and `.gemini/tasks/PRMT-A4C9/state_journal.json`.
 5. **Repeat**: Repeat until all nodes reach `VERIFIED`.

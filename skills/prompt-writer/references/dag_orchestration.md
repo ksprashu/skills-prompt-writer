@@ -78,25 +78,28 @@ The `task_graph.json` file dictates task execution order, workspace isolation, m
 
 ---
 
-## 3. Pure Orchestrator (Manager) Protocol
+## 3. Pure Orchestrator (Manager) Protocol & `/Goal` Handoff
 
 The executing main thread operates under strict **Pure Orchestrator Protocol**:
 
 1. **Zero Direct Implementation**: The Manager thread NEVER calls code-editing or file-writing tools directly on target source files.
 2. **DAG Evaluation**: The Manager reads `task_graph.json`. It identifies all nodes whose `dependencies` are completely `VERIFIED`.
-3. **Subagent Execution (`invoke_subagent`)**:
+3. **Subagent `/Goal` Execution (`invoke_subagent`)**:
    - For each ready node, the Manager launches a specialized worker subagent using `invoke_subagent`.
-   - Pass the contents of `tasks/<task_file>.md` as the subagent's prompt.
+   - The Manager formats the subagent prompt as a `/goal` directive passing the contents of `tasks/<task_file>.md` (which contains clean, unambiguous Intent Specifications, acceptance criteria, and boundaries).
    - Set `Role`, `Model`, and `Workspace` according to the node specification in `task_graph.json`.
-4. **Sentry Gatekeeping**:
+4. **Subagent Thinking Harness Execution**:
+   - The subagent receives the clean Intent Directive and leverages Antigravity's full thinking capability to perform its own autonomous planning (`implementation_plan.md`, `task.md`), TDD/BDD execution loops, and walkthrough generation for that logical atomic module.
+5. **Sentry Gatekeeping**:
    - When a worker subagent signals completion, the Manager DOES NOT immediately mark the task as complete.
    - The Manager spawns a **Sentry / Verifier Subagent** using `verification_gate.verifier_prompt`.
    - The Sentry executes tests, builds, or security scans to verify `blocking_criteria`.
-5. **State Journal & Sign-off**:
+6. **State Journal & Sign-off**:
    - If the Sentry confirms all `blocking_criteria` pass, the Manager updates node status to `VERIFIED` in `task_graph.json` and `.gemini/tasks/<SHORT_ID>/state_journal.json`.
    - If the Sentry reports failures, the Manager re-dispatches the worker subagent with failure feedback (capped at `MAX_ITERATIONS=3`).
-6. **Reactive Wakeup**:
+7. **Reactive Wakeup**:
    - After launching subagents, the Manager stops calling tools. The Antigravity system automatically wakes the Manager up when a subagent sends a message or completes.
+
 
 ---
 

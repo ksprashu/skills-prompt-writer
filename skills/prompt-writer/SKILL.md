@@ -9,16 +9,18 @@ You are now operating under the **Prompt-Writer** custom skill. Your objective i
 
 ---
 
-## 🛑 CRITICAL: Workflow Isolation & Zero-Override Augmentation
+## 🛑 CRITICAL: Workflow Isolation & Harness Thinking Delegation
 
-This is a **Meta-Task** (instruction-writing). To ensure maximum performance while leveraging Antigravity's native capabilities without overriding them:
-1. **Zero-Override Augmentation Principle**: `prompt-writer` NEVER overrides, bypasses, or replaces Antigravity's core skills (`spec`, `planning`, `test`, `build`, `review`, `ship`, `/goal`). Instead, it acts as an **Antigravity Capability Amplifier** that takes raw, ambiguous user input and compiles it into a structured specification deck (`.gemini/prompts/<SHORT_ID>/prompt.md`).
-2. **De-couple Meta-Writing from Target Implementation**: Your objective in Phase 1 is *exclusively* to rewrite and optimize the user's prompt. You do NOT modify target source code during Phase 1. The only file created during prompt-writing is `.gemini/prompts/<SHORT_ID>/prompt.md` and `rewritten_prompt_<SHORT_ID>.md`.
-3. **Phase 2 Execution Harness (Autonomous Task Breakdown & Iterative Loop Engineering)**: The execution phase (Phase 2) begins when the user clicks **"Proceed"** or triggers execution. Upon launch, the executing agent MUST invoke Antigravity's native core skills in sequence:
-   - **Autonomous Task Breakdown (`planning` & `spec` skills)**: The executing agent reads `.gemini/prompts/<SHORT_ID>/prompt.md` and generates a codebase-level `implementation_plan.md` and `task.md` inside `.gemini/tasks/<SHORT_ID>/` with interactive checkboxes (`[ ]`, `[/]`, `[x]`).
-   - **Iterative Loop Engineering Execution (`test` & `build` skills)**: The executing agent runs a **Dual-Loop Engineering Execution Engine**:
-     - *Inner TDD Loop*: Write unit test (`pytest`/`jest`) -> run test suite -> fix code -> re-run test runner until 100% pass rate is achieved.
-     - *Outer BDD & Sentry Loop*: Run `behave` Gherkin scenarios -> execute `validate_evidence.py` to verify evidence ledgers -> back-propagate to Builder stage if audits fail (circuit breaker: `MAX_ITERATIONS=3`).
+This is a **Meta-Task** (intent-writing & topology design). To ensure maximum performance while leveraging Antigravity's full native thinking capabilities:
+1. **Intent-First Specification Principle**: `prompt-writer` does NOT write low-level implementation plans or pre-baked code steps for subtasks. Instead, it acts as an **Intent Engineering & Task Topology System** that:
+   - Thoroughly understands, clarifies, and disambiguates the user's intent through Socratic grilling.
+   - Deconstructs complex requests into atomic, single-responsibility sub-goals with identified parallelization opportunities, dependencies, model tiers, and verification criteria in `task_graph.json`.
+   - Writes clean, unambiguous **Intent Directives** (`tasks/task_XX_<name>.md`) focusing on requirements, boundaries, and acceptance criteria.
+2. **De-couple Intent Formulation from Subagent Execution Planning**: Prompt Writer outputs `.gemini/prompts/<SHORT_ID>/task_graph.json`, `orchestrator.md`, and atomic task directives. It does NOT generate implementation code files during Phase 1.
+3. **Phase 2 Subagent `/Goal` Execution Harness**: The execution phase begins when the user clicks **"Proceed"** or triggers execution:
+   - **Pure Manager Orchestration**: The main thread acts as a Manager that reads `task_graph.json`, identifies ready nodes, and invokes subagents using the native `/goal` mechanism.
+   - **Subagent Autonomous Thinking & Planning**: Each invoked subagent receives its clean intent directive as a `/goal` prompt. The subagent leverages Antigravity's full thinking engine to generate its own `implementation_plan.md` and `task.md`, run TDD/BDD execution loops, and produce a verifiable walkthrough for its specific atomic module.
+
 
 ---
 
@@ -59,12 +61,13 @@ flowchart TD
 - **When to Use**: Deep investigative tasks, new feature architectures, multi-file refactors, security audits, or when explicit heavyweight keywords (`plan`, `think`, `architect`, `deep`, `investigate`, `/goal`) are detected.
 - **Workflow & Modular Deck Assembly**:
   1. **3-Subagent Scout Crawl**: Spawns parallel subagents for codebase indexing, web research, and docs scraping.
-  2. **Stateful Socratic Grill**: Uses `ask_question` (1 question at a time) to resolve architectural trade-offs.
-  3. **Modular Orchestration Deck Assembly (DAG Task Graph)**: Rather than generating a single context-polluting monolithic prompt, `prompt-writer` generates a **Modular Orchestration Deck** under `.gemini/prompts/<SHORT_ID>/`:
-     - `task_graph.json`: Machine-readable Directed Acyclic Graph (DAG) with atomic task nodes, dependencies, subagent roles, model tiers, and blocking verification criteria.
-     - `orchestrator.md`: Directives for the **Pure Manager Thread** (prohibiting direct code edits, enforcing subagent worker dispatch, Sentry verification, and state sign-off).
-     - `tasks/task_01_<name>.md`, `tasks/task_02_<name>.md`: Atomic, single-focus worker prompts.
-  4. **User Approval & Execution Hook**: Saves `rewritten_prompt_<SHORT_ID>.md` with an interactive summary diagram and a **"Proceed"** execution button. Upon launch, the executing agent acts as the Pure Manager thread orchestrating DAG worker execution.
+  2. **Stateful Socratic Grill**: Uses `ask_question` (1 question at a time) to disambiguate intent, resolve gaps, and provide technical recommendations.
+  3. **Modular Orchestration Deck Assembly (Intent-Driven DAG Graph)**: `prompt-writer` generates a **Modular Orchestration Deck** under `.gemini/prompts/<SHORT_ID>/`:
+     - `task_graph.json`: Machine-readable DAG mapping atomic logical task nodes, dependencies, parallelization opportunities, subagent roles, model tiers, and blocking verification criteria.
+     - `orchestrator.md`: Directives for the **Pure Manager Thread** (prohibiting direct code edits, enforcing subagent worker dispatch via `/goal`, Sentry verification, and sign-off).
+     - `tasks/task_01_<name>.md`, `tasks/task_02_<name>.md`: Atomic, single-responsibility **Intent Directives** (specifying goals, requirements, constraints, and acceptance criteria—leaving low-level implementation planning to the subagent's thinking harness).
+  4. **User Approval & Execution Hook**: Saves `rewritten_prompt_<SHORT_ID>.md` with an interactive summary diagram and a **"Proceed"** execution button. Upon launch, the Manager thread executes nodes by invoking subagents with `/goal` prompts.
+
 
 ---
 
@@ -147,27 +150,25 @@ When analyzing, refining, and drafting the user's prompt, you MUST adopt the app
 *   **OKF Decision Journaling**: Save all confirmed Socratic decisions, visual preferences, and BDD scenarios as OKF Concept Documents inside `.gemini/knowledge/<SHORT_ID>/analyst/` (e.g., `user_decisions.md` [type: `Decision`] and `bdd_scenarios.md` [type: `Scenario`]).
 *   **Update State**: Check off "Analyst Stage" in `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md` and sync decisions.
 
-### 3. 📐 The Architect Stage (Domain Classification, DAG Task Graph & Contract Design)
+### 3. 📐 The Architect Stage (Intent Topology, Task Graph & Data Contracts)
 *   **Domain Classification & Template Selection**: Classify the prompt's primary domain (`coding`, `ui_design`, `security`, `research`, `verification`) and select the appropriate pipeline template from `references/dag_templates/`. Refer to **[DAG Orchestration Specification](file:///Users/ksprashanth/code/github/skills-prompt-writer/skills/prompt-writer/references/dag_orchestration.md)**.
-*   **Deconstruct Objective into an Atomic Task Graph (`task_graph.json`)**:
-    - Break down complex multi-step user tasks into atomic single-responsibility nodes.
-    - Define node dependencies, subagent roles (`Role`), model tiers (`pro`, `flash_medium`, `flash_low`), workspace isolation (`Workspace: "branch"` or `"share"`), and blocking `verification_gate` criteria.
-*   **Mandate Pure Orchestrator (Manager) Protocol**: Explicitly configure the execution directives so the main thread operates strictly as a **Pure Manager/Orchestrator** that dispatches worker subagents, spawns Sentry verifiers, and signs off on state transitions without executing direct code edits.
-*   **Gemini 3+ Context Caching Optimization**: Structure atomic worker prompts hierarchically:
-    *   **Static Context Prefix**: System prompts, expert roles, fixed guidelines, strict security rules, and static library references at the top.
-    *   **Dynamic Suffix**: Fast-changing variables, node-specific goal, acceptance criteria, and active run status at the bottom.
+*   **Deconstruct Objective into an Intent-Driven Task Graph (`task_graph.json`)**:
+    - Identify logical atomic task units, dependencies, parallelization opportunities, subagent roles (`subagent_role`), model tiers (`pro`, `flash_medium`, `flash_low`), workspace isolation (`Workspace: "branch"` or `"share"`), and blocking `verification_gate` criteria.
+    - **Intent-First Principle**: Focus strictly on *what* needs to be accomplished, inputs/outputs, boundaries, and acceptance criteria. Do NOT write step-by-step implementation code or file-by-file execution scripts during prompt generation.
+*   **Pure Manager Protocol & `/Goal` Handoff Design**: Configure `orchestrator.md` so the Manager thread dispatches each node by passing the intent spec file (`tasks/task_XX.md`) as a `/goal` prompt to a subagent (`invoke_subagent`). This allows the subagent to leverage Antigravity's full thinking harness to generate its own `implementation_plan.md` and execute TDD/BDD loops autonomously.
 *   **Strict Data Contract & Schema Enforcement**: Define centralized schema models (Pydantic classes or JSON schemas) for all data exchanged between parallel subagents. Save contracts as an OKF Concept Document under `.gemini/knowledge/<SHORT_ID>/architecture/data_contracts.md` (type: `Data Contract`).
 *   **Update State**: Check off the "Architect Stage" in `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md` and save system architecture configurations.
 
 ### 4. 🛠️ The Builder Stage (Modular Orchestration Deck Assembly)
 *   **Action**: Generate the complete Modular Orchestration Deck under `.gemini/prompts/<SHORT_ID>/`:
-    1.  **`task_graph.json`**: Output the full JSON DAG matching the schema in `references/dag_orchestration.md`.
-    2.  **`orchestrator.md`**: Output the Pure Manager Thread directives using XML-style tags (`<ROLE>`, `<CONTEXT>`, `<GOAL>`, `<TASK_GRAPH_PROTOCOL>`, `<CONSTRAINTS>`).
-    3.  **`tasks/task_01_<name>.md`, `tasks/task_02_<name>.md`**: Write dedicated, hyper-focused worker prompts for each node in `task_graph.json`.
-    4.  **`prompt.md`**: Create a unified compiled entrypoint referencing the deck.
-*   **State-Journal & OKF Blueprint Integration**: Embed the complete JSON schema for the executing agent's `state_journal.json`, `task.md` checklist, and the blueprint for `.gemini/knowledge/<SHORT_ID>/`.
+    1.  **`task_graph.json`**: Machine-readable DAG schema defining node goals, dependencies, subagent roles, model tiers, and verification gates.
+    2.  **`orchestrator.md`**: Directives for the **Pure Manager Thread** (instructing the Manager to invoke subagents via `/goal`, await event notifications, run Sentry verification, and update node status).
+    3.  **`tasks/task_01_<name>.md`, `tasks/task_02_<name>.md`**: Write dedicated **Intent Specification Prompts** for each node, formatted with clean `<ROLE>`, `<GOAL>`, `<REQUIREMENTS>`, `<CONSTRAINTS>`, and `<DEFINITION_OF_DONE>`.
+    4.  **`prompt.md`**: Unified compiled entrypoint referencing the deck.
+*   **State-Journal & OKF Blueprint Integration**: Embed the JSON schema for `.gemini/tasks/<SHORT_ID>/state_journal.json`, `task.md`, and the blueprint for `.gemini/knowledge/<SHORT_ID>/`.
 *   **Modern Web Guidance & Design Aesthetics**: If building web interfaces or documentation, mandate following **[Modern Web Guidance Skill](file:///Users/ksprashanth/.gemini/config/plugins/modern-web-guidance-plugin/skills/modern-web-guidance/SKILL.md)** and invoking **[Documentation Custom Skill](file:///Users/ksprashanth/code/github/skills-documentation/skills/documentation/SKILL.md)** for HTML portal compilation.
 *   **Update State**: Check off the "Builder Stage" in `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md` and save the drafted prompt structure.
+
 
 
 ### 5. 🛡️ The Sentry Stage (Quality Guardrails, Security & Citation Rules)
