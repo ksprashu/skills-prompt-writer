@@ -33,6 +33,12 @@ The `task_graph.json` file dictates task execution order, workspace isolation, m
   "title": "Autonomous Security Audit & Patch Swarm",
   "domain": "security",
   "execution_mode": "dag_orchestration",
+  "project_scoped_skills": [
+    "spec",
+    "test",
+    "review",
+    "security-and-hardening"
+  ],
   "nodes": [
     {
       "id": "task_01",
@@ -40,13 +46,14 @@ The `task_graph.json` file dictates task execution order, workspace isolation, m
       "template": "security_scan",
       "prompt_file": "tasks/task_01_scan.md",
       "subagent_role": "Auditor - Vulnerability Scanner",
+      "subagent_skills": ["review", "security-and-hardening"],
       "model_tier": "flash_medium",
       "workspace_mode": "share",
       "dependencies": [],
       "status": "PENDING",
       "verification_gate": {
         "verifier_role": "Sentry - Security Gatekeeper",
-        "verifier_prompt": "Audit the scan outputs in .gemini/knowledge/PRMT-8F21/sout/scans.json. Verify zero unhandled high-severity errors.",
+        "verifier_prompt": "Audit the scan outputs in .gemini/knowledge/PRMT-8F21/scout/scans.json. Verify zero unhandled high-severity errors.",
         "blocking_criteria": [
           "run_security_scanner executed successfully",
           "vulnerabilities log formatted with CWE IDs"
@@ -59,6 +66,7 @@ The `task_graph.json` file dictates task execution order, workspace isolation, m
       "template": "coding_patch",
       "prompt_file": "tasks/task_02_patch_a.md",
       "subagent_role": "Producer - Secure Patch Writer",
+      "subagent_skills": ["spec", "source-driven-development", "security-and-hardening", "test"],
       "model_tier": "pro",
       "workspace_mode": "branch",
       "dependencies": ["task_01"],
