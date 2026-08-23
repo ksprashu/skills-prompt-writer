@@ -122,13 +122,27 @@ To support concurrent prompt executions and survive any environment interruption
 
 ---
 
-## 🧭 Meta-Operational Workflow (The 6-Persona Pipeline & OKF Integration)
+## 🧭 Meta-Operational Workflow (The 6-Persona Pipeline & Pure Meta-Orchestration)
 
-When analyzing, refining, and drafting the user's prompt, you MUST adopt the appropriate persona at each stage, standardizing and organizing all generated knowledge artifacts as an isolated OKF Knowledge Bundle under `.gemini/knowledge/<SHORT_ID>/`. The orchestration of these stages is guided by the global standalone **[6-personas Custom Skill](file:///Users/ksprashanth/.gemini/skills/6-personas/SKILL.md)**. All file layouts, YAML frontmatters, indices, and log schemas are governed and specified by the standalone **[Knowledge Catalog Custom Skill](file:///Users/ksprashanth/.gemini/skills/knowledge-catalog/SKILL.md)**. You must adopt these personas:
+When analyzing, refining, and drafting the user's prompt, you MUST adopt the appropriate persona at each stage. Standardize and organize all generated knowledge artifacts as an isolated OKF Knowledge Bundle under `.gemini/knowledge/<SHORT_ID>/`.
 
-### 1. 🎓 The Scout Stage (Short ID Generation, Catalog Ingestion, Intelligent Skill Selection & Registry Init)
+> [!IMPORTANT]
+> **Pure Meta-Orchestration Principle**: `prompt-writer` is a **Meta-Orchestrator**, not a domain practitioner. It does NOT redefine how specifications, testing, security, or documentation should be written. Instead, it systematically **composes, delegates to, and weaves** the authoritative global skills into the generated prompt deck:
+> - **Specification & Interface Contracts** ➔ Delegated to **[Spec Custom Skill](file:///Users/ksprashanth/code/github/agent-skills/skills/spec/SKILL.md)** and **[Source-Driven Development](file:///Users/ksprashanth/code/github/agent-skills/skills/source-driven-development/SKILL.md)**
+> - **Knowledge Bundles & Concept Docs** ➔ Delegated to **[Knowledge Catalog Custom Skill](file:///Users/ksprashanth/code/github/skills-knowledge-catalog/skills/knowledge-catalog/SKILL.md)**
+> - **Task Decomposition & Dependency DAGs** ➔ Delegated to **[Planning Custom Skill](file:///Users/ksprashanth/code/github/agent-skills/skills/planning/SKILL.md)**
+> - **Verification & TDD Loops** ➔ Delegated to **[Test Custom Skill](file:///Users/ksprashanth/code/github/agent-skills/skills/test/SKILL.md)** and **[Expectation Harness](file:///Users/ksprashanth/code/github/skills-expectation-harness/skills/expectation-harness/SKILL.md)**
+> - **Adversarial Audits & Security** ➔ Delegated to **[Review Custom Skill](file:///Users/ksprashanth/code/github/agent-skills/skills/review/SKILL.md)** and **[Security & Hardening](file:///Users/ksprashanth/code/github/agent-skills/skills/security-and-hardening/SKILL.md)**
+> - **Documentation & Presentation Portals** ➔ Delegated to **[Documentation Custom Skill](file:///Users/ksprashanth/code/github/skills-documentation/skills/documentation/SKILL.md)** and **[Compile Docs](file:///Users/ksprashanth/code/github/skills-prompt-writer/skills/compile-docs/SKILL.md)**
+> - **Personal Voice & Copywriting** ➔ Delegated to **[Copy-Write-Bara](file:///Users/ksprashanth/code/github/copy-write-bara/SKILL.md)**
+> - **Visuals & Diagram Assets** ➔ Delegated to **[Image-Gen-Expert](file:///Users/ksprashanth/code/github/skills-image-gen-expert/skills/image-gen-expert/SKILL.md)**
+
+---
+
+### 1. 🎓 The Scout Stage (Short ID Generation, AGY Capability Discovery, Catalog Ingestion & Registry Init)
 *   **Generate Short ID**: Generate a unique `SHORT_ID` (e.g., `PRMT-8F21`). If this is a revision of an existing prompt, capture `PARENT_SHORT_ID`.
 *   **Workspace Mapping**: Ingest the user's initial prompt and inspect the active workspace. Execute `list_dir` or `find` to map the workspace's structure.
+*   **Antigravity Native Capability Grounding**: Consult the built-in **[Antigravity Guide Skill](file:///Users/ksprashanth/.gemini/antigravity/builtin/skills/antigravity_guide/SKILL.md)** and its subdocs (`references/app.md`, `references/cli.md`, `references/ide.md`, `references/sdk.md`) in preference to discover available native AGY features (`/goal`, `/schedule`, `/grill-me`, `/browser`, `/learn`, artifacts, workspace isolation). Fall back to live documentation URLs (`https://antigravity.google/docs`) only when querying unreleased or specialized platform APIs.
 *   **Curated Catalog Ingestion & LLM Intelligent Skill Selection**: 
     1. Read the curated **[Preferred Skills Catalog](file:///Users/ksprashanth/code/github/skills-prompt-writer/skills/prompt-writer/references/PREFERRED_SKILLS.md)**.
     2. Employ LLM semantic reasoning to evaluate the user's objective, architectural layers, and tech stack against the catalog (e.g. mapping ADK/Agents -> `google-agents-cli-workflow`, Cloud Run -> `cloud-run-basics`, BigQuery -> `bigquery-basics`, Next.js -> `vercel-labs/agent-skills`).
@@ -137,16 +151,17 @@ When analyzing, refining, and drafting the user's prompt, you MUST adopt the app
        ```bash
        python3 ~/.agents/skills/prompt-writer/scripts/skills_bootstrapper.py --project . --skills <skill_1>,<skill_2>,<skill_3>
        ```
-*   **Initialize State, Registry & Namespaced OKF Bundle**: Create or hydrate `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md`, `.gemini/tasks/<SHORT_ID>/prompt_writer_journal.json`, sync `.gemini/prompts/registry.json`, and scaffold the namespaced OKF Knowledge Bundle at `.gemini/knowledge/<SHORT_ID>/` with a default `index.md` and `log.md`.
-*   **Spawn Concurrent Subagents**: Trigger automated context engineering by launching three parallel, specialized background subagents using `invoke_subagent`:
+*   **Initialize State, Registry & Namespaced OKF Bundle**: Create or hydrate `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md`, `.gemini/tasks/<SHORT_ID>/prompt_writer_journal.json`, sync `.gemini/prompts/registry.json`, and scaffold the namespaced OKF Knowledge Bundle at `.gemini/knowledge/<SHORT_ID>/` with a default `index.md` and `log.md` following **[Knowledge Catalog](file:///Users/ksprashanth/code/github/skills-knowledge-catalog/skills/knowledge-catalog/SKILL.md)**.
+*   **Spawn Concurrent Subagents**: Trigger automated context engineering by launching three parallel, specialized background subagents using `invoke_subagent` (all with `Model: "inherit"`):
     *   **Codebase Scout**: Indexes folder paths, detects dependencies, maps HTTP route endpoints, and writes an OKF Concept Document `scout/codebase_map.md` (type: `Reference`).
     *   **Web Intelligence Analyst**: Searches the web for latest versions, release notes, and best-practices, writing `scout/web_intel.md` (type: `Reference`).
     *   **Docs Crawler**: Queries local/global MCP documentation servers, writing `scout/docs_crawler.md` (type: `Reference`).
 *   **Event-Driven Message Handoffs**: Await incoming lightweight event-notification triggers via the `send_message` tool from the background subagents. Once notifications are received, read and verify their completed OKF Concept Document payloads on disk.
 *   **Update State & Registry**: Check off the "Scout Stage" in `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md` and update `prompt_writer_journal.json` and `registry.json`.
 
-### 2. 🕵️ The Analyst Stage (Context Filtering, Caching Optimization & Socratic Grill)
+### 2. 🕵️ The Analyst Stage (Specification Construction, Caching Optimization & Socratic Grill)
 *   **Context Payload Ingestion**: Parse and load the structured OKF documents from `.gemini/knowledge/<SHORT_ID>/scout/` generated during the Scout stage.
+*   **Specification & Interface Contracts Construction**: Formulate formal specifications, API contracts, and BDD scenarios before code generation, following **[Spec Custom Skill](file:///Users/ksprashanth/code/github/agent-skills/skills/spec/SKILL.md)** and save to `.gemini/knowledge/<SHORT_ID>/architecture/data_contracts.md`.
 *   **Cache-Friendly Context Tiering**: Filter and partition the gathered context payload into:
     *   **Static Prefix (High Cache Priority)**: Keep fixed libraries API signatures, cloud parameters, and core guidelines at the top of your prompt template to maximize context cache hits.
     *   **Dynamic Suffix (Low Cache Priority)**: Place active user specifications, checklists, and run status variables at the bottom.
@@ -158,18 +173,19 @@ When analyzing, refining, and drafting the user's prompt, you MUST adopt the app
 *   **OKF Decision Journaling**: Save all confirmed Socratic decisions, visual preferences, and BDD scenarios as OKF Concept Documents inside `.gemini/knowledge/<SHORT_ID>/analyst/` (e.g., `user_decisions.md` [type: `Decision`] and `bdd_scenarios.md` [type: `Scenario`]).
 *   **Update State**: Check off "Analyst Stage" in `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md` and sync decisions.
 
-### 3. 📐 The Architect Stage (Intent Topology, Task Graph & Curated Skill Weaving)
+### 3. 📐 The Architect Stage (Intent Topology, Task Graph & Dream Sequence Weaving)
 *   **Domain Classification & Template Selection**: Classify the prompt's primary domain (`coding`, `ui_design`, `security`, `research`, `verification`) and select the appropriate pipeline template from `references/dag_templates/`. Refer to **[DAG Orchestration Specification](file:///Users/ksprashanth/code/github/skills-prompt-writer/skills/prompt-writer/references/dag_orchestration.md)**.
 *   **Deconstruct Objective into an Intent-Driven Task Graph (`task_graph.json`)**:
-    - Identify logical atomic task units, dependencies, parallelization opportunities, subagent roles (`subagent_role`), model tiers (`pro`, `flash_medium`, `flash_low`), workspace isolation (`Workspace: "branch"` or `"share"`), and blocking `verification_gate` criteria.
+    - Identify logical atomic task units, dependencies, parallelization opportunities, subagent roles (`subagent_role`), workspace isolation (`Workspace: "branch"` for code edits, `"share"` for read-only audits), and blocking `verification_gate` criteria.
+    - **Subagent Model Configuration**: Standardize on `Model: "inherit"` across all subagents to adhere to AGY's unified session model.
     - **Curated Skill Weaving**: Explicitly bind and assign the selected curated skills to each subagent node in `task_graph.json` (`subagent_skills: ["<skill_1>", "<skill_2>"]`) so each worker subagent loads its domain-specific lifecycle instructions (e.g., `spec` for specifications, `test` for TDD, `review` for sentry audits, `documentation` for portal generation).
     - **Intent-First Principle**: Focus strictly on *what* needs to be accomplished, inputs/outputs, boundaries, and acceptance criteria. Do NOT write step-by-step implementation code or file-by-file execution scripts during prompt generation.
 *   **Pure Manager Protocol & `/Goal` Handoff Design**: Configure `orchestrator.md` so the Manager thread dispatches each node by passing the intent spec file (`tasks/task_XX.md`) as a `/goal` prompt to a subagent (`invoke_subagent`) along with its project-scoped domain skills.
 
-*   **Continuous Evolutionary Retrospective Cycles & Self-Enhancing DAG Protocol**:
+*   **In-Flight Dream Sequence & Dynamic DAG Evolution Protocol**:
     - **Never-Satisfied Orchestration Rule**: Direct that completion of initial implementation nodes MUST NOT conclude the DAG execution.
-    - **Checkpoint & Periodic Retrospective Loops**: Inject explicit **Retrospective & Critique Nodes** (`retrospective_checkpoints`) into `task_graph.json` at strategic intervals (e.g. post-implementation, post-integration, and post-verification):
-      1. *Critique Dispatch*: Manager dispatches a specialized **Sentry/Reviewer Subagent** (equipped with `review` and `expectation-harness` skills) tasked strictly with adversarial code review, static analysis, performance profiling, and gap detection against original intent.
+    - **In-Flight Dream Checkpoints**: Inject explicit **Retrospective & Critique Nodes** (`retrospective_checkpoints`) into `task_graph.json` at strategic intervals, following **[Dream Sequence Specification](file:///Users/ksprashanth/code/github/skills-prompt-writer/skills/prompt-writer/references/dream_sequence.md)**:
+      1. *Critique Dispatch*: Manager dispatches a specialized **Sentry/Reviewer Subagent** (equipped with `review`, `expectation-harness`, and `doubt-driven-development`) tasked strictly with adversarial code review, static analysis (`verify_okf.py`), and gap detection against original intent.
       2. *Dynamic DAG Evolution*: If the Reviewer identifies scope for improvement, optimization, or missing edge-case handling, the Manager receives the structured improvement proposal and dynamically appends new child task nodes (`task_XX_evolution_step1`, `task_XX_evolution_step2`) to `task_graph.json`.
       3. *Recursive Refinement*: The Manager dispatches workers for the newly appended evolution nodes via `/goal`, followed by a subsequent Retrospective Cycle. The Manager is never satisfied until a Retrospective Pass explicitly returns `STATUS: OPTIMAL / ZERO_GAPS`.
 *   **Strict Data Contract & Schema Enforcement**: Define centralized schema models (Pydantic classes or JSON schemas) for all data exchanged between parallel subagents. Save contracts as an OKF Concept Document under `.gemini/knowledge/<SHORT_ID>/architecture/data_contracts.md` (type: `Data Contract`).
@@ -177,8 +193,8 @@ When analyzing, refining, and drafting the user's prompt, you MUST adopt the app
 
 ### 4. 🛠️ The Builder Stage (Modular Orchestration Deck Assembly & Skill Directives)
 *   **Action**: Generate the complete Modular Orchestration Deck under `.gemini/prompts/<SHORT_ID>/`:
-    1.  **`task_graph.json`**: Machine-readable DAG schema defining node goals, dependencies, subagent roles, model tiers, verification gates, attached `subagent_skills`, and explicit `retrospective_checkpoints`.
-    2.  **`orchestrator.md`**: Directives for the **Pure Manager Thread** (instructing the Manager to invoke subagents via `/goal`, enforce subagent skill loading, execute retrospective cycles, dynamically evolve `task_graph.json` upon review findings, and require explicit `ZERO_GAPS` sign-off).
+    1.  **`task_graph.json`**: Machine-readable DAG schema defining node goals, dependencies, subagent roles (`Model: "inherit"`), verification gates, attached `subagent_skills`, and explicit `retrospective_checkpoints`.
+    2.  **`orchestrator.md`**: Directives for the **Pure Manager Thread** (instructing the Manager to invoke subagents via `/goal`, enforce subagent skill loading, execute dream retrospective cycles, dynamically evolve `task_graph.json` upon review findings, and require explicit `ZERO_GAPS` sign-off).
     3.  **`tasks/task_01_<name>.md`, `tasks/task_02_<name>.md`**: Write dedicated **Intent Specification Prompts** for both implementation nodes and retrospective/critique nodes, citing the required skill rules (e.g., TDD/BDD via `test`, documentation via `compile-docs`).
     4.  **`prompt.md`**: Unified compiled entrypoint referencing the deck.
 

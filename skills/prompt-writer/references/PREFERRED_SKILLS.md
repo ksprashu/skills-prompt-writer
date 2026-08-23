@@ -4,38 +4,42 @@ This document serves as the **Single Source of Truth** for preferred agent skill
 
 ---
 
-## 🧭 How to Use This Catalog
+## 🧭 Architecture Principle: Prompt-Writer as a Pure Meta-Orchestrator
 
-1. **LLM Semantic Evaluation**: 
-   - Read the user prompt and inspect the project workspace.
-   - Identify the primary architectural domains, frameworks, databases, and verification requirements.
-   - Select the matching skills from the tables below.
-2. **Community Discovery (`skills.sh`)**:
-   - If a specialized library, cloud provider, or framework is not listed below, search the global `skills.sh` registry:
-     ```bash
-     npx skills find <technology_or_topic>
-     ```
-3. **Project-Scoped Bootstrapping**:
-   - Install the chosen skills directly into `<project>/.gemini/skills/` and `<project>/.agents/skills/` using the bootstrapper utility:
-     ```bash
-     python3 ~/.agents/skills/prompt-writer/scripts/skills_bootstrapper.py --project . --skills <skill_1>,<skill_2>,<skill_3>
-     ```
-   - For remote `skills.sh` packages:
-     ```bash
-     npx skills add <package_name> --skill <skill_name> --project
-     ```
-4. **Prompt & DAG Weaving**:
-   - In `task_graph.json` and `tasks/task_XX_<name>.md`, bind the selected skills to each subagent node under `subagent_skills: ["<skill_name>"]` so executing workers automatically load domain-specific rules.
+> [!IMPORTANT]
+> **Zero Practice Redefinition**: `prompt-writer` is a **Meta-Orchestrator**, not a domain practitioner. It does NOT redefine how specifications, testing, security, or documentation should be written. Instead, it systematically **composes, delegates to, and weaves** the authoritative global skills into the generated prompt deck:
+> - **Specification & Interface Contracts** ➔ Delegated to [`spec`](file:///Users/ksprashanth/code/github/agent-skills/skills/spec) and [`source-driven-development`](file:///Users/ksprashanth/code/github/agent-skills/skills/source-driven-development)
+> - **Knowledge Bundles & Concept Docs** ➔ Delegated to [`knowledge-catalog`](file:///Users/ksprashanth/code/github/skills-knowledge-catalog/skills/knowledge-catalog)
+> - **Task Decomposition & Dependency DAGs** ➔ Delegated to [`planning`](file:///Users/ksprashanth/code/github/agent-skills/skills/planning)
+> - **Verification & TDD Loops** ➔ Delegated to [`test`](file:///Users/ksprashanth/code/github/agent-skills/skills/test) and [`expectation-harness`](file:///Users/ksprashanth/code/github/skills-expectation-harness/skills/expectation-harness)
+> - **Adversarial Audits & Security** ➔ Delegated to [`review`](file:///Users/ksprashanth/code/github/agent-skills/skills/review) and [`security-and-hardening`](file:///Users/ksprashanth/code/github/agent-skills/skills/security-and-hardening)
+> - **Documentation & Presentation Portals** ➔ Delegated to [`documentation`](file:///Users/ksprashanth/code/github/skills-documentation/skills/documentation) and [`compile-docs`](file:///Users/ksprashanth/code/github/skills-prompt-writer/skills/compile-docs)
+> - **Personal Voice & Copywriting** ➔ Delegated to [`copy-write-bara`](file:///Users/ksprashanth/code/github/copy-write-bara)
+> - **Visuals & Diagram Assets** ➔ Delegated to [`image-gen-expert`](file:///Users/ksprashanth/code/github/skills-image-gen-expert/skills/image-gen-expert)
 
 ---
 
-## 🌟 1. Core Global Engineering Lifecycle Skills (Always Available)
+## 🚀 Native Antigravity Grounding & Continuous Adaptation
 
-These 15 skills are always loaded globally in Antigravity and Claude Code:
+1. **Prioritize Built-In [`antigravity-guide`](file:///Users/ksprashanth/.gemini/antigravity/builtin/skills/antigravity_guide/SKILL.md)**:
+   - Always consult the built-in skill and its offline subdocs (`references/app.md`, `references/cli.md`, `references/ide.md`, `references/sdk.md`) first to discover native AGY mechanics.
+   - Use live doc URLs (`https://antigravity.google/docs`) as a fallback only when querying unreleased or specialized platform APIs.
+2. **Native Mechanics to Weave into Prompts**:
+   - **`/goal` Pure Delegation**: Direct the Manager thread to dispatch subagents via `/goal` intent directives.
+   - **Unified Model Configuration**: Use `Model: "inherit"` across subagent invocations, matching AGY's single active session model.
+   - **Workspace Isolation**: Use `Workspace: "branch"` for modifying source code and `Workspace: "share"` for read-only audits or scans.
+   - **Dream Sequences & Retrospectives**: Inject in-flight retrospective checkpoints to ensure self-evolving DAG execution until `ZERO_GAPS`. (See **[Dream Sequence Specification](file:///Users/ksprashanth/code/github/skills-prompt-writer/skills/prompt-writer/references/dream_sequence.md)**).
+
+---
+
+## 🌟 1. Core Global Lifecycle Skills (16 Always Active)
+
+These 16 skills are active globally across Antigravity and Claude Code:
 
 | Skill Name | Role & Objective | Key Injected Rules |
 | :--- | :--- | :--- |
 | **`prompt-writer`** | Meta-task intent engineering & task DAG graph topology | 6 Personas pipeline, OKF bundles, on-demand skill bootstrapping, Short IDs (`PRMT-<HEX4>`). |
+| **`knowledge-catalog`** | Google Open Knowledge Format (OKF) bundle builder | Scaffolds `.gemini/knowledge/` concept docs (`scout/`, `analyst/`, `architecture/`, `sentry/`, `builder/`) and runs `verify_okf.py`. |
 | **`spec`** | Spec-driven development | Enforces writing clear specifications, interface contracts, and boundaries before writing code. |
 | **`planning`** | Task breakdown & dependency DAGs | Breaks specifications into atomic verifiable subtasks with strict dependency ordering. |
 | **`test`** | Test-Driven Development (TDD & BDD) | Prove-it bug reproduction loops, `pytest`/`behave` dual coverage, and 100% verification before delivery. |
@@ -146,13 +150,14 @@ When working with popular open-source frameworks, the LLM can recommend or insta
 
 ## 🧩 4. Prompt Weaving & Subagent Task Assignment Example
 
-When `prompt-writer` generates `.gemini/prompts/<SHORT_ID>/task_graph.json` and task directives, it maps skills to each subagent node:
+When `prompt-writer` generates `.gemini/prompts/<SHORT_ID>/task_graph.json` and task directives, it binds skills to each subagent node using `Model: "inherit"`:
 
 ```json
 {
   "prompt_id": "PRMT-8F21",
   "project_scoped_skills": [
     "spec",
+    "knowledge-catalog",
     "google-agents-cli-workflow",
     "cloud-run-basics",
     "test",
@@ -161,39 +166,44 @@ When `prompt-writer` generates `.gemini/prompts/<SHORT_ID>/task_graph.json` and 
   ],
   "nodes": [
     {
-      "id": "task_01_api_spec",
+      "id": "task_01_spec_and_contracts",
       "subagent_role": "API Architect",
-      "model_tier": "pro",
-      "subagent_skills": ["spec", "source-driven-development", "api-and-interface-design"],
-      "directive_file": "tasks/task_01_api_spec.md"
+      "model_tier": "inherit",
+      "workspace_mode": "share",
+      "subagent_skills": ["spec", "source-driven-development", "knowledge-catalog", "api-and-interface-design"],
+      "directive_file": "tasks/task_01_spec_and_contracts.md"
     },
     {
       "id": "task_02_adk_agent_core",
       "subagent_role": "ADK Agent Engineer",
-      "model_tier": "pro",
+      "model_tier": "inherit",
+      "workspace_mode": "branch",
       "subagent_skills": ["google-agents-cli-workflow", "google-agents-cli-adk-code"],
       "directive_file": "tasks/task_02_adk_agent_core.md"
     },
     {
       "id": "task_03_cloud_run_deploy",
       "subagent_role": "Cloud DevOps Engineer",
-      "model_tier": "flash_medium",
+      "model_tier": "inherit",
+      "workspace_mode": "branch",
       "subagent_skills": ["cloud-run-basics", "google-cloud-waf-security"],
       "directive_file": "tasks/task_03_cloud_run_deploy.md"
     },
     {
       "id": "task_04_verification_tdd",
       "subagent_role": "QA & Test Engineer",
-      "model_tier": "pro",
+      "model_tier": "inherit",
+      "workspace_mode": "share",
       "subagent_skills": ["test", "expectation-harness"],
       "directive_file": "tasks/task_04_verification_tdd.md"
     },
     {
-      "id": "task_05_sentry_security_audit",
-      "subagent_role": "Security Sentry",
-      "model_tier": "pro",
-      "subagent_skills": ["review", "security-and-hardening"],
-      "directive_file": "tasks/task_05_sentry_security_audit.md"
+      "id": "task_05_retrospective_critic",
+      "subagent_role": "Sentry - Adversarial Reviewer & Critic",
+      "model_tier": "inherit",
+      "workspace_mode": "share",
+      "subagent_skills": ["review", "security-and-hardening", "doubt-driven-development"],
+      "directive_file": "tasks/task_05_retrospective_critic.md"
     }
   ]
 }

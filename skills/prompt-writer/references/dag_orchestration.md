@@ -35,6 +35,7 @@ The `task_graph.json` file dictates task execution order, workspace isolation, m
   "execution_mode": "dag_orchestration",
   "project_scoped_skills": [
     "spec",
+    "knowledge-catalog",
     "test",
     "review",
     "security-and-hardening"
@@ -47,7 +48,7 @@ The `task_graph.json` file dictates task execution order, workspace isolation, m
       "prompt_file": "tasks/task_01_scan.md",
       "subagent_role": "Auditor - Vulnerability Scanner",
       "subagent_skills": ["review", "security-and-hardening"],
-      "model_tier": "flash_medium",
+      "model_tier": "inherit",
       "workspace_mode": "share",
       "dependencies": [],
       "status": "PENDING",
@@ -67,7 +68,7 @@ The `task_graph.json` file dictates task execution order, workspace isolation, m
       "prompt_file": "tasks/task_02_patch_a.md",
       "subagent_role": "Producer - Secure Patch Writer",
       "subagent_skills": ["spec", "source-driven-development", "security-and-hardening", "test"],
-      "model_tier": "pro",
+      "model_tier": "inherit",
       "workspace_mode": "branch",
       "dependencies": ["task_01"],
       "status": "PENDING",
