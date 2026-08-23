@@ -1,408 +1,515 @@
 <!DOCTYPE html>
-<html lang="en" class="dark h-full bg-[#121212]">
+<html lang="en" class="technical">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Codebase Implementation Plan: Genesis Dream (World-Builder Dream) • Google India Summit 2026</title>
+    <title>Implementation Plan</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'google-blue': '#A8C7FA',
-                        'surface-100': '#1E1E1E',
-                        'surface-200': '#2A2A2A',
-                        'safety-green': '#10b981',
-                        'muted-slate': '#94a3b8',
-                        'electric-teal': '#0be6b3',
-                        'neon-indigo': '#A8C7FA',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        headings: ['Outfit', 'sans-serif'],
-                        console: ['Fira Code', 'monospace'],
-                    },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     
     <style>
-        html {
-            font-size: 16px;
-        }
         
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
+        /* TECHNICAL DOCUMENTATION THEME (Clean Light) */
+        :root {
+            --bg-canvas: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-surface-alt: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --color-primary: #1e40af;
+            --color-accent: #2563eb;
+            --color-accent-glow: rgba(37, 99, 235, 0.08);
+            --border-color: #e2e8f0;
+            --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --rounding: 8px;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --header-bg: #ffffff;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            font-family: var(--font-body);
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 9999px;
+        .main-container {
+            display: grid;
+            grid-template-columns: 240px minmax(0, 1fr) 200px;
+            gap: 28px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 24px;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
+        @media(max-width: 1100px) {
+            .main-container { grid-template-columns: 220px minmax(0, 1fr); }
+            .toc-bar { display: none; }
         }
-        
+        @media(max-width: 768px) {
+            .main-container { grid-template-columns: 1fr; padding: 16px; }
+            .sidebar { position: relative; top: 0; height: auto; border-right: none; padding-right: 0; margin-bottom: 20px; }
+        }
+        .sidebar {
+            position: sticky;
+            top: 76px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+            padding-right: 20px;
+        }
+        .toc-bar {
+            position: sticky;
+            top: 76px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+            border-left: 1px solid var(--border-color);
+            padding-left: 20px;
+        }
+        .prose-content {
+            min-width: 0;
+            line-height: 1.7;
+            font-size: 15px;
+        }
         .glass-panel {
-            background: rgba(30, 30, 30, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--rounding);
+            box-shadow: var(--shadow-sm);
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+    
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+        }
+        
+        .header-bar {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: var(--header-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .tab-btn {
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+        }
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-surface-alt);
+        }
+        .tab-btn.tab-active {
+            background: var(--color-accent-glow);
+            color: var(--color-accent);
+            border: 1px solid var(--border-color);
+        }
+        
+        .external-link, .nav-link-item {
+            color: var(--color-accent);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            font-weight: 500;
+        }
+        
+        .rich-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+            border-radius: var(--rounding);
+            border: 1px solid var(--border-color);
+        }
+        .rich-table th {
+            background-color: var(--bg-surface-alt);
+            color: var(--text-primary);
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .rich-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        .rich-table th:first-child, .rich-table td:first-child {
+            white-space: nowrap !important;
+        }
+        
+        .code-container {
+            background-color: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: var(--rounding);
+            overflow: hidden;
+            color: #f8fafc;
+        }
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            background-color: #020617;
+            border-bottom: 1px solid #1e293b;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #334155;
+            padding: 2px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #cbd5e1;
+            font-size: 0.7rem;
+        }
+        pre {
+            margin: 0;
+            padding: 16px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+        }
+        .inline-code {
+            background-color: var(--bg-surface-alt);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            color: var(--color-accent);
+            border: 1px solid var(--border-color);
+        }
+        
+        .sidebar-link {
+            display: block;
+            padding: 6px 10px;
+            border-radius: var(--rounding);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 2px;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+        .sidebar-link:hover {
+            background-color: var(--bg-surface-alt);
+            color: var(--text-primary);
+        }
+        .sidebar-link.active {
+            background-color: var(--color-accent-glow);
+            color: var(--color-accent);
+            font-weight: 600;
+            border-left: 3px solid var(--color-accent);
         }
     </style>
-    
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            mermaid.initialize({
-                startOnLoad: true,
-                theme: 'dark',
-                securityLevel: 'loose',
-                themeVariables: {
-                    background: '#121212',
-                    primaryColor: '#A8C7FA',
-                    primaryTextColor: '#ffffff',
-                    lineColor: '#94a3b8',
-                }
-            });
-        });
-    </script>
 </head>
-<body class="h-full font-sans text-zinc-300 flex flex-col overflow-hidden selection:bg-google-blue/30 selection:text-white bg-[#121212]">
+<body>
 
-    <div id="toast" class="fixed top-5 right-5 transform translate-y-[-100px] opacity-0 transition-all duration-300 bg-emerald-500 text-white font-headings font-bold px-4 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 z-50">
-        <span class="text-xs">Copied to Clipboard!</span>
-    </div>
-
-    <!-- Top Navigation Bar -->
-    <header class="h-16 border-b border-white/10 px-6 flex items-center justify-between shrink-0 glass-panel sticky top-0 z-40">
-        <div class="flex items-center space-x-6 min-w-0">
-            <div class="flex items-center space-x-2 shrink-0">
-                <div class="w-3 h-3 rounded-full bg-google-blue animate-pulse"></div>
-                <span class="text-sm font-headings font-extrabold tracking-wide text-white uppercase">Google Keynote</span>
-            </div>
-            <nav class="hidden md:flex items-center space-x-1 pl-4 border-l border-white/10">
-                
-        <a href="user_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
-            User & Demo Guide
-        </a>
-        
-        <a href="deployment_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
-            Enterprise Deployment
-        </a>
-        
-        <a href="master_roadmap.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
-            Project Roadmap & History
-        </a>
-        
-            </nav>
+    <header class="header-bar">
+        <div class="flex items-center gap-2">
+            <span class="text-sm font-bold text-[var(--text-primary)]">Implementation Plan</span>
         </div>
-        <div class="flex items-center space-x-4 shrink-0">
-            <span class="text-xs font-console text-zinc-400">DOCS_SYNC <span class="text-emerald-400 font-bold">ONLINE</span></span>
+        <div class="flex gap-1 bg-[var(--bg-surface-alt)] border border-[var(--border-color)] rounded-md p-0.5">
+            <button id="btn-ui-view" onclick="showView('ui')" class="tab-btn tab-active">🖥️ Reading View</button>
+            <button id="btn-md-view" onclick="showView('md')" class="tab-btn">📄 Markdown Source</button>
         </div>
     </header>
+
+    <div class="main-container">
+        
+        <aside class="sidebar">
+            <div class="pb-3 border-b border-[var(--border-color)] mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Navigation</span>
+            </div>
+            <nav>
+                <a href="architecture_map.html" class="sidebar-link">Architecture Map</a>
+<a href="genesis_dream_walkthrough.html" class="sidebar-link">Genesis Dream Walkthrough</a>
+<a href="implementation_plan.html" class="sidebar-link active">Implementation Plan</a>
+<a href="master_roadmap.html" class="sidebar-link">Master Roadmap</a>
+<a href="task.html" class="sidebar-link">Task</a>
+<a href="user_guide.html" class="sidebar-link">User Guide</a>
+<a href="walkthrough.html" class="sidebar-link">Walkthrough</a>
+            </nav>
+        </aside>
+
+        <main class="prose-content">
+            <div id="ui-view">
+                <article class="glass-panel">
+                    <h1 id="codebase-implementation-plan-genesis-dream-world-builder-dream" class="text-2xl font-bold mb-4 pb-2 border-b border-[var(--border-color)] text-[var(--text-primary)]">Codebase Implementation Plan: Genesis Dream (World-Builder Dream)</h1>
+<p class="mb-4 text-[var(--text-secondary)]">This plan details the step-by-step execution of the <strong>Genesis Dream (World-Builder Dream)</strong> task. The objective is to retrospect on all past developer-agent interactions across both Google Antigravity platforms, synthesize developer preferences and operational rules, and initialize a complete, project-specific baseline configuration.</p>
+<p class="mb-4 text-[var(--text-secondary)]">---</p>
+<h2 id="target-deliverables" class="text-xl font-bold mt-8 mb-3 text-[var(--text-primary)]">🎯 Target Deliverables</h2>
+<p class="mb-4 text-[var(--text-secondary)]">1.  <strong>Event Card Log Directory</strong>: Programmatic map of past sessions saved as compressed summaries at <code class="inline-code">scratch/event_cards/</code>.</p>
+<p class="mb-4 text-[var(--text-secondary)]">2.  <strong>Durable Memory (<code class="inline-code">.gemini/knowledge/MEMORY.md</code>)</strong>: A structured markdown ledger compiling declarative, procedural, and user preference facts.</p>
+<p class="mb-4 text-[var(--text-secondary)]">3.  <strong>Unified Rulebook (<code class="inline-code">.agents/AGENTS.md</code>)</strong>: Global coding conventions, design patterns, and platform-specific constraints.</p>
+<p class="mb-4 text-[var(--text-secondary)]">4.  <strong>Custom Skill Scaffolding</strong>: 1-2 newly created custom skill directories under <code class="inline-code">skills/</code> targeting discovered repetitive tasks.</p>
+<p class="mb-4 text-[var(--text-secondary)]">5.  <strong>OKF Index (<code class="inline-code">.gemini/knowledge/index.md</code>)</strong>: Rebuilt index of all compiled knowledge assets.</p>
+<p class="mb-4 text-[var(--text-secondary)]">6.  <strong>Interactive Document Suite</strong>: Raw documentation compiled into high-fidelity interactive HTML sheets in <code class="inline-code">docs/</code> using the local <code class="inline-code">/Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py</code> compiler.</p>
+<p class="mb-4 text-[var(--text-secondary)]">---</p>
+<h2 id="inception-security-vector-safeguards" class="text-xl font-bold mt-8 mb-3 text-[var(--text-primary)]">🛡️ "Inception" Security Vector & Safeguards</h2>
+<ul class="list-disc pl-5 my-3 space-y-1">
+<li>  <strong>The Risk</strong>: Reading historical chat logs or code modifications that contain malicious command prompts or old prompt injections.</li>
+<li>  <strong>Mitigation</strong>: The extraction Python script will be strictly factual, extracting <em>only</em> raw user objectives, successful files modified, compiler/runtime errors, and confirmed choices. It will strip out all command syntax, system role definitions, or active prompt tags.</li>
+<li>  <strong>Model Config</strong>: LLM-based clustering or extraction runs will use absolute minimum creativity (Temperature = 0) and highly restricted schemas to ensure they treat historical transcript text purely as inert passive data.</li>
+</ul>
+<p class="mb-4 text-[var(--text-secondary)]">---</p>
+<h2 id="proposed-changes-pipeline-phases" class="text-xl font-bold mt-8 mb-3 text-[var(--text-primary)]">🧭 Proposed Changes & Pipeline Phases</h2>
+<h3 id="component-1-map-pipeline---log-ingestion-compression" class="text-lg font-semibold mt-6 mb-2 text-[var(--text-primary)]">Component 1: Map Pipeline - Log Ingestion & Compression</h3>
+<p class="mb-4 text-[var(--text-secondary)]">We will write and run a high-performance Python script <code class="inline-code">scratch/parse_transcripts.py</code> that processes conversation transcripts across both platforms.</p>
+<h4 id="new-parse-transcripts-py-file-users-ksprashanth-gemini-antigravity-brain-5eec2dde-fb42-4da6-b6c9-e916ff012561-scratch-parse-transcripts-py" class="font-semibold mt-4 mb-2 text-[var(--text-primary)]">[NEW] <a href="parse_transcripts.html" class="nav-link-item">parse_transcripts.py</a></h4>
+<ul class="list-disc pl-5 my-3 space-y-1">
+<li>  <strong>Target Directories</strong>:</li>
+<li>  <code class="inline-code">/Users/ksprashanth/.gemini/antigravity/brain/</code></li>
+<li>  <code class="inline-code">/Users/ksprashanth/.gemini/antigravity-cli/brain/</code></li>
+<li>  <strong>Parsing Logic</strong>:</li>
+<li>  Scan for all directories containing <code class="inline-code">.system_generated/logs/transcript.jsonl</code> or <code class="inline-code">transcript_full.jsonl</code>.</li>
+<li>  Parse the JSONLines file.</li>
+<li>  Detect user prompts (type: <code class="inline-code">USER_INPUT</code>), final tool calls/success states, and edited files.</li>
+<li>  Summarize each conversation into a structured YAML/JSON "Event Card" containing:</li>
+<li><code class="inline-code">conversation_id</code>: The ID of the thread.</li>
+<li><code class="inline-code">goal</code>: What the user was trying to achieve.</li>
+<li><code class="inline-code">files_modified</code>: Any files written/edited.</li>
+<li><code class="inline-code">errors_encountered</code>: Compile, syntax, or command-line failures.</li>
+<li><code class="inline-code">preferences_expressed</code>: Explicit or implicit user design/behavioral preferences.</li>
+<li>  Write results to <code class="inline-code">/Users/ksprashanth/.gemini/antigravity/brain/5eec2dde-fb42-4da6-b6c9-e916ff012561/scratch/event_cards/</code>.</li>
+</ul>
+<p class="mb-4 text-[var(--text-secondary)]">---</p>
+<h3 id="component-2-reduce-pipeline---synthesis-clustering" class="text-lg font-semibold mt-6 mb-2 text-[var(--text-primary)]">Component 2: Reduce Pipeline - Synthesis & Clustering</h3>
+<p class="mb-4 text-[var(--text-secondary)]">Using the extracted event cards, we will cluster and synthesize our final baseline files:</p>
+<h4 id="new-gemini-knowledge-memory-md-file-users-ksprashanth-code-github-skills-prompt-writer-gemini-knowledge-memory-md" class="font-semibold mt-4 mb-2 text-[var(--text-primary)]">[NEW] <a href="MEMORY.html" class="nav-link-item">.gemini/knowledge/MEMORY.md</a></h4>
+<ul class="list-disc pl-5 my-3 space-y-1">
+<li>  Initialize memory of:</li>
+<li>OS configurations (Mac zsh).</li>
+<li>Discovered tool schemas, local commands, and script usages.</li>
+<li>Verified preferences (e.g., custom Socratic formats, option styles).</li>
+</ul>
+<h4 id="new-agents-agents-md-file-users-ksprashanth-code-github-skills-prompt-writer-agents-agents-md" class="font-semibold mt-4 mb-2 text-[var(--text-primary)]">[NEW] <a href="AGENTS.html" class="nav-link-item">.agents/AGENTS.md</a></h4>
+<ul class="list-disc pl-5 my-3 space-y-1">
+<li>  Assemble a unified rulebook encompassing:</li>
+<li>HTML/XML Tag Symmetry.</li>
+<li>Responsive first-column nowrap resets for comparative tables.</li>
+<li>Documentation compiling rules using Stitch themes and <code class="inline-code">compile_docs.py</code>.</li>
+</ul>
+<h4 id="new-custom-skills-scaffolding---inline-code-20" class="font-semibold mt-4 mb-2 text-[var(--text-primary)]">[NEW] Custom Skills Scaffolding (<code class="inline-code">skills/</code>)</h4>
+<ul class="list-disc pl-5 my-3 space-y-1">
+<li>  If repetitive actions are discovered (such as running validation suites, compiling docs, or formatting assets), scaffold custom skills:</li>
+<li><code class="inline-code">skills/&lt;skill_name&gt;/SKILL.md</code> (instructions).</li>
+<li><code class="inline-code">skills/&lt;skill_name&gt;/scripts/</code> (any helper tools).</li>
+</ul>
+<h4 id="new-okf-catalog-index" class="font-semibold mt-4 mb-2 text-[var(--text-primary)]">[NEW] OKF Catalog Index</h4>
+<ul class="list-disc pl-5 my-3 space-y-1">
+<li>  Build <code class="inline-code">.gemini/knowledge/index.md</code> linking to <code class="inline-code">MEMORY.md</code>, <code class="inline-code">DREAMS.md</code>, and individual stage documents.</li>
+</ul>
+<p class="mb-4 text-[var(--text-secondary)]">---</p>
+<h3 id="component-3-handoff-documentation-compiling" class="text-lg font-semibold mt-6 mb-2 text-[var(--text-primary)]">Component 3: Handoff & Documentation Compiling</h3>
+<p class="mb-4 text-[var(--text-secondary)]">To complete the "World-Building" Dream, we will compile our compiled guidelines and walkthrough documents inside the <code class="inline-code">docs/</code> folder:</p>
+<h4 id="new-walkthrough-documentation-suite-file-users-ksprashanth-code-github-skills-prompt-writer-docs" class="font-semibold mt-4 mb-2 text-[var(--text-primary)]">[NEW] <a href=".html" class="nav-link-item">Walkthrough Documentation Suite</a></h4>
+<ul class="list-disc pl-5 my-3 space-y-1">
+<li>  Draft detailed guides: <code class="inline-code">user_guide.md</code>, <code class="inline-code">walkthrough.md</code>, and <code class="inline-code">architecture_map.md</code> in <code class="inline-code">docs/</code>.</li>
+<li>  Execute the local documentation suite compiler:</li>
+</ul>
     
-    <!-- Main Content Area -->
-    <main class="flex-1 overflow-y-auto custom-scrollbar relative">
-        <!-- Subtle Glow Background -->
-        <div class="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-google-blue/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
-
-        <div class="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto px-8 py-8 leading-relaxed pt-12 pb-24 animate-fade-in-up relative z-10">
-            <h1 class="text-3xl md:text-5xl font-headings font-black tracking-tight text-white mb-4">Codebase Implementation Plan: Genesis Dream (World-Builder Dream)</h1>
-            <div class="h-1 w-20 bg-google-blue rounded-full mb-10"></div>
-            
-            <div class="space-y-6">
-                <p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">This plan details the step-by-step execution of the <strong class="text-white font-bold font-headings">Genesis Dream (World-Builder Dream)</strong> task. The objective is to retrospect on all past developer-agent interactions across both Google Antigravity platforms, synthesize developer preferences and operational rules, and initialize a complete, project-specific baseline configuration.</p>
-
-<hr class="border-white/5 my-8" />
-<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">🎯 Target Deliverables</h2>
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">1.  <strong class="text-white font-bold font-headings">Event Card Log Directory</strong>: Programmatic map of past sessions saved as compressed summaries at <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">scratch/event_cards/</code>.</p>
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">2.  <strong class="text-white font-bold font-headings">Durable Memory (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/MEMORY.md</code>)</strong>: A structured markdown ledger compiling declarative, procedural, and user preference facts.</p>
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">3.  <strong class="text-white font-bold font-headings">Unified Rulebook (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.agents/AGENTS.md</code>)</strong>: Global coding conventions, design patterns, and platform-specific constraints.</p>
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">4.  <strong class="text-white font-bold font-headings">Custom Skill Scaffolding</strong>: 1-2 newly created custom skill directories under <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">skills/</code> targeting discovered repetitive tasks.</p>
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">5.  <strong class="text-white font-bold font-headings">OKF Index (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/index.md</code>)</strong>: Rebuilt index of all compiled knowledge assets.</p>
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">6.  <strong class="text-white font-bold font-headings">Interactive Document Suite</strong>: Raw documentation compiled into high-fidelity interactive HTML sheets in <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">docs/</code> using the local <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">/Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py</code> compiler.</p>
-
-<hr class="border-white/5 my-8" />
-<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">🛡️ "Inception" Security Vector & Safeguards</h2>
-<ul class="space-y-2.5 my-4 pl-1">
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">The Risk</strong>: Reading historical chat logs or code modifications that contain malicious command prompts or old prompt injections.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Mitigation</strong>: The extraction Python script will be strictly factual, extracting *only* raw user objectives, successful files modified, compiler/runtime errors, and confirmed choices. It will strip out all command syntax, system role definitions, or active prompt tags.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Model Config</strong>: LLM-based clustering or extraction runs will use absolute minimum creativity (Temperature = 0) and highly restricted schemas to ensure they treat historical transcript text purely as inert passive data.</span>
-                </li>
-                </ul>
-
-<hr class="border-white/5 my-8" />
-<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">🧭 Proposed Changes & Pipeline Phases</h2>
-
-<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Component 1: Map Pipeline - Log Ingestion & Compression</span></h3>
-
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">We will write and run a high-performance Python script <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">scratch/parse_transcripts.py</code> that processes conversation transcripts across both platforms.</p>
-
-<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[NEW] <a href="parse_transcripts.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">parse_transcripts.py</a></h4>
-<ul class="space-y-2.5 my-4 pl-1">
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Target Directories</strong>:</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">/Users/ksprashanth/.gemini/antigravity/brain/</code></span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">/Users/ksprashanth/.gemini/antigravity-cli/brain/</code></span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Parsing Logic</strong>:</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Scan for all directories containing <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.system_generated/logs/transcript.jsonl</code> or <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">transcript_full.jsonl</code>.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Parse the JSONLines file.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Detect user prompts (type: <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">USER_INPUT</code>), final tool calls/success states, and edited files.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Summarize each conversation into a structured YAML/JSON "Event Card" containing:</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed"><code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">conversation_id</code>: The ID of the thread.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed"><code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">goal</code>: What the user was trying to achieve.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed"><code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">files_modified</code>: Any files written/edited.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed"><code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">errors_encountered</code>: Compile, syntax, or command-line failures.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed"><code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">preferences_expressed</code>: Explicit or implicit user design/behavioral preferences.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Write results to <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">/Users/ksprashanth/.gemini/antigravity/brain/5eec2dde-fb42-4da6-b6c9-e916ff012561/scratch/event_cards/</code>.</span>
-                </li>
-                </ul>
-
-<hr class="border-white/5 my-8" />
-<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Component 2: Reduce Pipeline - Synthesis & Clustering</span></h3>
-
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">Using the extracted event cards, we will cluster and synthesize our final baseline files:</p>
-
-<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[NEW] <a href="MEMORY.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">.gemini/knowledge/MEMORY.md</a></h4>
-<ul class="space-y-2.5 my-4 pl-1">
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Initialize memory of:</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">OS configurations (Mac zsh).</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">Discovered tool schemas, local commands, and script usages.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">Verified preferences (e.g., custom Socratic formats, option styles).</span>
-                </li>
-                </ul>
-
-<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[NEW] <a href="AGENTS.html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">.agents/AGENTS.md</a></h4>
-<ul class="space-y-2.5 my-4 pl-1">
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Assemble a unified rulebook encompassing:</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">HTML/XML Tag Symmetry.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">Responsive first-column nowrap resets for comparative tables.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">Documentation compiling rules using Stitch themes and <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">compile_docs.py</code>.</span>
-                </li>
-                </ul>
-
-<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[NEW] Custom Skills Scaffolding (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">skills/</code>)</h4>
-<ul class="space-y-2.5 my-4 pl-1">
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  If repetitive actions are discovered (such as running validation suites, compiling docs, or formatting assets), scaffold custom skills:</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed"><code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">skills/<skill_name>/SKILL.md</code> (instructions).</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed"><code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">skills/<skill_name>/scripts/</code> (any helper tools).</span>
-                </li>
-                </ul>
-
-<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[NEW] OKF Catalog Index</h4>
-<ul class="space-y-2.5 my-4 pl-1">
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Build <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/index.md</code> linking to <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">MEMORY.md</code>, <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">DREAMS.md</code>, and individual stage documents.</span>
-                </li>
-                </ul>
-
-<hr class="border-white/5 my-8" />
-<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Component 3: Handoff & Documentation Compiling</span></h3>
-
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">To complete the "World-Building" Dream, we will compile our compiled guidelines and walkthrough documents inside the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">docs/</code> folder:</p>
-
-<h4 class="text-sm md:text-base font-headings font-bold text-zinc-400 uppercase tracking-widest mt-5 mb-1.5">[NEW] <a href=".html" class="text-electric-teal hover:text-white underline decoration-electric-teal/40 hover:decoration-white font-semibold transition duration-200">Walkthrough Documentation Suite</a></h4>
-<ul class="space-y-2.5 my-4 pl-1">
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Draft detailed guides: <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">user_guide.md</code>, <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">walkthrough.md</code>, and <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">architecture_map.md</code> in <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">docs/</code>.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Execute the local documentation suite compiler:</span>
-                </li>
-                </ul>
-    
-            <div class="rounded-2xl overflow-hidden border border-white/5 bg-[#080b13] my-6 font-console text-xs relative group shadow-2xl backdrop-blur-md">
-                <div class="flex items-center justify-between px-4 py-2.5 bg-[#0d101b] border-b border-white/5">
-                    <div class="flex items-center space-x-1.5">
-                        <span class="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-[0_0_6px_rgba(239,68,68,0.4)]"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80 shadow-[0_0_6px_rgba(234,179,8,0.4)]"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-green-500/80 shadow-[0_0_6px_rgba(34,197,94,0.4)]"></span>
-                        <span class="text-xs text-muted-slate font-console font-black pl-2 tracking-widest uppercase">bash code terminal</span>
-                    </div>
-                    <button onclick="navigator.clipboard.writeText(decodeURIComponent('%20%20%20%20python%20/Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py%20--dir%20./docs%0A%20%20%20%20')); showCopiedToast(this);" class="text-xs font-console font-bold text-muted-slate hover:text-white bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded-md transition duration-200 border border-white/5 flex items-center space-x-1 group-hover:border-white/10">
-                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                        <span>Copy</span>
-                    </button>
+            <div class="code-container my-4">
+                <div class="code-header">
+                    <span>BASH</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                 </div>
-                <pre class="p-4 overflow-x-auto text-zinc-300 leading-relaxed font-console text-xs md:text-sm max-h-[420px] custom-scrollbar"><code>    python /Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py --dir ./docs
+                <pre><code class="language-bash">    python /Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py --dir ./docs
     </code></pre>
             </div>
             
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">    This generates stunning, premium interactive HTML guides utilizing premium Stitch themes.</p>
-
-<hr class="border-white/5 my-8" />
-<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">🧪 Verification Plan</h2>
-
-<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Automated Tests</span></h3>
-<ul class="space-y-2.5 my-4 pl-1">
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Verify that <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">parse_transcripts.py</code> completes without syntax or execution errors.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Verify that <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">compile_docs.py</code> compiles the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">docs/</code> folder into stunning, responsive HTML guides successfully.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Run <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">bash scripts/validate_skill.sh</code> to ensure all custom skills and references are clean.</span>
-                </li>
-                </ul>
-
-<h3 class="text-lg md:text-xl font-headings font-semibold text-white mt-6 mb-2.5 flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-electric-teal shrink-0"></span><span>Manual Verification</span></h3>
-<ul class="space-y-2.5 my-4 pl-1">
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  Inspect <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.agents/AGENTS.md</code> and <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/MEMORY.md</code> to confirm they capture our exact workspace characteristics and conversations.</span>
-                </li>
-                </ul>
-
+<p class="mb-4 text-[var(--text-secondary)]">    This generates stunning, premium interactive HTML guides utilizing premium Stitch themes.</p>
+<p class="mb-4 text-[var(--text-secondary)]">---</p>
+<h2 id="verification-plan" class="text-xl font-bold mt-8 mb-3 text-[var(--text-primary)]">🧪 Verification Plan</h2>
+<h3 id="automated-tests" class="text-lg font-semibold mt-6 mb-2 text-[var(--text-primary)]">Automated Tests</h3>
+<ul class="list-disc pl-5 my-3 space-y-1">
+<li>  Verify that <code class="inline-code">parse_transcripts.py</code> completes without syntax or execution errors.</li>
+<li>  Verify that <code class="inline-code">compile_docs.py</code> compiles the <code class="inline-code">docs/</code> folder into stunning, responsive HTML guides successfully.</li>
+<li>  Run <code class="inline-code">bash scripts/validate_skill.sh</code> to ensure all custom skills and references are clean.</li>
+</ul>
+<h3 id="manual-verification" class="text-lg font-semibold mt-6 mb-2 text-[var(--text-primary)]">Manual Verification</h3>
+<ul class="list-disc pl-5 my-3 space-y-1">
+<li>  Inspect <code class="inline-code">.agents/AGENTS.md</code> and <code class="inline-code">.gemini/knowledge/MEMORY.md</code> to confirm they capture our exact workspace characteristics and conversations.</li>
+</ul>
+                </article>
             </div>
-        </div>
-        
-        <footer class="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto px-8 py-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-zinc-500 mx-auto px-8 relative z-10">
-            <p>© 2026 Google India Summit • Developed on stage live with Antigravity</p>
-            <a href="https://ai.google.dev/gemini-api/docs" target="_blank" class="hover:text-white transition mt-2 md:mt-0">Gemini Live API Docs ➔</a>
-        </footer>
-    </main>
+
+            <div id="markdown-view" class="hidden">
+                <div class="glass-panel">
+                    <div class="flex justify-between items-center pb-2 border-b border-[var(--border-color)] mb-4">
+                        <span class="text-sm font-bold">Raw Markdown Source</span>
+                        <button onclick="copyRawMarkdown(this)" class="copy-btn">Copy</button>
+                    </div>
+                    <pre class="bg-[#020617] border border-[#1e293b] rounded-md p-4 overflow-x-auto"><code class="language-markdown text-[#f8fafc]"># Codebase Implementation Plan: Genesis Dream (World-Builder Dream)
+
+This plan details the step-by-step execution of the **Genesis Dream (World-Builder Dream)** task. The objective is to retrospect on all past developer-agent interactions across both Google Antigravity platforms, synthesize developer preferences and operational rules, and initialize a complete, project-specific baseline configuration.
+
+---
+
+## 🎯 Target Deliverables
+1.  **Event Card Log Directory**: Programmatic map of past sessions saved as compressed summaries at `scratch/event_cards/`.
+2.  **Durable Memory (`.gemini/knowledge/MEMORY.md`)**: A structured markdown ledger compiling declarative, procedural, and user preference facts.
+3.  **Unified Rulebook (`.agents/AGENTS.md`)**: Global coding conventions, design patterns, and platform-specific constraints.
+4.  **Custom Skill Scaffolding**: 1-2 newly created custom skill directories under `skills/` targeting discovered repetitive tasks.
+5.  **OKF Index (`.gemini/knowledge/index.md`)**: Rebuilt index of all compiled knowledge assets.
+6.  **Interactive Document Suite**: Raw documentation compiled into high-fidelity interactive HTML sheets in `docs/` using the local `/Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py` compiler.
+
+---
+
+## 🛡️ &quot;Inception&quot; Security Vector &amp; Safeguards
+*   **The Risk**: Reading historical chat logs or code modifications that contain malicious command prompts or old prompt injections.
+*   **Mitigation**: The extraction Python script will be strictly factual, extracting *only* raw user objectives, successful files modified, compiler/runtime errors, and confirmed choices. It will strip out all command syntax, system role definitions, or active prompt tags.
+*   **Model Config**: LLM-based clustering or extraction runs will use absolute minimum creativity (Temperature = 0) and highly restricted schemas to ensure they treat historical transcript text purely as inert passive data.
+
+---
+
+## 🧭 Proposed Changes &amp; Pipeline Phases
+
+### Component 1: Map Pipeline - Log Ingestion &amp; Compression
+
+We will write and run a high-performance Python script `scratch/parse_transcripts.py` that processes conversation transcripts across both platforms.
+
+#### [NEW] [parse_transcripts.py](file:///Users/ksprashanth/.gemini/antigravity/brain/5eec2dde-fb42-4da6-b6c9-e916ff012561/scratch/parse_transcripts.py)
+*   **Target Directories**:
+    *   `/Users/ksprashanth/.gemini/antigravity/brain/`
+    *   `/Users/ksprashanth/.gemini/antigravity-cli/brain/`
+*   **Parsing Logic**:
+    *   Scan for all directories containing `.system_generated/logs/transcript.jsonl` or `transcript_full.jsonl`.
+    *   Parse the JSONLines file.
+    *   Detect user prompts (type: `USER_INPUT`), final tool calls/success states, and edited files.
+    *   Summarize each conversation into a structured YAML/JSON &quot;Event Card&quot; containing:
+        - `conversation_id`: The ID of the thread.
+        - `goal`: What the user was trying to achieve.
+        - `files_modified`: Any files written/edited.
+        - `errors_encountered`: Compile, syntax, or command-line failures.
+        - `preferences_expressed`: Explicit or implicit user design/behavioral preferences.
+    *   Write results to `/Users/ksprashanth/.gemini/antigravity/brain/5eec2dde-fb42-4da6-b6c9-e916ff012561/scratch/event_cards/`.
+
+---
+
+### Component 2: Reduce Pipeline - Synthesis &amp; Clustering
+
+Using the extracted event cards, we will cluster and synthesize our final baseline files:
+
+#### [NEW] [.gemini/knowledge/MEMORY.md](file:///Users/ksprashanth/code/github/skills-prompt-writer/.gemini/knowledge/MEMORY.md)
+*   Initialize memory of:
+    - OS configurations (Mac zsh).
+    - Discovered tool schemas, local commands, and script usages.
+    - Verified preferences (e.g., custom Socratic formats, option styles).
+
+#### [NEW] [.agents/AGENTS.md](file:///Users/ksprashanth/code/github/skills-prompt-writer/.agents/AGENTS.md)
+*   Assemble a unified rulebook encompassing:
+    - HTML/XML Tag Symmetry.
+    - Responsive first-column nowrap resets for comparative tables.
+    - Documentation compiling rules using Stitch themes and `compile_docs.py`.
+
+#### [NEW] Custom Skills Scaffolding (`skills/`)
+*   If repetitive actions are discovered (such as running validation suites, compiling docs, or formatting assets), scaffold custom skills:
+    - `skills/&lt;skill_name&gt;/SKILL.md` (instructions).
+    - `skills/&lt;skill_name&gt;/scripts/` (any helper tools).
+
+#### [NEW] OKF Catalog Index
+*   Build `.gemini/knowledge/index.md` linking to `MEMORY.md`, `DREAMS.md`, and individual stage documents.
+
+---
+
+### Component 3: Handoff &amp; Documentation Compiling
+
+To complete the &quot;World-Building&quot; Dream, we will compile our compiled guidelines and walkthrough documents inside the `docs/` folder:
+
+#### [NEW] [Walkthrough Documentation Suite](file:///Users/ksprashanth/code/github/skills-prompt-writer/docs/)
+*   Draft detailed guides: `user_guide.md`, `walkthrough.md`, and `architecture_map.md` in `docs/`.
+*   Execute the local documentation suite compiler:
+    ```bash
+    python /Users/ksprashanth/code/github/skills-documentation/skills/documentation/scripts/compile_docs.py --dir ./docs
+    ```
+    This generates stunning, premium interactive HTML guides utilizing premium Stitch themes.
+
+---
+
+## 🧪 Verification Plan
+
+### Automated Tests
+*   Verify that `parse_transcripts.py` completes without syntax or execution errors.
+*   Verify that `compile_docs.py` compiles the `docs/` folder into stunning, responsive HTML guides successfully.
+*   Run `bash scripts/validate_skill.sh` to ensure all custom skills and references are clean.
+
+### Manual Verification
+*   Inspect `.agents/AGENTS.md` and `.gemini/knowledge/MEMORY.md` to confirm they capture our exact workspace characteristics and conversations.
+</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <aside class="toc-bar">
+            <span class="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">On This Page</span>
+            <nav class="mt-3 space-y-1">
+                <a href="#target-deliverables" class="sidebar-link text-xs">🎯 Target Deliverables</a>
+<a href="#inception-security-vector-safeguards" class="sidebar-link text-xs">🛡️ "Inception" Security Vector & Safeguards</a>
+<a href="#proposed-changes-pipeline-phases" class="sidebar-link text-xs">🧭 Proposed Changes & Pipeline Phases</a>
+<a href="#component-1-map-pipeline---log-ingestion-compression" class="sidebar-link text-xs ml-2">Component 1: Map Pipeline - Log Ingestion & Compression</a>
+<a href="#component-2-reduce-pipeline---synthesis-clustering" class="sidebar-link text-xs ml-2">Component 2: Reduce Pipeline - Synthesis & Clustering</a>
+<a href="#component-3-handoff-documentation-compiling" class="sidebar-link text-xs ml-2">Component 3: Handoff & Documentation Compiling</a>
+<a href="#verification-plan" class="sidebar-link text-xs">🧪 Verification Plan</a>
+<a href="#automated-tests" class="sidebar-link text-xs ml-2">Automated Tests</a>
+<a href="#manual-verification" class="sidebar-link text-xs ml-2">Manual Verification</a>
+            </nav>
+        </aside>
+
+    </div>
 
     <script>
-        function showCopiedToast(btn) {
-            const toast = document.getElementById('toast');
-            toast.style.transform = 'translateY(0)';
-            toast.style.opacity = '1';
+        function showView(view) {
+            const ui = document.getElementById('ui-view');
+            const md = document.getElementById('markdown-view');
+            const btnUi = document.getElementById('btn-ui-view');
+            const btnMd = document.getElementById('btn-md-view');
             
-            setTimeout(() => {
-                toast.style.transform = 'translateY(-100px)';
-                toast.style.opacity = '0';
-            }, 2000);
+            if (view === 'ui') {
+                ui.classList.remove('hidden');
+                md.classList.add('hidden');
+                btnUi.classList.add('tab-active');
+                btnMd.classList.remove('tab-active');
+            } else {
+                ui.classList.add('hidden');
+                md.classList.remove('hidden');
+                btnUi.classList.remove('tab-active');
+                btnMd.classList.add('tab-active');
+            }
+        }
+
+        function copyCode(btn) {
+            const pre = btn.closest('.code-container').querySelector('code');
+            navigator.clipboard.writeText(pre.innerText).then(() => {
+                btn.innerText = "Copied!";
+                setTimeout(() => btn.innerText = "Copy", 1500);
+            });
+        }
+
+        function copyRawMarkdown(btn) {
+            const code = document.querySelector('#markdown-view code');
+            navigator.clipboard.writeText(code.innerText).then(() => {
+                btn.innerText = "Copied!";
+                setTimeout(() => btn.innerText = "Copy", 1500);
+            });
         }
     </script>
 </body>

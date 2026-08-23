@@ -1,77 +1,120 @@
 ---
-title: "Genesis Dream: System Architecture Map"
+title: "Prompt-Writer: System Architecture Map"
 theme: "obsidian"
 description: "Comprehensive system blueprint, multi-agent coordination models, and cognitive tiering specifications"
 ---
 
-# Genesis Dream: Workspace Architecture Map
+# 🗺️ Prompt-Writer: System Architecture Map
 
-This blueprint maps the structural layout, model tiering parameters, parallelization pipelines, and cognitive state-backpropagation mechanics governing the newly initialized workspace.
+This document details the architectural topology, meta-orchestration flow, and multi-agent coordination mechanics powering the **Prompt-Writer** engine.
 
 ---
 
-## 💤 1. The Persistent Cognitive Lifecycle
-
-The workspace operates as a continuous stateful environment. While active conversations execute fast, non-linear steps, the **Agent Dreaming** cycle guarantees that the workspace remains clean, organized, and structurally updated:
+## 🏛️ 1. Pure Meta-Orchestration Topology
 
 ```mermaid
-graph TD
-    A["Active Multi-Turn Conversations"] -->|"1. Ingests raw logs"| B["Agent Dreaming Light Phase\n(Cleanup & Clutter Removal)"]
-    B -->|"2. Programmatic aggregation"| C["Agent Dreaming REM Phase\n(Pattern & Compile Error Synthesis)"]
-    C -->|"3. Fact Promotion"| D["Agent Dreaming Deep Phase\n(MEMORY.md & AGENTS.md Compilation)"]
-    D -->|"4. Active baseline hydrate"| A
+flowchart TD
+    UserReq["User Request / Task Intent"] --> PM["Prompt-Writer (Meta-Orchestrator)"]
+    
+    subgraph Discovery["1. Discovery & Grounding Layer"]
+        PM --> AGYGuide["antigravity-guide<br>(Built-in Feature Discovery)"]
+        PM --> Catalog["PREFERRED_SKILLS.md<br>(Curated Skills Catalog)"]
+        PM --> Registry["skills.sh / npx skills find<br>(Community Registry)"]
+    end
+    
+    subgraph Cognitive["2. Cognitive Evaluation Layer"]
+        PM --> Socratic["Socratic Grill & Propose<br>(1 Question at a time via ask_question)"]
+        PM --> OKF["Knowledge Catalog<br>(Scaffolds .gemini/knowledge/<ID>/)"]
+        PM --> Spec["Spec & SDD<br>(Interface contracts & BDD)"]
+    end
+    
+    subgraph Output["3. Modular Orchestration Deck"]
+        PM --> TaskGraph["task_graph.json<br>(DAG Schema with subagent_skills)"]
+        PM --> Orchestrator["orchestrator.md<br>(Pure Manager Protocol)"]
+        PM --> TaskDirectives["tasks/task_XX.md<br>(Clean Intent Specifications)"]
+    end
+    
+    subgraph Execution["4. Pure Manager Execution & Retrospectives"]
+        TaskGraph --> Manager["Manager Thread (/goal dispatch)"]
+        Manager --> Workers["Worker Subagents (Model: inherit, Workspace: branch)"]
+        Workers --> Retro["Retrospective Sentry (Model: inherit, Workspace: share)"]
+        Retro -->|"Gaps Found"| Evolve["Dynamic DAG Expansion (task_XX_evolution)"]
+        Evolve --> Manager
+        Retro -->|"ZERO_GAPS"| Done["STATUS: OPTIMAL / Complete"]
+    end
 ```
-
-1.  **Light Phase (Ingestion & Pruning)**: Scans workspace folders to prune intermediate scripts, temporary backups, or build scratchcards, leaving a clean workspace.
-2.  **REM Phase (Pattern Synthesis)**: Extracts compile-time, test, and command-line error patterns from the `transcript.jsonl` log file to discover repeated failure vectors and recurring manual tasks.
-3.  **Deep Phase (Memory Promotion)**: Permanently writes verified facts to `.gemini/knowledge/MEMORY.md` and style conventions to `.agents/AGENTS.md` while logging the retrospective in `.gemini/knowledge/DREAMS.md`.
 
 ---
 
-## 🛠️ 2. Multi-Agent Resource & Model Tiering
-
-To optimize execution latency, API quotas, and resource costs, tasks are divided hierarchically across three distinct tiers of the fast **Gemini 3.5 Flash** model:
-
-```mermaid
-gantt
-    title Cognitive Model Tiering Schedule
-    dateFormat  X
-    axisFormat %s
-    section High-Reasoning (Flash High)
-    Planning & Threat Modeling      :active, 0, 10
-    Socratic Grilling & Audits      :active, 10, 20
-    section Builder-Coding (Flash Medium)
-    Module Generation & Writing      : 0, 15
-    Component Compilation Checks    : 15, 20
-    section Programmatic (Flash Low)
-    File-Writing & Code Injection   : 0, 10
-    Automated Testing Suite Runs    : 10, 20
-```
-
--   **High Tier (`gemini-3.5-flash-high`)**: Tasked with system planning, BDD test-suite mapping, security auditing, and socratic interviews where architectural reasoning is key.
--   **Medium Tier (`gemini-3.5-flash-medium`)**: Tasked with writing source code, editing classes, parsing JSON schemas, and verifying compiler integrity.
--   **Low Tier (`gemini-3.5-flash-low`)**: Tasked with rapid single-file updates, executing CLI tools, running lint suites, and programmatically writing test assets.
-
----
-
-## ⚡ 3. Multi-Agent Shared-State Communications
-
-Parallel subagents avoid bloated chat logs and trace histories by communicating programmatically through the shared `/scratch/` directory:
+## ⚡ 2. The 6-Persona Execution Pipeline
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Developer
-    participant Orchestrator
-    participant Scout
-    participant Sentry
-    Orchestrator->>Scout: Spawn Scout Subagent (Parallel)
-    Orchestrator->>Sentry: Spawn Sentry Subagent (Parallel)
-    Scout->>Scout: Scan filesystem and route mappings
-    Scout->>Orchestrator: Write state to scratch/context_engineering/codebase_map.json
-    Sentry->>Sentry: Scan import dependencies & licenses
-    Sentry->>Orchestrator: Write state to scratch/context_engineering/security_audit.json
-    Orchestrator->>Developer: Consolidate data & run Socratic Questionnaire
+    actor User as Developer / User
+    participant Scout as 🎓 Scout Stage
+    participant Analyst as 🕵️ Analyst Stage
+    participant Architect as 📐 Architect Stage
+    participant Builder as 🛠️ Builder Stage
+    participant Sentry as 🛡️ Sentry Stage
+    participant Mentor as 👨‍🏫 Mentor Stage
+
+    User->>Scout: Submit initial prompt (/prompt-writer)
+    Scout->>Scout: Map workspace, read PREFERRED_SKILLS.md, assign Short ID
+    Scout->>Analyst: Hand off context payload
+    Analyst->>User: Socratic Grill (1 question at a time via ask_question)
+    User-->>Analyst: Confirmed choices & defaults
+    Analyst->>Analyst: Write OKF decisions & contracts
+    Analyst->>Architect: Hand off specs & requirements
+    Architect->>Architect: Design DAG topology, attach subagent_skills, embed Dream checkpoints
+    Architect->>Builder: Hand off graph architecture
+    Builder->>Builder: Assemble task_graph.json, orchestrator.md, task directives
+    Builder->>Sentry: Hand off orchestration deck
+    Sentry->>Sentry: Run verify_okf.py & validate DAG schema
+    Sentry->>Mentor: Deliver validated prompt deck
+    Mentor->>User: Present rewritten_prompt_<SHORT_ID>.md with Proceed action
 ```
 
-This decoupled sequence prevents multiple subagents from writing overlapping outputs to the active chat stream, securing absolute transcript readability.
+---
+
+## 🌙 3. Dual-Loop Dream Sequence Engine
+
+```mermaid
+graph TD
+    subgraph LoopA["Loop A: In-Flight Dream Cycle (Self-Evolving DAG)"]
+        A1["Task Implementation Nodes"] --> A2["Retrospective Checkpoint"]
+        A2 --> A3{"Adversarial Review<br>(verify_okf.py + edge cases)"}
+        A3 -->|"Gaps Detected"| A4["Append Child Evolution Nodes<br>(task_XX_evolution)"]
+        A4 --> A1
+        A3 -->|"ZERO_GAPS"| A5["Gate Passed & Verified"]
+    end
+    
+    subgraph LoopB["Loop B: Cross-Session Dream Sequence (Memory Ingestion)"]
+        B1["Ingest transcript.jsonl"] --> B2["Extract User Corrections & Tool Errors"]
+        B2 --> B3["Synthesize OKF Concepts in .gemini/knowledge/"]
+        B3 --> B4["Persist Habits into AGENTS.md via /learn"]
+    end
+```
+
+---
+
+## 📂 4. Open Knowledge Format (OKF) Namespaced Layout
+
+All intelligence gathered during the prompt-writing session is organized into an isolated bundle governed by [`knowledge-catalog`](file:///Users/ksprashanth/code/github/skills-knowledge-catalog/skills/knowledge-catalog):
+
+```
+.gemini/knowledge/<SHORT_ID>/
+├── index.md                      # Progressive disclosure Table of Contents
+├── log.md                        # Chronological session changelog
+├── scout/
+│   ├── codebase_map.md           # Indexed folder paths, dependencies, route mappings
+│   ├── web_intel.md              # Live library versions and release telemetry
+│   └── docs_crawler.md           # MCP documentation and API signatures
+├── analyst/
+│   ├── user_decisions.md         # Codified user preferences, UI styling, and decisions
+│   └── bdd_scenarios.md          # Gherkin-style behavior scenarios
+├── architecture/
+│   └── data_contracts.md         # Pydantic schemas, protobufs, and API models
+└── sentry/
+    └── secure_threat_model.md    # Discovered threat models and security verification criteria
+```

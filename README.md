@@ -1,117 +1,118 @@
 > [!IMPORTANT]
 > **DISCLAIMER & LIABILITY NOTICE**: This is a **personal, individual project** created and maintained entirely by the author (Prashanth). It is **not** an official Google product, it is **not** affiliated with or supported by Google Cloud or Google LLC, and it does **not** come with any official support or warranty. By using this software, you acknowledge that you are solely liable for its use.
 
-# ✍️ Prompt Writer
+# ✍️ Prompt-Writer: Meta-Orchestration & Task Graph Engine
 
 [![npx skills](https://img.shields.io/badge/skills.sh-installed-brightgreen)](https://skills.sh)
+[![Antigravity](https://img.shields.io/badge/Antigravity-Native-blue)](https://antigravity.google)
 
 ![Prompt Writer Header](./docs/images/header.png)
 
-An advanced, meta-level custom skill designed for Google Antigravity that programmatically transforms basic, vague, or incomplete user requests into highly-structured, technically precise, and optimized instruction sets designed specifically for LLMs.
-
-The **Prompt Writer** guides you through an interactive "Grill & Propose" design alignment interview, maps framework dependencies, structures robust error boundaries, and compiles instant-execution templates.
+An advanced, meta-level custom skill designed for **Google Antigravity** and **Claude Code** that programmatically transforms vague, incomplete, or complex user requests into highly-structured, technically rigorous **Modular Orchestration Decks** (`task_graph.json`, `orchestrator.md`, `tasks/*.md`) and Open Knowledge Format (OKF) bundles.
 
 ---
 
-## 🔄 The Interactive Grill & Rewrite Pipeline
+## 🧭 Architecture Principles
 
-The custom skill coordinates technical refinement and asset planning through a highly structured 6-stage lifecycle:
+### 1. Pure Meta-Orchestrator (Zero Practice Redefinition)
+`prompt-writer` does **not** invent bespoke rules for specifications, testing, security, or documentation. Instead, it systematically **composes, delegates to, and weaves** the 16 authoritative global skills into the generated prompt deck:
+- **Specification & Interface Contracts** ➔ Delegated to [`spec`](file:///Users/ksprashanth/code/github/agent-skills/skills/spec) and [`source-driven-development`](file:///Users/ksprashanth/code/github/agent-skills/skills/source-driven-development)
+- **Knowledge Bundles & Concept Docs** ➔ Delegated to [`knowledge-catalog`](file:///Users/ksprashanth/code/github/skills-knowledge-catalog/skills/knowledge-catalog)
+- **Task Decomposition & Dependency DAGs** ➔ Delegated to [`planning`](file:///Users/ksprashanth/code/github/agent-skills/skills/planning)
+- **Verification & TDD Loops** ➔ Delegated to [`test`](file:///Users/ksprashanth/code/github/agent-skills/skills/test) and [`expectation-harness`](file:///Users/ksprashanth/code/github/skills-expectation-harness/skills/expectation-harness)
+- **Adversarial Audits & Security** ➔ Delegated to [`review`](file:///Users/ksprashanth/code/github/agent-skills/skills/review) and [`security-and-hardening`](file:///Users/ksprashanth/code/github/agent-skills/skills/security-and-hardening)
+- **Documentation & Presentation Portals** ➔ Delegated to [`documentation`](file:///Users/ksprashanth/code/github/skills-documentation/skills/documentation) and [`compile-docs`](file:///Users/ksprashanth/code/github/skills-prompt-writer/skills/compile-docs)
+- **Personal Voice & Copywriting** ➔ Delegated to [`copy-write-bara`](file:///Users/ksprashanth/code/github/copy-write-bara)
+- **Visuals & Diagram Assets** ➔ Delegated to [`image-gen-expert`](file:///Users/ksprashanth/code/github/skills-image-gen-expert/skills/image-gen-expert)
+
+### 2. Curated Preferred Skills Matrix vs. Brittle Crawlers
+Rather than relying on unguided filesystem crawling, `prompt-writer` consults an authoritative, curated Markdown matrix:
+[`skills/prompt-writer/references/PREFERRED_SKILLS.md`](file:///Users/ksprashanth/code/github/skills-prompt-writer/skills/prompt-writer/references/PREFERRED_SKILLS.md)
+
+### 3. Decoupled Cognitive Selection vs. Execution Plumbing
+- **LLM Reasoning**: Evaluates project tech stack, reads `PREFERRED_SKILLS.md` (and queries `skills.sh` if needed), and selects the precise skill bundle.
+- **Python Plumbing (`skills_bootstrapper.py`)**: A deterministic script that only handles symlink creation into `<project>/.gemini/skills/` and `<project>/.agents/skills/`, or runs `npx skills add`.
+
+### 4. Native Antigravity Grounding
+- Prioritizes built-in [`antigravity-guide`](file:///Users/ksprashanth/.gemini/antigravity/builtin/skills/antigravity_guide/SKILL.md) and its offline subdocs to discover native AGY mechanics (`/goal`, `/schedule`, `/browser`, `/grill-me`, `/learn`, artifacts, workspace isolation).
+- Uses live URLs (`https://antigravity.google/docs`) strictly as a fallback.
+- Standardizes subagents to `Model: "inherit"`.
+
+### 5. Dual-Loop Dream Sequences
+- **In-Flight Dream Cycle**: Sentry/Critic subagent audits code at DAG checkpoints, dynamic DAG self-expansion until `STATUS: OPTIMAL / ZERO_GAPS`.
+- **Cross-Session Dream Sequence**: Offline log parsing of `<appDataDir>/brain/<id>/transcript.jsonl` into `.gemini/knowledge/` OKF concepts.
+
+---
+
+## 🔄 The 6-Persona Meta-Operational Pipeline
 
 ```mermaid
 flowchart TD
-    Phase1[1. Scout Stage<br>Gathers context & codebase facts] --> Phase2[2. Analyst Stage<br>Interactive Grill & Propose Loops]
-    Phase2 --> Phase3[3. Architect Stage<br>Select templates & schema designs]
-    Phase3 --> Phase4[4. Builder Stage<br>Refines prompt contents & variables]
-    Phase4 --> Phase5[5. Sentry Stage<br>Audits security, lints, and error handles]
-    Phase5 --> Phase6[6. Mentor Stage<br>Deliver rewritten_prompt.md & visual maps]
-    
-    classDef steps fill:#0e101f,stroke:#ff9100,stroke-width:2px,color:#fff;
-    class Phase1,Phase2,Phase3,Phase4,Phase5,Phase6 steps;
+    Scout["🎓 1. Scout Stage<br>Short ID, AGY Discovery, PREFERRED_SKILLS & Context Crawl"] --> Analyst["🕵️ 2. Analyst Stage<br>Specification, Caching Optimization & Socratic Grill"]
+    Analyst --> Architect["📐 3. Architect Stage<br>DAG Intent Topology, Skill Weaving & Dream Checkpoints"]
+    Architect --> Builder["🛠️ 4. Builder Stage<br>Assemble Modular Deck & task_graph.json"]
+    Builder --> Sentry["🛡️ 5. Sentry Stage<br>Static Verifier (verify_okf.py) & Adversarial Review"]
+    Sentry --> Mentor["👨‍🏫 6. Mentor Stage<br>Deliver rewritten_prompt_<ID>.md with 'Proceed' Action"]
 ```
 
 ---
 
 ## 📁 Repository Structure
 
-The package is fully modular and compatible with `npx skills` installation guidelines:
-
-| Path | Type | Purpose |
-| :--- | :--- | :--- |
-| `skills/prompt-writer/SKILL.md` | Core Instructions | Standard system instructions, Short ID generation, prompt registry sync, and socratic question-banks. |
-| `skills/prompt-writer/references/template.md` | Codebase Template | The authoritative XML prompt envelope schema with `<PROMPT_METADATA>` and Short ID tags. |
-| `skills/prompt-writer/examples/example.md` | Examples | Complete before-and-after showcase comparing original vague inputs and completed outputs. |
-| `scripts/prompt_registry.py` | Python CLI | Central registry management, Short ID (`PRMT-<HEX4>`) generation, diff prompt calculation, and status tracking. |
-| `scripts/execute_pipeline.py` | Python Orchestrator | Asynchronous multi-prompt pipeline runner utilizing the Google Antigravity SDK. |
-| `scripts/validate_skill.sh` | Shell Script | Automated structural audit testing frontmatter, files, and link integrity. |
-
----
-
-## 🛠️ Installation & Setup Guide
-
-To utilize the **Prompt Writer** custom skill, you must set up both your **Custom Companion Skills** (written by you) and ensure your **Native 3P Agent Skills & MCP Servers** (bundled with Antigravity) are active.
-
----
-
-### 1️⃣ Install Custom Companion Skills (1P)
-
-The prompt-writing pipeline integrates directly with your other custom skills. Install them using `npx skills`:
-
-```bash
-# Install the 6 AI Personas pipeline coordinator
-npx skills add ksprashu/skills-6-personas
-
-# Install the OKF Knowledge Catalog schema framework
-npx skills add ksprashu/skills-knowledge-catalog
-
-# Install the Prompt Writer itself
-npx skills add ksprashu/skills-prompt-writer
+```
+skills-prompt-writer/
+├── skills/
+│   ├── prompt-writer/
+│   │   ├── SKILL.md                          # Core Prompt-Writer instructions
+│   │   ├── references/
+│   │   │   ├── PREFERRED_SKILLS.md           # Authoritative Curated Skills Catalog
+│   │   │   ├── dag_orchestration.md          # DAG schema and Pure Manager Protocol
+│   │   │   ├── dream_sequence.md             # In-flight & cross-session Dream Sequence spec
+│   │   │   ├── template.md                   # XML / Markdown prompt envelope schema
+│   │   │   └── dag_templates/                # Templates for coding, ui_design, security, etc.
+│   │   ├── scripts/
+│   │   │   └── skills_bootstrapper.py        # Deterministic project-scoped skill bootstrapper
+│   │   └── examples/
+│   │       └── example.md                    # Before-and-after prompt transformations
+│   ├── compile-docs/
+│   │   └── SKILL.md                          # Standalone HTML documentation compiler skill
+│   └── validate-skill/
+│       └── SKILL.md                          # Skill validation and linting rules
+├── docs/                                     # Compiled Stitch documentation portal
+│   ├── architecture_map.md                   # Visual architecture and sequence maps
+│   ├── master_roadmap.md                     # SDLC roadmap and milestone tracking
+│   └── user_guide.md                         # Detailed usage workflows
+├── scripts/
+│   ├── prompt_registry.py                    # Central prompt registry CLI
+│   ├── execute_pipeline.py                   # Multi-prompt pipeline runner
+│   └── validate_skill.sh                     # Automated validation test script
+└── README.md
 ```
 
 ---
 
-### 2️⃣ Verify Pre-Installed Platform Agent Skills (3P)
+## 🛠️ Quick Start & Usage
 
-The Prompt Writer leverages these advanced, natively bundled platform skills. They are pre-installed in the Antigravity system and do not require manual setup, but can be verified under your skills directory:
+### 1. Invoke via Slash Command
+Inside Antigravity 2.0 or Claude Code:
+```text
+/prompt-writer Build a multi-agent customer support agent with ADK deployed to Cloud Run
+```
 
-| Native 3P Skill | Purpose inside Prompt-Writer | Local Location / Access Path |
-| :--- | :--- | :--- |
-| **[google-antigravity-sdk](file:///Users/ksprashanth/.gemini/config/plugins/google-antigravity-sdk/skills/google-antigravity-sdk/SKILL.md)** | Drives python SDK orchestration and Multi-Agent tier parallelization (`execute_pipeline.py`). | `~/.gemini/config/plugins/google-antigravity-sdk/` |
-| **[mandatory-secure-web-skills](file:///Users/ksprashanth/.gemini/config/plugins/Google.securecoder.securecoder/skills/securecoder_generation/SKILL.md)** | Runs dependency validation (`scan_dependencies`) and threat audits (`run-security-scanner`). | `~/.gemini/config/plugins/Google.securecoder.securecoder/` |
-| **[chrome-devtools](file:///Users/ksprashanth/.gemini/config/plugins/chrome-devtools-plugin/skills/chrome-devtools/SKILL.md)** | Powers visual layout testing and browser DOM automation through `browser_subagent`. | `~/.gemini/config/plugins/chrome-devtools-plugin/` |
-| **[a11y-debugging](file:///Users/ksprashanth/.gemini/config/plugins/chrome-devtools-plugin/skills/a11y-debugging/SKILL.md)** | Audits accessibility, tap targets, color contrasts, and keyboard navigations. | `~/.gemini/config/plugins/chrome-devtools-plugin/` |
-| **[modern-web-guidance](file:///Users/ksprashanth/.gemini/config/plugins/modern-web-guidance-plugin/skills/modern-web-guidance/SKILL.md)** | Enforces advanced layout queries, HSL colors, responsive design, and CSS transitions. | `~/.gemini/config/plugins/modern-web-guidance-plugin/` |
-| **[antigravity-guide](file:///Users/ksprashanth/.gemini/antigravity-cli/builtin/skills/antigravity_guide/SKILL.md)** | Maps all built-in agy commands, slash triggers, and IDE configurations. | `~/.gemini/antigravity-cli/builtin/skills/` |
+### 2. Socratic Interview
+The Prompt-Writer asks focused, 1-at-a-time questions to confirm:
+- Target cloud services and database backends
+- UI theme preferences (for web/doc tasks)
+- Project-scoped skill bundles (`google-agents-cli-workflow`, `cloud-run-basics`, etc.)
 
----
-
-### 3️⃣ Enable Supporting Model Context Protocol (MCP) Servers
-
-The Scout and Analyst stages query several MCP servers to parse live specifications, compile UI screens, or analyze databases. Ensure the following servers are registered inside your `~/.gemini/antigravity-cli/mcp/` directory:
-
-*   **`google-developer-knowledge`**: Local RAG semantic search engine used by the `Docs Crawler` subagent to extract authorized Google Cloud APIs and library specifications.
-*   **`context7`**: Documentation resolving server used by `Docs Crawler` to fetch specific package versions and signatures.
-*   **`chrome-devtools-mcp`**: Active Chromium automation engine driving the `browser_subagent` visual screenshot capture.
-*   **`StitchMCP`**: Visual screens compiler and Design System engine for UI layout prototyping.
-*   **`bigquery`**: Cloud SQL executing framework for data-intensive or machine-learning pipelines.
-
-> [!TIP]
-> Use the standard list command inside your terminal to verify that all MCP tools are active:
-> ```bash
-> agy mcp list
-> ```
+### 3. Execution via Pure Manager
+The resulting `rewritten_prompt_<SHORT_ID>.md` presents the complete DAG architecture with a **Proceed** action. When triggered, the Manager thread:
+1. Bootstraps on-demand skills into `<project>/.gemini/skills/`
+2. Dispatches subagents node-by-node via `/goal`
+3. Enforces verification gates and in-flight Dream Retrospectives until `ZERO_GAPS`
 
 ---
 
-## 🚀 Quickstart Example
+## 📜 License
 
-To rewrite and optimize a basic request, invoke the custom skill in your Antigravity chat:
-
-> *"Rewrite my prompt about creating a secure PostgreSQL integration using our prompt-writer skill."*
-
-1.  **🎓 Scout Stage**: The agent maps the workspace, spins up three background subagents (`Codebase Scout`, `Web Intelligence Analyst`, and `Docs Crawler`) to scrape databases, configurations, and API references.
-2.  **🕵️ Analyst Stage**: Initiates a focused Socratic "Grill & Propose" loop to clarify choices (e.g., choice of pooling library, schema standards) and logs them into `.gemini/knowledge/analyst/user_decisions.md`.
-3.  **📐 Architect Stage**: Selects the XML envelope, configures model resource tiering (mapping parallel sub-tasks to dynamic **Gemini 3.5 Flash** tiers), and designs shared Pydantic data contracts.
-4.  **🛠️ Builder Stage**: Assembles the refined prompt with clear XML context tags and saves it as an executable `rewritten_prompt.md` artifact.
-5.  **🛡️ Sentry Stage**: Sets up automated dependency scanning (`scan_dependencies`) and visual testing workflows.
-6.  **🏫 Mentor Stage**: Displays the finalized prompt, presents a complete visual Mermaid architecture of the execution pipeline, and awaits your approval. Click **"Proceed"** to execute!
-
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.

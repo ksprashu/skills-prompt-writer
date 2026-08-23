@@ -1,267 +1,566 @@
 <!DOCTYPE html>
-<html lang="en" class="dark h-full bg-[#121212]">
+<html lang="en" class="obsidian">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genesis Dream: Workspace Architecture Map • Google India Summit 2026</title>
+    <title>Prompt-Writer: System Architecture Map</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'google-blue': '#A8C7FA',
-                        'surface-100': '#1E1E1E',
-                        'surface-200': '#2A2A2A',
-                        'safety-green': '#10b981',
-                        'muted-slate': '#94a3b8',
-                        'electric-teal': '#0be6b3',
-                        'neon-indigo': '#A8C7FA',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        headings: ['Outfit', 'sans-serif'],
-                        console: ['Fira Code', 'monospace'],
-                    },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     
     <style>
-        html {
-            font-size: 16px;
-        }
         
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
+        /* LUMINOUS OBSIDIAN THEME (Sleek Dark) */
+        :root {
+            --bg-canvas: #0f172a;
+            --bg-surface: #1e293b;
+            --bg-surface-alt: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --color-primary: #38bdf8;
+            --color-accent: #0ea5e9;
+            --color-accent-glow: rgba(56, 189, 248, 0.12);
+            --border-color: #334155;
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --rounding: 8px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --header-bg: #1e293b;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            font-family: var(--font-body);
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 9999px;
+        .main-container {
+            display: grid;
+            grid-template-columns: 240px minmax(0, 1fr) 200px;
+            gap: 28px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 24px;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
+        @media(max-width: 1100px) {
+            .main-container { grid-template-columns: 220px minmax(0, 1fr); }
+            .toc-bar { display: none; }
         }
-        
+        @media(max-width: 768px) {
+            .main-container { grid-template-columns: 1fr; padding: 16px; }
+            .sidebar { position: relative; top: 0; height: auto; border-right: none; padding-right: 0; margin-bottom: 20px; }
+        }
+        .sidebar {
+            position: sticky;
+            top: 76px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+            padding-right: 20px;
+        }
+        .toc-bar {
+            position: sticky;
+            top: 76px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+            border-left: 1px solid var(--border-color);
+            padding-left: 20px;
+        }
+        .prose-content {
+            min-width: 0;
+            line-height: 1.7;
+            font-size: 15px;
+        }
         .glass-panel {
-            background: rgba(30, 30, 30, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--rounding);
+            box-shadow: var(--shadow-sm);
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+    
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+        }
+        
+        .header-bar {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: var(--header-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .tab-btn {
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+        }
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-surface-alt);
+        }
+        .tab-btn.tab-active {
+            background: var(--color-accent-glow);
+            color: var(--color-accent);
+            border: 1px solid var(--border-color);
+        }
+        
+        .external-link, .nav-link-item {
+            color: var(--color-accent);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            font-weight: 500;
+        }
+        
+        .rich-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+            border-radius: var(--rounding);
+            border: 1px solid var(--border-color);
+        }
+        .rich-table th {
+            background-color: var(--bg-surface-alt);
+            color: var(--text-primary);
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .rich-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        .rich-table th:first-child, .rich-table td:first-child {
+            white-space: nowrap !important;
+        }
+        
+        .code-container {
+            background-color: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: var(--rounding);
+            overflow: hidden;
+            color: #f8fafc;
+        }
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            background-color: #020617;
+            border-bottom: 1px solid #1e293b;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #334155;
+            padding: 2px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #cbd5e1;
+            font-size: 0.7rem;
+        }
+        pre {
+            margin: 0;
+            padding: 16px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+        }
+        .inline-code {
+            background-color: var(--bg-surface-alt);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            color: var(--color-accent);
+            border: 1px solid var(--border-color);
+        }
+        
+        .sidebar-link {
+            display: block;
+            padding: 6px 10px;
+            border-radius: var(--rounding);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 2px;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+        .sidebar-link:hover {
+            background-color: var(--bg-surface-alt);
+            color: var(--text-primary);
+        }
+        .sidebar-link.active {
+            background-color: var(--color-accent-glow);
+            color: var(--color-accent);
+            font-weight: 600;
+            border-left: 3px solid var(--color-accent);
         }
     </style>
-    
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            mermaid.initialize({
-                startOnLoad: true,
-                theme: 'dark',
-                securityLevel: 'loose',
-                themeVariables: {
-                    background: '#121212',
-                    primaryColor: '#A8C7FA',
-                    primaryTextColor: '#ffffff',
-                    lineColor: '#94a3b8',
-                }
-            });
-        });
-    </script>
 </head>
-<body class="h-full font-sans text-zinc-300 flex flex-col overflow-hidden selection:bg-google-blue/30 selection:text-white bg-[#121212]">
+<body>
 
-    <div id="toast" class="fixed top-5 right-5 transform translate-y-[-100px] opacity-0 transition-all duration-300 bg-emerald-500 text-white font-headings font-bold px-4 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 z-50">
-        <span class="text-xs">Copied to Clipboard!</span>
-    </div>
-
-    <!-- Top Navigation Bar -->
-    <header class="h-16 border-b border-white/10 px-6 flex items-center justify-between shrink-0 glass-panel sticky top-0 z-40">
-        <div class="flex items-center space-x-6 min-w-0">
-            <div class="flex items-center space-x-2 shrink-0">
-                <div class="w-3 h-3 rounded-full bg-google-blue animate-pulse"></div>
-                <span class="text-sm font-headings font-extrabold tracking-wide text-white uppercase">Google Keynote</span>
-            </div>
-            <nav class="hidden md:flex items-center space-x-1 pl-4 border-l border-white/10">
-                
-        <a href="user_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
-            User & Demo Guide
-        </a>
-        
-        <a href="deployment_guide.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
-            Enterprise Deployment
-        </a>
-        
-        <a href="master_roadmap.html" class="px-3 py-1.5 rounded-lg text-sm font-sans transition duration-200 text-zinc-400 hover:text-white hover:bg-white/5">
-            Project Roadmap & History
-        </a>
-        
-            </nav>
+    <header class="header-bar">
+        <div class="flex items-center gap-2">
+            <span class="text-sm font-bold text-[var(--text-primary)]">Prompt-Writer: System Architecture Map</span>
         </div>
-        <div class="flex items-center space-x-4 shrink-0">
-            <span class="text-xs font-console text-zinc-400">DOCS_SYNC <span class="text-emerald-400 font-bold">ONLINE</span></span>
+        <div class="flex gap-1 bg-[var(--bg-surface-alt)] border border-[var(--border-color)] rounded-md p-0.5">
+            <button id="btn-ui-view" onclick="showView('ui')" class="tab-btn tab-active">🖥️ Reading View</button>
+            <button id="btn-md-view" onclick="showView('md')" class="tab-btn">📄 Markdown Source</button>
         </div>
     </header>
+
+    <div class="main-container">
+        
+        <aside class="sidebar">
+            <div class="pb-3 border-b border-[var(--border-color)] mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Navigation</span>
+            </div>
+            <nav>
+                <a href="architecture_map.html" class="sidebar-link active">Architecture Map</a>
+<a href="genesis_dream_walkthrough.html" class="sidebar-link">Genesis Dream Walkthrough</a>
+<a href="implementation_plan.html" class="sidebar-link">Implementation Plan</a>
+<a href="master_roadmap.html" class="sidebar-link">Master Roadmap</a>
+<a href="task.html" class="sidebar-link">Task</a>
+<a href="user_guide.html" class="sidebar-link">User Guide</a>
+<a href="walkthrough.html" class="sidebar-link">Walkthrough</a>
+            </nav>
+        </aside>
+
+        <main class="prose-content">
+            <div id="ui-view">
+                <article class="glass-panel">
+                    <h1 id="prompt-writer-system-architecture-map" class="text-2xl font-bold mb-4 pb-2 border-b border-[var(--border-color)] text-[var(--text-primary)]">🗺️ Prompt-Writer: System Architecture Map</h1>
+<p class="mb-4 text-[var(--text-secondary)]">This document details the architectural topology, meta-orchestration flow, and multi-agent coordination mechanics powering the <strong>Prompt-Writer</strong> engine.</p>
+<p class="mb-4 text-[var(--text-secondary)]">---</p>
+<h2 id="1-pure-meta-orchestration-topology" class="text-xl font-bold mt-8 mb-3 text-[var(--text-primary)]">🏛️ 1. Pure Meta-Orchestration Topology</h2>
+
+            <div class="code-container my-4">
+                <div class="code-header">
+                    <span>MERMAID</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-mermaid">flowchart TD
+    UserReq[&quot;User Request / Task Intent&quot;] --&gt; PM[&quot;Prompt-Writer (Meta-Orchestrator)&quot;]
     
-    <!-- Main Content Area -->
-    <main class="flex-1 overflow-y-auto custom-scrollbar relative">
-        <!-- Subtle Glow Background -->
-        <div class="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-google-blue/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
-
-        <div class="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto px-8 py-8 leading-relaxed pt-12 pb-24 animate-fade-in-up relative z-10">
-            <h1 class="text-3xl md:text-5xl font-headings font-black tracking-tight text-white mb-4">Genesis Dream: Workspace Architecture Map</h1>
-            <div class="h-1 w-20 bg-google-blue rounded-full mb-10"></div>
-            
-            <div class="space-y-6">
-                <hr class="border-white/5 my-8" />
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">title: "Genesis Dream: System Architecture Map"</p>
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">theme: "obsidian"</p>
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">description: "Comprehensive system blueprint, multi-agent coordination models, and cognitive tiering specifications"</p>
-<hr class="border-white/5 my-8" />
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">This blueprint maps the structural layout, model tiering parameters, parallelization pipelines, and cognitive state-backpropagation mechanics governing the newly initialized workspace.</p>
-
-<hr class="border-white/5 my-8" />
-<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">💤 1. The Persistent Cognitive Lifecycle</h2>
-
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">The workspace operates as a continuous stateful environment. While active conversations execute fast, non-linear steps, the <strong class="text-white font-bold font-headings">Agent Dreaming</strong> cycle guarantees that the workspace remains clean, organized, and structurally updated:</p>
-
-
-            <div class="flex flex-col items-center justify-center bg-[#0d101b]/35 border border-white/5 rounded-3xl p-6.5 my-6 shadow-2xl backdrop-blur-md w-full overflow-hidden">
-                <div class="text-xs font-console font-black tracking-widest text-zinc-500 uppercase mb-4 flex items-center space-x-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-electric-teal animate-pulse"></span>
-                    <span>Interactive Flow Chart Diagram</span>
-                </div>
-                <div class="mermaid w-full text-center flex justify-center text-sm text-zinc-300">
-graph TD
-    A["Active Multi-Turn Conversations"] -->|"1. Ingests raw logs"| B["Agent Dreaming Light Phase\n(Cleanup & Clutter Removal)"]
-    B -->|"2. Programmatic aggregation"| C["Agent Dreaming REM Phase\n(Pattern & Compile Error Synthesis)"]
-    C -->|"3. Fact Promotion"| D["Agent Dreaming Deep Phase\n(MEMORY.md & AGENTS.md Compilation)"]
-    D -->|"4. Active baseline hydrate"| A
-
-                </div>
+    subgraph Discovery[&quot;1. Discovery &amp; Grounding Layer&quot;]
+        PM --&gt; AGYGuide[&quot;antigravity-guide&lt;br&gt;(Built-in Feature Discovery)&quot;]
+        PM --&gt; Catalog[&quot;PREFERRED_SKILLS.md&lt;br&gt;(Curated Skills Catalog)&quot;]
+        PM --&gt; Registry[&quot;skills.sh / npx skills find&lt;br&gt;(Community Registry)&quot;]
+    end
+    
+    subgraph Cognitive[&quot;2. Cognitive Evaluation Layer&quot;]
+        PM --&gt; Socratic[&quot;Socratic Grill &amp; Propose&lt;br&gt;(1 Question at a time via ask_question)&quot;]
+        PM --&gt; OKF[&quot;Knowledge Catalog&lt;br&gt;(Scaffolds .gemini/knowledge/&lt;ID&gt;/)&quot;]
+        PM --&gt; Spec[&quot;Spec &amp; SDD&lt;br&gt;(Interface contracts &amp; BDD)&quot;]
+    end
+    
+    subgraph Output[&quot;3. Modular Orchestration Deck&quot;]
+        PM --&gt; TaskGraph[&quot;task_graph.json&lt;br&gt;(DAG Schema with subagent_skills)&quot;]
+        PM --&gt; Orchestrator[&quot;orchestrator.md&lt;br&gt;(Pure Manager Protocol)&quot;]
+        PM --&gt; TaskDirectives[&quot;tasks/task_XX.md&lt;br&gt;(Clean Intent Specifications)&quot;]
+    end
+    
+    subgraph Execution[&quot;4. Pure Manager Execution &amp; Retrospectives&quot;]
+        TaskGraph --&gt; Manager[&quot;Manager Thread (/goal dispatch)&quot;]
+        Manager --&gt; Workers[&quot;Worker Subagents (Model: inherit, Workspace: branch)&quot;]
+        Workers --&gt; Retro[&quot;Retrospective Sentry (Model: inherit, Workspace: share)&quot;]
+        Retro --&gt;|&quot;Gaps Found&quot;| Evolve[&quot;Dynamic DAG Expansion (task_XX_evolution)&quot;]
+        Evolve --&gt; Manager
+        Retro --&gt;|&quot;ZERO_GAPS&quot;| Done[&quot;STATUS: OPTIMAL / Complete&quot;]
+    end
+</code></pre>
             </div>
             
+<p class="mb-4 text-[var(--text-secondary)]">---</p>
+<h2 id="2-the-6-persona-execution-pipeline" class="text-xl font-bold mt-8 mb-3 text-[var(--text-primary)]">⚡ 2. The 6-Persona Execution Pipeline</h2>
 
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">1.  <strong class="text-white font-bold font-headings">Light Phase (Ingestion & Pruning)</strong>: Scans workspace folders to prune intermediate scripts, temporary backups, or build scratchcards, leaving a clean workspace.</p>
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">2.  <strong class="text-white font-bold font-headings">REM Phase (Pattern Synthesis)</strong>: Extracts compile-time, test, and command-line error patterns from the <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">transcript.jsonl</code> log file to discover repeated failure vectors and recurring manual tasks.</p>
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">3.  <strong class="text-white font-bold font-headings">Deep Phase (Memory Promotion)</strong>: Permanently writes verified facts to <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/MEMORY.md</code> and style conventions to <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.agents/AGENTS.md</code> while logging the retrospective in <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">.gemini/knowledge/DREAMS.md</code>.</p>
-
-<hr class="border-white/5 my-8" />
-<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">🛠️ 2. Multi-Agent Resource & Model Tiering</h2>
-
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">To optimize execution latency, API quotas, and resource costs, tasks are divided hierarchically across three distinct tiers of the fast <strong class="text-white font-bold font-headings">Gemini 3.5 Flash</strong> model:</p>
-
-
-            <div class="flex flex-col items-center justify-center bg-[#0d101b]/35 border border-white/5 rounded-3xl p-6.5 my-6 shadow-2xl backdrop-blur-md w-full overflow-hidden">
-                <div class="text-xs font-console font-black tracking-widest text-zinc-500 uppercase mb-4 flex items-center space-x-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-electric-teal animate-pulse"></span>
-                    <span>Interactive Flow Chart Diagram</span>
+            <div class="code-container my-4">
+                <div class="code-header">
+                    <span>MERMAID</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                 </div>
-                <div class="mermaid w-full text-center flex justify-center text-sm text-zinc-300">
-gantt
-    title Cognitive Model Tiering Schedule
-    dateFormat  X
-    axisFormat %s
-    section High-Reasoning (Flash High)
-    Planning & Threat Modeling      :active, 0, 10
-    Socratic Grilling & Audits      :active, 10, 20
-    section Builder-Coding (Flash Medium)
-    Module Generation & Writing      : 0, 15
-    Component Compilation Checks    : 15, 20
-    section Programmatic (Flash Low)
-    File-Writing & Code Injection   : 0, 10
-    Automated Testing Suite Runs    : 10, 20
+                <pre><code class="language-mermaid">sequenceDiagram
+    autonumber
+    actor User as Developer / User
+    participant Scout as 🎓 Scout Stage
+    participant Analyst as 🕵️ Analyst Stage
+    participant Architect as 📐 Architect Stage
+    participant Builder as 🛠️ Builder Stage
+    participant Sentry as 🛡️ Sentry Stage
+    participant Mentor as 👨‍🏫 Mentor Stage
 
-                </div>
+    User-&gt;&gt;Scout: Submit initial prompt (/prompt-writer)
+    Scout-&gt;&gt;Scout: Map workspace, read PREFERRED_SKILLS.md, assign Short ID
+    Scout-&gt;&gt;Analyst: Hand off context payload
+    Analyst-&gt;&gt;User: Socratic Grill (1 question at a time via ask_question)
+    User--&gt;&gt;Analyst: Confirmed choices &amp; defaults
+    Analyst-&gt;&gt;Analyst: Write OKF decisions &amp; contracts
+    Analyst-&gt;&gt;Architect: Hand off specs &amp; requirements
+    Architect-&gt;&gt;Architect: Design DAG topology, attach subagent_skills, embed Dream checkpoints
+    Architect-&gt;&gt;Builder: Hand off graph architecture
+    Builder-&gt;&gt;Builder: Assemble task_graph.json, orchestrator.md, task directives
+    Builder-&gt;&gt;Sentry: Hand off orchestration deck
+    Sentry-&gt;&gt;Sentry: Run verify_okf.py &amp; validate DAG schema
+    Sentry-&gt;&gt;Mentor: Deliver validated prompt deck
+    Mentor-&gt;&gt;User: Present rewritten_prompt_&lt;SHORT_ID&gt;.md with Proceed action
+</code></pre>
             </div>
             
+<p class="mb-4 text-[var(--text-secondary)]">---</p>
+<h2 id="3-dual-loop-dream-sequence-engine" class="text-xl font-bold mt-8 mb-3 text-[var(--text-primary)]">🌙 3. Dual-Loop Dream Sequence Engine</h2>
 
-<ul class="space-y-2.5 my-4 pl-1">
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">High Tier (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">gemini-3.5-flash-high</code>)</strong>: Tasked with system planning, BDD test-suite mapping, security auditing, and socratic interviews where architectural reasoning is key.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Medium Tier (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">gemini-3.5-flash-medium</code>)</strong>: Tasked with writing source code, editing classes, parsing JSON schemas, and verifying compiler integrity.</span>
-                </li>
-                
-                <li class="flex items-start space-x-3 text-zinc-300 font-sans text-base md:text-lg">
-                    <span class="w-1.5 h-1.5 rounded-full bg-neon-indigo shrink-0 mt-2"></span>
-                    <span class="leading-relaxed">  <strong class="text-white font-bold font-headings">Low Tier (<code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">gemini-3.5-flash-low</code>)</strong>: Tasked with rapid single-file updates, executing CLI tools, running lint suites, and programmatically writing test assets.</span>
-                </li>
-                </ul>
-
-<hr class="border-white/5 my-8" />
-<h2 class="text-xl md:text-2xl font-headings font-bold text-neon-indigo border-l-4 border-neon-indigo pl-3 mt-8 mb-3.5 uppercase tracking-wider">⚡ 3. Multi-Agent Shared-State Communications</h2>
-
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">Parallel subagents avoid bloated chat logs and trace histories by communicating programmatically through the shared <code class="bg-white/5 border border-white/5 text-pink-400 font-console text-xs md:text-sm px-1.5 py-0.5 rounded">/scratch/</code> directory:</p>
-
-
-            <div class="flex flex-col items-center justify-center bg-[#0d101b]/35 border border-white/5 rounded-3xl p-6.5 my-6 shadow-2xl backdrop-blur-md w-full overflow-hidden">
-                <div class="text-xs font-console font-black tracking-widest text-zinc-500 uppercase mb-4 flex items-center space-x-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-electric-teal animate-pulse"></span>
-                    <span>Interactive Flow Chart Diagram</span>
+            <div class="code-container my-4">
+                <div class="code-header">
+                    <span>MERMAID</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                 </div>
-                <div class="mermaid w-full text-center flex justify-center text-sm text-zinc-300">
+                <pre><code class="language-mermaid">graph TD
+    subgraph LoopA[&quot;Loop A: In-Flight Dream Cycle (Self-Evolving DAG)&quot;]
+        A1[&quot;Task Implementation Nodes&quot;] --&gt; A2[&quot;Retrospective Checkpoint&quot;]
+        A2 --&gt; A3{&quot;Adversarial Review&lt;br&gt;(verify_okf.py + edge cases)&quot;}
+        A3 --&gt;|&quot;Gaps Detected&quot;| A4[&quot;Append Child Evolution Nodes&lt;br&gt;(task_XX_evolution)&quot;]
+        A4 --&gt; A1
+        A3 --&gt;|&quot;ZERO_GAPS&quot;| A5[&quot;Gate Passed &amp; Verified&quot;]
+    end
+    
+    subgraph LoopB[&quot;Loop B: Cross-Session Dream Sequence (Memory Ingestion)&quot;]
+        B1[&quot;Ingest transcript.jsonl&quot;] --&gt; B2[&quot;Extract User Corrections &amp; Tool Errors&quot;]
+        B2 --&gt; B3[&quot;Synthesize OKF Concepts in .gemini/knowledge/&quot;]
+        B3 --&gt; B4[&quot;Persist Habits into AGENTS.md via /learn&quot;]
+    end
+</code></pre>
+            </div>
+            
+<p class="mb-4 text-[var(--text-secondary)]">---</p>
+<h2 id="4-open-knowledge-format-okf-namespaced-layout" class="text-xl font-bold mt-8 mb-3 text-[var(--text-primary)]">📂 4. Open Knowledge Format (OKF) Namespaced Layout</h2>
+<p class="mb-4 text-[var(--text-secondary)]">All intelligence gathered during the prompt-writing session is organized into an isolated bundle governed by <a href="knowledge-catalog.html" class="nav-link-item"><code class="inline-code">knowledge-catalog</code></a>:</p>
+
+            <div class="code-container my-4">
+                <div class="code-header">
+                    <span>TXT</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-txt">.gemini/knowledge/&lt;SHORT_ID&gt;/
+├── index.md                      # Progressive disclosure Table of Contents
+├── log.md                        # Chronological session changelog
+├── scout/
+│   ├── codebase_map.md           # Indexed folder paths, dependencies, route mappings
+│   ├── web_intel.md              # Live library versions and release telemetry
+│   └── docs_crawler.md           # MCP documentation and API signatures
+├── analyst/
+│   ├── user_decisions.md         # Codified user preferences, UI styling, and decisions
+│   └── bdd_scenarios.md          # Gherkin-style behavior scenarios
+├── architecture/
+│   └── data_contracts.md         # Pydantic schemas, protobufs, and API models
+└── sentry/
+    └── secure_threat_model.md    # Discovered threat models and security verification criteria
+</code></pre>
+            </div>
+            
+                </article>
+            </div>
+
+            <div id="markdown-view" class="hidden">
+                <div class="glass-panel">
+                    <div class="flex justify-between items-center pb-2 border-b border-[var(--border-color)] mb-4">
+                        <span class="text-sm font-bold">Raw Markdown Source</span>
+                        <button onclick="copyRawMarkdown(this)" class="copy-btn">Copy</button>
+                    </div>
+                    <pre class="bg-[#020617] border border-[#1e293b] rounded-md p-4 overflow-x-auto"><code class="language-markdown text-[#f8fafc]">---
+title: &quot;Prompt-Writer: System Architecture Map&quot;
+theme: &quot;obsidian&quot;
+description: &quot;Comprehensive system blueprint, multi-agent coordination models, and cognitive tiering specifications&quot;
+---
+
+# 🗺️ Prompt-Writer: System Architecture Map
+
+This document details the architectural topology, meta-orchestration flow, and multi-agent coordination mechanics powering the **Prompt-Writer** engine.
+
+---
+
+## 🏛️ 1. Pure Meta-Orchestration Topology
+
+```mermaid
+flowchart TD
+    UserReq[&quot;User Request / Task Intent&quot;] --&gt; PM[&quot;Prompt-Writer (Meta-Orchestrator)&quot;]
+    
+    subgraph Discovery[&quot;1. Discovery &amp; Grounding Layer&quot;]
+        PM --&gt; AGYGuide[&quot;antigravity-guide&lt;br&gt;(Built-in Feature Discovery)&quot;]
+        PM --&gt; Catalog[&quot;PREFERRED_SKILLS.md&lt;br&gt;(Curated Skills Catalog)&quot;]
+        PM --&gt; Registry[&quot;skills.sh / npx skills find&lt;br&gt;(Community Registry)&quot;]
+    end
+    
+    subgraph Cognitive[&quot;2. Cognitive Evaluation Layer&quot;]
+        PM --&gt; Socratic[&quot;Socratic Grill &amp; Propose&lt;br&gt;(1 Question at a time via ask_question)&quot;]
+        PM --&gt; OKF[&quot;Knowledge Catalog&lt;br&gt;(Scaffolds .gemini/knowledge/&lt;ID&gt;/)&quot;]
+        PM --&gt; Spec[&quot;Spec &amp; SDD&lt;br&gt;(Interface contracts &amp; BDD)&quot;]
+    end
+    
+    subgraph Output[&quot;3. Modular Orchestration Deck&quot;]
+        PM --&gt; TaskGraph[&quot;task_graph.json&lt;br&gt;(DAG Schema with subagent_skills)&quot;]
+        PM --&gt; Orchestrator[&quot;orchestrator.md&lt;br&gt;(Pure Manager Protocol)&quot;]
+        PM --&gt; TaskDirectives[&quot;tasks/task_XX.md&lt;br&gt;(Clean Intent Specifications)&quot;]
+    end
+    
+    subgraph Execution[&quot;4. Pure Manager Execution &amp; Retrospectives&quot;]
+        TaskGraph --&gt; Manager[&quot;Manager Thread (/goal dispatch)&quot;]
+        Manager --&gt; Workers[&quot;Worker Subagents (Model: inherit, Workspace: branch)&quot;]
+        Workers --&gt; Retro[&quot;Retrospective Sentry (Model: inherit, Workspace: share)&quot;]
+        Retro --&gt;|&quot;Gaps Found&quot;| Evolve[&quot;Dynamic DAG Expansion (task_XX_evolution)&quot;]
+        Evolve --&gt; Manager
+        Retro --&gt;|&quot;ZERO_GAPS&quot;| Done[&quot;STATUS: OPTIMAL / Complete&quot;]
+    end
+```
+
+---
+
+## ⚡ 2. The 6-Persona Execution Pipeline
+
+```mermaid
 sequenceDiagram
     autonumber
-    actor Developer
-    participant Orchestrator
-    participant Scout
-    participant Sentry
-    Orchestrator->>Scout: Spawn Scout Subagent (Parallel)
-    Orchestrator->>Sentry: Spawn Sentry Subagent (Parallel)
-    Scout->>Scout: Scan filesystem and route mappings
-    Scout->>Orchestrator: Write state to scratch/context_engineering/codebase_map.json
-    Sentry->>Sentry: Scan import dependencies & licenses
-    Sentry->>Orchestrator: Write state to scratch/context_engineering/security_audit.json
-    Orchestrator->>Developer: Consolidate data & run Socratic Questionnaire
+    actor User as Developer / User
+    participant Scout as 🎓 Scout Stage
+    participant Analyst as 🕵️ Analyst Stage
+    participant Architect as 📐 Architect Stage
+    participant Builder as 🛠️ Builder Stage
+    participant Sentry as 🛡️ Sentry Stage
+    participant Mentor as 👨‍🏫 Mentor Stage
 
+    User-&gt;&gt;Scout: Submit initial prompt (/prompt-writer)
+    Scout-&gt;&gt;Scout: Map workspace, read PREFERRED_SKILLS.md, assign Short ID
+    Scout-&gt;&gt;Analyst: Hand off context payload
+    Analyst-&gt;&gt;User: Socratic Grill (1 question at a time via ask_question)
+    User--&gt;&gt;Analyst: Confirmed choices &amp; defaults
+    Analyst-&gt;&gt;Analyst: Write OKF decisions &amp; contracts
+    Analyst-&gt;&gt;Architect: Hand off specs &amp; requirements
+    Architect-&gt;&gt;Architect: Design DAG topology, attach subagent_skills, embed Dream checkpoints
+    Architect-&gt;&gt;Builder: Hand off graph architecture
+    Builder-&gt;&gt;Builder: Assemble task_graph.json, orchestrator.md, task directives
+    Builder-&gt;&gt;Sentry: Hand off orchestration deck
+    Sentry-&gt;&gt;Sentry: Run verify_okf.py &amp; validate DAG schema
+    Sentry-&gt;&gt;Mentor: Deliver validated prompt deck
+    Mentor-&gt;&gt;User: Present rewritten_prompt_&lt;SHORT_ID&gt;.md with Proceed action
+```
+
+---
+
+## 🌙 3. Dual-Loop Dream Sequence Engine
+
+```mermaid
+graph TD
+    subgraph LoopA[&quot;Loop A: In-Flight Dream Cycle (Self-Evolving DAG)&quot;]
+        A1[&quot;Task Implementation Nodes&quot;] --&gt; A2[&quot;Retrospective Checkpoint&quot;]
+        A2 --&gt; A3{&quot;Adversarial Review&lt;br&gt;(verify_okf.py + edge cases)&quot;}
+        A3 --&gt;|&quot;Gaps Detected&quot;| A4[&quot;Append Child Evolution Nodes&lt;br&gt;(task_XX_evolution)&quot;]
+        A4 --&gt; A1
+        A3 --&gt;|&quot;ZERO_GAPS&quot;| A5[&quot;Gate Passed &amp; Verified&quot;]
+    end
+    
+    subgraph LoopB[&quot;Loop B: Cross-Session Dream Sequence (Memory Ingestion)&quot;]
+        B1[&quot;Ingest transcript.jsonl&quot;] --&gt; B2[&quot;Extract User Corrections &amp; Tool Errors&quot;]
+        B2 --&gt; B3[&quot;Synthesize OKF Concepts in .gemini/knowledge/&quot;]
+        B3 --&gt; B4[&quot;Persist Habits into AGENTS.md via /learn&quot;]
+    end
+```
+
+---
+
+## 📂 4. Open Knowledge Format (OKF) Namespaced Layout
+
+All intelligence gathered during the prompt-writing session is organized into an isolated bundle governed by [`knowledge-catalog`](file:///Users/ksprashanth/code/github/skills-knowledge-catalog/skills/knowledge-catalog):
+
+```
+.gemini/knowledge/&lt;SHORT_ID&gt;/
+├── index.md                      # Progressive disclosure Table of Contents
+├── log.md                        # Chronological session changelog
+├── scout/
+│   ├── codebase_map.md           # Indexed folder paths, dependencies, route mappings
+│   ├── web_intel.md              # Live library versions and release telemetry
+│   └── docs_crawler.md           # MCP documentation and API signatures
+├── analyst/
+│   ├── user_decisions.md         # Codified user preferences, UI styling, and decisions
+│   └── bdd_scenarios.md          # Gherkin-style behavior scenarios
+├── architecture/
+│   └── data_contracts.md         # Pydantic schemas, protobufs, and API models
+└── sentry/
+    └── secure_threat_model.md    # Discovered threat models and security verification criteria
+```
+</code></pre>
                 </div>
             </div>
-            
+        </main>
 
-<p class="text-base md:text-lg leading-relaxed text-zinc-200/90 font-sans my-4">This decoupled sequence prevents multiple subagents from writing overlapping outputs to the active chat stream, securing absolute transcript readability.</p>
+        <aside class="toc-bar">
+            <span class="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">On This Page</span>
+            <nav class="mt-3 space-y-1">
+                <a href="#1-pure-meta-orchestration-topology" class="sidebar-link text-xs">🏛️ 1. Pure Meta-Orchestration Topology</a>
+<a href="#2-the-6-persona-execution-pipeline" class="sidebar-link text-xs">⚡ 2. The 6-Persona Execution Pipeline</a>
+<a href="#3-dual-loop-dream-sequence-engine" class="sidebar-link text-xs">🌙 3. Dual-Loop Dream Sequence Engine</a>
+<a href="#4-open-knowledge-format-okf-namespaced-layout" class="sidebar-link text-xs">📂 4. Open Knowledge Format (OKF) Namespaced Layout</a>
+            </nav>
+        </aside>
 
-            </div>
-        </div>
-        
-        <footer class="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto px-8 py-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-zinc-500 mx-auto px-8 relative z-10">
-            <p>© 2026 Google India Summit • Developed on stage live with Antigravity</p>
-            <a href="https://ai.google.dev/gemini-api/docs" target="_blank" class="hover:text-white transition mt-2 md:mt-0">Gemini Live API Docs ➔</a>
-        </footer>
-    </main>
+    </div>
 
     <script>
-        function showCopiedToast(btn) {
-            const toast = document.getElementById('toast');
-            toast.style.transform = 'translateY(0)';
-            toast.style.opacity = '1';
+        function showView(view) {
+            const ui = document.getElementById('ui-view');
+            const md = document.getElementById('markdown-view');
+            const btnUi = document.getElementById('btn-ui-view');
+            const btnMd = document.getElementById('btn-md-view');
             
-            setTimeout(() => {
-                toast.style.transform = 'translateY(-100px)';
-                toast.style.opacity = '0';
-            }, 2000);
+            if (view === 'ui') {
+                ui.classList.remove('hidden');
+                md.classList.add('hidden');
+                btnUi.classList.add('tab-active');
+                btnMd.classList.remove('tab-active');
+            } else {
+                ui.classList.add('hidden');
+                md.classList.remove('hidden');
+                btnUi.classList.remove('tab-active');
+                btnMd.classList.add('tab-active');
+            }
+        }
+
+        function copyCode(btn) {
+            const pre = btn.closest('.code-container').querySelector('code');
+            navigator.clipboard.writeText(pre.innerText).then(() => {
+                btn.innerText = "Copied!";
+                setTimeout(() => btn.innerText = "Copy", 1500);
+            });
+        }
+
+        function copyRawMarkdown(btn) {
+            const code = document.querySelector('#markdown-view code');
+            navigator.clipboard.writeText(code.innerText).then(() => {
+                btn.innerText = "Copied!";
+                setTimeout(() => btn.innerText = "Copy", 1500);
+            });
         }
     </script>
 </body>

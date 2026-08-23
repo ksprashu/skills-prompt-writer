@@ -1,52 +1,67 @@
-# Project Roadmap & Dynamic Feature Ledger
+---
+title: "Prompt-Writer: Master Roadmap & Feature Ledger"
+theme: "technical"
+description: "Master project roadmap, architectural milestones, and capability matrix for Prompt-Writer"
+---
 
-Welcome to the Master Project Roadmap and Chronological Feature Ledger. This portal consolidates all completed core keynote milestones alongside the dynamic custom extension branches developed by our agentic fleet.
+# 🗺️ Prompt-Writer: Master Roadmap & Feature Ledger
+
+This document tracks completed milestones, current capabilities, and future enhancements for the **Prompt-Writer** meta-orchestration suite.
 
 ---
 
-## 1. Project Health Status
+## 🎯 1. Capability Status Matrix
 
 ::: grid-3
 ::: card
-### Core Keynote Trunk
+### Core Meta-Orchestration
 - Status: **100% Operational**
-- Scenes: **Scene 1 to Scene 6**
-- SLA Compliance: **Sub-150ms**
+- Principles: **Zero Practice Redefinition**
+- Skills Integrated: **16 Curated Globals**
 :::
 ::: card
-### Active Feature Branches
-- Active: **Docs Sync & Archiving**
-- Status: **90% Complete**
-- Hook Status: **Stop Event Active**
+### Dynamic DAG Engine
+- Status: **100% Operational**
+- Dispatch: **Pure Manager via `/goal`**
+- Subagent Model: **`Model: inherit`**
 :::
 ::: card
-### Extension Backlog
-- Proposed Ideas: **3 Features**
-- High-Impact: **Spatial plot, Rule Tuner**
-- Status: **Ready for Planning**
+### Dream Sequences
+- Status: **100% Operational**
+- In-Flight Loop: **Dynamic Self-Evolution**
+- Cross-Session: **Transcript Dreaming**
 :::
 :::
 
 ---
 
-## 2. Chronological Milestones Ledger
+## 🏆 2. Chronological Milestones Ledger
 
-| Milestone Area | Class / Type | Completion Status | Deliverables & Artifacts |
+<style>
+th:first-child, td:first-child {
+    white-space: nowrap;
+}
+td:first-child code {
+    white-space: nowrap !important;
+    word-break: normal !important;
+}
+</style>
+
+| Milestone Area | Capability & Scope | Status | Key Deliverables & Artifacts |
 | :--- | :--- | :--- | :--- |
-| **Scene 1: Chatbot** | Core Keynote Trunk | [badge:emerald:100% Completed] | Raw ungrounded Gemini gaffe sandbox |
-| **Scene 2: Commute** | Core Keynote Trunk | [badge:emerald:100% Completed] | Calendar MCP & Google Maps grounding tools |
-| **Scene 3: Wardrobe** | Core Keynote Trunk | [badge:emerald:100% Completed] | AlloyDB pgvector styling similarity |
-| **Scene 4: Florist** | Core Keynote Trunk | [badge:emerald:100% Completed] | Model Armor prompt injection input guardrails |
-| **Scene 5: Pet Sitter** | Core Keynote Trunk | [badge:emerald:100% Completed] | Model Armor PII redaction and secure logs |
-| **Scene 6: Showstopper**| Core Keynote Trunk | [badge:emerald:100% Completed] | Diner Black bilateral multi-agent seating negotiation |
-| **Docs Sync Skill** | Active Feature Branch | [badge:indigo:90% In Progress] | Automatic Stop event hook, auto-archiver, HTML timelines |
-| **Rule-Tuning Panel** | Extension Backlog | [badge:slate:0% Pending] | Model Armor toggles for live stage demonstrations |
-| **Spatial Scatter Plot**| Extension Backlog | [badge:slate:0% Pending] | AlloyDB cluster visualizations in SVG |
-| **DB Mode Controller**| Extension Backlog | [badge:slate:0% Pending] | Settings pane to hot-swap DB_MODE |
+| **M1: Core Prompt Writer** | 6-Persona Pipeline (Scout to Mentor), Short ID generation (`PRMT-<HEX4>`), and centralized registry. | [badge:emerald:100% Completed] | `SKILL.md`, `scripts/prompt_registry.py`, `references/template.md` |
+| **M2: Modular DAG Architecture** | Decoupled intent engineering from subagent implementation; machine-readable `task_graph.json` topology. | [badge:emerald:100% Completed] | `references/dag_orchestration.md`, `orchestrator.md` |
+| **M3: Pure Meta-Orchestration** | Codified Zero Practice Redefinition; weaving 16 global skills (`spec`, `test`, `review`, `documentation`, etc.). | [badge:emerald:100% Completed] | `references/PREFERRED_SKILLS.md`, updated `SKILL.md` |
+| **M4: Curated Skills Catalog** | Replaced brittle filesystem crawling with curated Markdown matrix and decoupled execution plumbing. | [badge:emerald:100% Completed] | `references/PREFERRED_SKILLS.md`, `scripts/skills_bootstrapper.py` |
+| **M5: Native AGY Grounding** | Built-in `antigravity-guide` feature discovery with live docs fallback; standardized `Model: "inherit"`. | [badge:emerald:100% Completed] | `SKILL.md`, `dag_orchestration.md`, `AGENTS.md` |
+| **M6: Dual Dream Sequences** | In-flight Retrospective Checkpoints (`ZERO_GAPS`) and cross-session transcript memory synthesis. | [badge:emerald:100% Completed] | `references/dream_sequence.md`, `docs/genesis_dream_walkthrough.md` |
+| **M7: OKF Knowledge Bundle** | Integration with `skills-knowledge-catalog` under `.gemini/knowledge/<SHORT_ID>/` with `verify_okf.py`. | [badge:emerald:100% Completed] | `knowledge-catalog/SKILL.md`, `sync_skills.py` |
+| **M8: Stitch Docs Portals** | 4 Stitch themes (obsidian, technical, proscript, dynamics) compiled into interactive HTML presentations. | [badge:emerald:100% Completed] | `compile_docs.py`, `docs/*.html` |
 
 ---
 
-## 3. Historic Plan Archives
+## 🔭 3. Future Roadmap Items
 
-All historic implementation plans and active checklists are preserved inside our documentation vault:
-* [Docs-Sync Skill Plan](archive/implementation_plan_automated_documentation_sync.html) & [Docs-Sync Active Checklist](archive/task_automated_documentation_sync.html)
+1. **Self-Balancing Parallel Worker Pool**: Dynamic subagent concurrency throttling based on live rate limits and token budgets.
+2. **Interactive Web DAG Visualizer**: In-browser reactive Canvas / SVG node inspector with live subagent state inspection.
+3. **Cross-Project Habit Transfer**: Automated skill recommendation clustering across disparate local git workspaces based on historical dream logs.
