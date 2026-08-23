@@ -129,6 +129,11 @@ When analyzing, refining, and drafting the user's prompt, you MUST adopt the app
 ### 1. 🎓 The Scout Stage (Short ID Generation, Multi-Agent Context Ingestion & Registry Init)
 *   **Generate Short ID**: Generate a unique `SHORT_ID` (e.g., `PRMT-8F21`). If this is a revision of an existing prompt, capture `PARENT_SHORT_ID`.
 *   **Workspace Mapping**: Ingest the user's initial prompt and inspect the active workspace. Execute `list_dir` or `find` to map the workspace's structure.
+*   **On-Demand Skill Bootstrapping (Project Scope)**: Run the on-demand skill bootstrapper to detect required domain frameworks (e.g. ADK, Cloud Run, BigQuery, Next.js, Tailwind, etc.) and bootstrap local canonical skills into `.gemini/skills/` and `.agents/skills/`:
+    ```bash
+    python3 ~/.agents/skills/prompt-writer/scripts/skills_bootstrapper.py --project . --prompt "<USER_PROMPT>"
+    ```
+    If community skills from `skills.sh` are recommended, suggest or execute `npx skills add <package> --skill <name> --project`.
 *   **Initialize State, Registry & Namespaced OKF Bundle**: Create or hydrate `.gemini/tasks/<SHORT_ID>/prompt_writer_task.md`, `.gemini/tasks/<SHORT_ID>/prompt_writer_journal.json`, sync `.gemini/prompts/registry.json`, and scaffold the namespaced OKF Knowledge Bundle at `.gemini/knowledge/<SHORT_ID>/` with a default `index.md` and `log.md`.
 *   **Spawn Concurrent Subagents**: Trigger automated context engineering by launching three parallel, specialized background subagents using `invoke_subagent`:
     *   **Codebase Scout**: Indexes folder paths, detects dependencies, maps HTTP route endpoints, and writes an OKF Concept Document `scout/codebase_map.md` (type: `Reference`).
@@ -153,9 +158,10 @@ When analyzing, refining, and drafting the user's prompt, you MUST adopt the app
 ### 3. 📐 The Architect Stage (Intent Topology, Task Graph & Data Contracts)
 *   **Domain Classification & Template Selection**: Classify the prompt's primary domain (`coding`, `ui_design`, `security`, `research`, `verification`) and select the appropriate pipeline template from `references/dag_templates/`. Refer to **[DAG Orchestration Specification](file:///Users/ksprashanth/code/github/skills-prompt-writer/skills/prompt-writer/references/dag_orchestration.md)**.
 *   **Deconstruct Objective into an Intent-Driven Task Graph (`task_graph.json`)**:
-    - Identify logical atomic task units, dependencies, parallelization opportunities, subagent roles (`subagent_role`), model tiers (`pro`, `flash_medium`, `flash_low`), workspace isolation (`Workspace: "branch"` or `"share"`), and blocking `verification_gate` criteria.
+    - Identify logical atomic task units, dependencies, parallelization opportunities, subagent roles (`subagent_role`), model tiers (`pro`, `flash_medium`, `flash_low`), workspace isolation (`Workspace: "branch"` or `"share"`), attached scoped skills (`subagent_skills`), and blocking `verification_gate` criteria.
     - **Intent-First Principle**: Focus strictly on *what* needs to be accomplished, inputs/outputs, boundaries, and acceptance criteria. Do NOT write step-by-step implementation code or file-by-file execution scripts during prompt generation.
-*   **Pure Manager Protocol & `/Goal` Handoff Design**: Configure `orchestrator.md` so the Manager thread dispatches each node by passing the intent spec file (`tasks/task_XX.md`) as a `/goal` prompt to a subagent (`invoke_subagent`).
+*   **Pure Manager Protocol & `/Goal` Handoff Design**: Configure `orchestrator.md` so the Manager thread dispatches each node by passing the intent spec file (`tasks/task_XX.md`) as a `/goal` prompt to a subagent (`invoke_subagent`) along with its project-scoped domain skills.
+
 *   **Continuous Evolutionary Retrospective Cycles & Self-Enhancing DAG Protocol**:
     - **Never-Satisfied Orchestration Rule**: Direct that completion of initial implementation nodes MUST NOT conclude the DAG execution.
     - **Checkpoint & Periodic Retrospective Loops**: Inject explicit **Retrospective & Critique Nodes** (`retrospective_checkpoints`) into `task_graph.json` at strategic intervals (e.g. post-implementation, post-integration, and post-verification):

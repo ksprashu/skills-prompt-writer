@@ -25,3 +25,5 @@ temp/
 tmp/
 scratch/
 rewritten_prompt.md
+__pycache__/
+*.pyc
